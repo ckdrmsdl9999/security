@@ -1,5 +1,9 @@
 package com.security.everywhere.domain;
 
+import lombok.AllArgsConstructor;
+
+@AllArgsConstructor
+
 public class TestParam {
     private String name;
 

@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 public class TestController {
 
     @GetMapping("/")
-    public String gettesting(@RequestParam(name="name", required = false, defaultValue = "World") String name, Model model) {
+    public String getTesting(@RequestParam(name="name", required = false, defaultValue = "World") String name, Model model) {
         model.addAttribute("name", name);
         return "test";  // html name
     }
