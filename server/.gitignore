@@ -21,8 +21,6 @@ build/
 *.ipr
 out/
 
-/src/main/resources/application.properties
-
 ### NetBeans ###
 /nbproject/private/
 /nbbuild/
@@ -32,3 +30,5 @@ out/
 
 ### VS Code ###
 .vscode/
+
+etc/
