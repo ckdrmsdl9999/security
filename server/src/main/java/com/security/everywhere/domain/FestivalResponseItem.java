@@ -8,52 +8,28 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement(name="item")
 @XmlAccessorType(XmlAccessType.FIELD)
 public class FestivalResponseItem {
-    @XmlElement(name = "addr1")
     private String addr1;
-    @XmlElement(name = "addr2")
     private String addr2;
-    @XmlElement(name = "areacode")
     private String areacode;
-    @XmlElement(name = "booktour")
     private String booktour;
-    @XmlElement(name = "cat1")
     private String cat1;
-    @XmlElement(name = "cat2")
     private String cat2;
-    @XmlElement(name = "cat3")
     private String cat3;
-    @XmlElement(name = "contenid")
-    private String contenid;
-    @XmlElement(name = "contenttyprld")
-    private String contenttyprld;
-    @XmlElement(name = "createdtime")
+    private String contentid;
+    private String contenttypeid;
     private String createdtime;
-    @XmlElement(name = "firstimage")
     private String firstimage;
-    @XmlElement(name = "firstimage2")
     private String firstimage2;
-    @XmlElement(name = "mapX")
-    private String mapX;
-    @XmlElement(name = "mapY")
-    private String mapY;
-    @XmlElement(name = "mlevel")
+    private String mapx;
+    private String mapy;
     private String mlevel;
-    @XmlElement(name = "modifiedtime")
     private String modifiedtime;
-    @XmlElement(name = "readcount")
     private String readcount;
-    @XmlElement(name = "sigungucode")
     private String sigungucode;
-    @XmlElement(name = "tel")
     private String tel;
-    @XmlElement(name = "title")
     private String title;
-    @XmlElement(name = "eventstartdate")
     private String eventstartdate;
-    @XmlElement(name = "eventenddate")
     private String eventenddate;
-    @XmlElement(name = "totalCnt")
-    private String totalCnt;
 
     public String getAddr1() {
         return addr1;
@@ -111,20 +87,20 @@ public class FestivalResponseItem {
         this.cat3 = cat3;
     }
 
-    public String getContenid() {
-        return contenid;
+    public String getContentid() {
+        return contentid;
     }
 
-    public void setContenid(String contenid) {
-        this.contenid = contenid;
+    public void setContentid(String contentid) {
+        this.contentid = contentid;
     }
 
-    public String getContenttyprld() {
-        return contenttyprld;
+    public String getContenttypeid() {
+        return contenttypeid;
     }
 
-    public void setContenttyprld(String contenttyprld) {
-        this.contenttyprld = contenttyprld;
+    public void setContenttypeid(String contenttypeid) {
+        this.contenttypeid = contenttypeid;
     }
 
     public String getCreatedtime() {
@@ -151,20 +127,20 @@ public class FestivalResponseItem {
         this.firstimage2 = firstimage2;
     }
 
-    public String getMapX() {
-        return mapX;
+    public String getMapx() {
+        return mapx;
     }
 
-    public void setMapX(String mapX) {
-        this.mapX = mapX;
+    public void setMapx(String mapx) {
+        this.mapx = mapx;
     }
 
-    public String getMapY() {
-        return mapY;
+    public String getMapy() {
+        return mapy;
     }
 
-    public void setMapY(String mapY) {
-        this.mapY = mapY;
+    public void setMapy(String mapy) {
+        this.mapy = mapy;
     }
 
     public String getMlevel() {
@@ -229,13 +205,5 @@ public class FestivalResponseItem {
 
     public void setEventenddate(String eventenddate) {
         this.eventenddate = eventenddate;
-    }
-
-    public String getTotalCnt() {
-        return totalCnt;
-    }
-
-    public void setTotalCnt(String totalCnt) {
-        this.totalCnt = totalCnt;
     }
 }

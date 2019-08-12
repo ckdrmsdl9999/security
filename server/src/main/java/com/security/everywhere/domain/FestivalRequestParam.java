@@ -1,12 +1,5 @@
 package com.security.everywhere.domain;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.Setter;
-
-@Getter
-@Setter
-@AllArgsConstructor
 public class FestivalRequestParam {
     private String numOfRows="";
     private String pageNo="";

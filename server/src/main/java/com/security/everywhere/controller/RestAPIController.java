@@ -2,11 +2,9 @@ package com.security.everywhere.controller;
 
 
 import com.security.everywhere.domain.FestivalRequestParam;
-import com.security.everywhere.domain.FestivalResponseBody;
 import com.security.everywhere.domain.FestivalResponseDTO;
 import com.security.everywhere.domain.FestivalResponseItem;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpMethod;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -16,7 +14,6 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLEncoder;
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -42,7 +39,6 @@ public class RestAPIController {
         urlBuilder.append("&" + URLEncoder.encode("eventStartDate","UTF-8") + "=" + URLEncoder.encode(requestParam.getEventStartDate(), "UTF-8")); /*행사 시작일(형식:YYYYMMDD)*/
         urlBuilder.append("&" + URLEncoder.encode("eventEndDate","UTF-8") + "=" + URLEncoder.encode(requestParam.getEventEndDate(), "UTF-8")); /*행사 종료일(형식:YYYYMMDD)*/
         URL url = new URL(urlBuilder.toString());
-
 
         RestTemplate restTemplate = new RestTemplate();
         FestivalResponseDTO responseResult = null;

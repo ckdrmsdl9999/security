@@ -9,11 +9,8 @@ public class FestivalResponseBody {
     @XmlElementWrapper(name = "items")
     @XmlElement(name = "item")
     private List<FestivalResponseItem> items;
-    @XmlElement(name = "numOfRows")
     private String numOfRows;
-    @XmlElement(name = "pageNo")
     private String pageNo;
-    @XmlElement(name = "totalCount")
     private String totalCount;
 
     public String getNumOfRows() {
