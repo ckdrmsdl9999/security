@@ -4,7 +4,6 @@
 
 package com.security.everywhere.configuration;
 
-import lombok.Getter;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
@@ -15,7 +14,6 @@ import org.springframework.context.annotation.PropertySources;
         @PropertySource(value = "file:etc/application.properties"
                 , ignoreResourceNotFound = true)
 })
-@Getter // 변수마다 getter를 순서대로 만들어줌 (lombok에서 제공)
 public class GlobalPropertySource {
 
     @Value("${spring.datasource.driver-class-name}")
