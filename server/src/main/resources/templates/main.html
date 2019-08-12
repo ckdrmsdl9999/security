@@ -84,6 +84,10 @@
             margin-top: 23px;
         }
 
+        .modal-body1 .row {
+            padding-top: 10px;
+        }
+
     </style>
 </head>
 <body>
@@ -116,13 +120,142 @@
            <a class="navbar-brand">Sidebar</a>
        </header>
        <ul class="list-group">
-           <a class="list-group-item"><i class="fas fa-map-signs"></i>지역검색</a>
-           <a class="list-group-item"><i class="fas fa-calendar-alt"></i>기간검색</a>
+           <a class="list-group-item" data-toggle="modal" data-target="#Modal2"><i class="fas fa-calendar-alt"></i>지역검색</a>
+           <a class="list-group-item" data-toggle="modal" data-target="#Modal1"><i class="fas fa-calendar-alt"></i>기간검색</a>
            <a class="list-group-item"><i class="fas fa-user"></i>로그인</a>
        </ul>
    </div>
-   <main class="bmd-layout-content mx-auto">
 
+    <!-- 기간검색 modal -->
+    <div class="modal fade" id="Modal1" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="ModalLabel">기간검색</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="container-fluid modal-body1">
+                    <div class="row">
+                        <div class="col">
+                            <div class="btn-group-toggle" data-toggle="buttons">
+                            <label class="btn btn-secondary active" id="calendar_all_button">
+                               전체
+                            </label></div>
+                        </div>
+                        <div class="col">
+                                <div class="btn-group-toggle" data-toggle="buttons">
+                                    <label class="btn calander_button btn-secondary">
+                                        1월
+                                    </label></div>
+                        </div>
+                        <div class="col">
+                                <div class="btn-group-toggle" data-toggle="buttons">
+                                    <label class="btn calander_button btn-secondary">
+                                        2월
+                                    </label></div>
+                        </div>
+                        <div class="col">
+                                <div class="btn-group-toggle" data-toggle="buttons">
+                                    <label class="btn calander_button btn-secondary">
+                                        3월
+                                    </label></div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <div class="btn-group-toggle" data-toggle="buttons">
+                                <label class="btn calander_button btn-secondary">
+                                    4월
+                                </label></div>
+                        </div>
+                        <div class="col">
+                            <div class="btn-group-toggle" data-toggle="buttons">
+                                <label class="btn calander_button btn-secondary">
+                                    5월
+                                </label></div>
+                        </div>
+                        <div class="col">
+                            <div class="btn-group-toggle" data-toggle="buttons">
+                                <label class="btn calander_button btn-secondary">
+                                    6월
+                                </label></div>
+                        </div>
+                        <div class="col">
+
+                            <div class="btn-group-toggle" data-toggle="buttons">
+                                <label class="btn calander_button btn-secondary">
+                                    7월
+                                </label></div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <div class="btn-group-toggle" data-toggle="buttons">
+                                <label class="btn calander_button btn-secondary ">
+                                    8월
+                                </label></div>
+                        </div>
+                        <div class="col">
+                                <div class="btn-group-toggle" data-toggle="buttons">
+                                    <label class="btn calander_button btn-secondary">
+                                        9월
+                                    </label></div>
+                        </div>
+                        <div class="col">
+                                <div class="btn-group-toggle" data-toggle="buttons">
+                                    <label class="btn calander_button btn-secondary">
+                                        10월
+                                    </label></div>
+                        </div>
+                        <div class="col">
+                                <div class="btn-group-toggle" data-toggle="buttons">
+                                    <label class="btn calander_button btn-secondary">
+                                        11월
+                                    </label></div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <div class="btn-group-toggle" data-toggle="buttons">
+                                <label class="btn calander_button btn-secondary">
+                                    12월
+                                </label></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
+                    <button type="button" class="btn btn-primary">검색</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- 지역검색 modal -->
+    <div class="modal fade" id="Modal2" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="ModalLabe2">지역검색</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="container-fluid modal-body2">
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
+                    <button type="button" class="btn btn-primary">검색</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+   <main class="bmd-layout-content mx-auto">
        <ul class="list-unstyled video-list-thumbs row">
            <li class="col-lg-3 col-sm-4 col-xs-6">
                <a href="#" title="Claudio Bravo, antes su debut con el Barça en la Liga">
@@ -159,4 +292,30 @@
 
 </div>
 </body>
+<script type="text/javascript">
+
+    // 기간 선택 modal
+    var before_click;
+    $(document).on('click','#calendar_all_button',function () {
+        if($(this).hasClass("active") != true) {
+            $(".calander_button").removeClass("active");
+        }
+    });
+    $(document).on('click','.calander_button',function () {
+        if($("#calendar_all_button").hasClass("active") == true) {
+            $("#calendar_all_button").removeClass("active");
+        }
+        else{
+            if($(".modal-body1 .active").length == 1 && $(this).hasClass('active') == true ){
+                $("#calendar_all_button").addClass("active");
+            }
+        }
+
+
+    });
+
+
+
+
+</script>
 </html>
