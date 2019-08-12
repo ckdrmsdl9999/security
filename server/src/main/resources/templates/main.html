@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css" integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Material Design for Bootstrap fonts and icons -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons">
+    <!-- Material Design for Bootstrap CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/bootstrap-material-design@4.1.1/dist/css/bootstrap-material-design.min.css" integrity="sha384-wXznGJNEXNG1NFsbm0ugrLFMQPWswR3lds2VeinahP8N0zJw9VWSopbjv2x7WCvX" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/popper.js@1.12.6/dist/umd/popper.js" integrity="sha384-fA23ZRQ3G/J53mElWqVJEGJzU0sTs+SvzG8fXVWP+kJQ1lwFAOkcUOysnlKJC33U" crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/bootstrap-material-design@4.1.1/dist/js/bootstrap-material-design.js" integrity="sha384-CauSuKpEqAFajSpkdjv3z9t8E7RlpJ1UP0lKM/+NdtSarroVKu069AlsRPKkFBz9" crossorigin="anonymous"></script>
+    <script>$(document).ready(function() { $('body').bootstrapMaterialDesign(); });</script>
+    <title>Hello, world!</title>
+    <style>
+        .bmd-layout-container{
+            width: 600px;
+            height: 600px;
+        }
+        #custom-search-input {
+            margin:0;
+            margin-top: 10px;
+            padding: 0;
+        }
+
+        #custom-search-input .search-query {
+            padding-right: 3px;
+            padding-right: 4px \9;
+            padding-left: 3px;
+            padding-left: 4px \9;
+            /* IE7-8 doesn't have border-radius, so don't indent the padding */
+
+            margin-bottom: 0;
+            -webkit-border-radius: 3px;
+            -moz-border-radius: 3px;
+            border-radius: 3px;
+        }
+
+        #custom-search-input button {
+            border: 0;
+            background: none;
+            /** belows styles are working good */
+            padding: 2px 5px;
+            margin-top: 2px;
+            position: relative;
+            left: -28px;
+            /* IE7-8 doesn't have border-radius, so don't indent the padding */
+            margin-bottom: 0;
+            -webkit-border-radius: 3px;
+            -moz-border-radius: 3px;
+            border-radius: 3px;
+            color:#D9230F;
+        }
+
+        .search-query:focus + button {
+            z-index: 3;
+        }
+        #custom-search-input {
+            margin: 13%;
+            margin-top: 10px;
+            padding: 0;
+        }
+        .col-xs-6 {
+            flex: 0 0 50%;
+            max-width: 50%;
+            width: 40%;
+            height: 250px;
+        }
+        .col-xs-6 img{
+            width: 250px;
+            height: 200px;
+
+        }
+        .row {
+            display: flex;
+            flex-wrap: wrap;
+            margin-right: 0px;
+            margin-left: 0px;
+        }
+        .navbar2 {
+            height: 80px;
+            margin-top: 23px;
+        }
+
+    </style>
+</head>
+<body>
+<div class="bmd-layout-container bmd-drawer-f-l bmd-drawer-overlay mx-auto">
+   <header class="bmd-layout-header">
+       <div class="navbar navbar-light bg-faded">
+           <button class="navbar-toggler" type="button" data-toggle="drawer" data-target="#dw-s2">
+               <span class="sr-only">Toggle drawer</span>
+               <i class="material-icons">menu</i>
+           </button>
+           <ul class="nav navbar-nav mx-auto">
+               <li class="nav-item">Festival</li>
+           </ul>
+       </div>
+   </header>
+    <nav class="navbar2">
+        <div id="custom-search-input" style="width:70%">
+            <div class="input-group col-md-12">
+                <input type="text" class="search-query form-control" placeholder="Search" />
+                <span class="input-group-btn">
+                   <button class="btn btn-danger" type="button">
+                       <i class="fas fa-search"></i>
+                   </button>
+               </span>
+            </div>
+        </div>
+    </nav>
+   <div id="dw-s2" class="bmd-layout-drawer bg-faded">
+       <header>
+           <a class="navbar-brand">Sidebar</a>
+       </header>
+       <ul class="list-group">
+           <a class="list-group-item"><i class="fas fa-map-signs"></i>지역검색</a>
+           <a class="list-group-item"><i class="fas fa-calendar-alt"></i>기간검색</a>
+           <a class="list-group-item"><i class="fas fa-user"></i>로그인</a>
+       </ul>
+   </div>
+   <main class="bmd-layout-content mx-auto">
+
+       <ul class="list-unstyled video-list-thumbs row">
+           <li class="col-lg-3 col-sm-4 col-xs-6">
+               <a href="#" title="Claudio Bravo, antes su debut con el Barça en la Liga">
+                   <img src="../image/dojagi.jpg" alt="Barca" class="img-responsive" height="130px" />
+                   이천 도자기
+               </a>
+           </li>
+           <li class="col-lg-3 col-sm-4 col-xs-6">
+               <a href="#" title="Claudio Bravo, antes su debut con el Barça en la Liga">
+                   <img src="../image/dojagi.jpg" alt="Barca" class="img-responsive" height="130px" />
+                   축제2
+               </a>
+           </li>
+           <li class="col-lg-3 col-sm-4 col-xs-6">
+               <a href="#" title="Claudio Bravo, antes su debut con el Barça en la Liga">
+                   <img src="../image/dojagi.jpg" alt="Barca" class="img-responsive" height="130px" />
+                   축제3
+               </a>
+           </li>
+           <li class="col-lg-3 col-md-4 col-sm-4 col-xs-6">
+               <a href="#" title="Claudio Bravo, antes su debut con el Barça en la Liga">
+                   <img src="../image/dojagi.jpg" alt="Barca" class="img-responsive" height="130px" />
+                   축제4
+               </a>
+           </li>
+           <li class="col-lg-3 col-md-4 col-sm-4 col-xs-6">
+               <a href="#" title="Claudio Bravo, antes su debut con el Barça en la Liga">
+                   <img src="../image/dojagi.jpg" alt="Barca" class="img-responsive" height="130px" />
+                   축제5
+               </a>
+           </li>
+       </ul>
+   </main>
+
+</div>
+</body>
+</html>
