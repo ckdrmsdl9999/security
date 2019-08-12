@@ -1,6 +1,6 @@
-package com.security.everywhere.domain;
+package com.security.everywhere.request;
 
-public class FestivalRequestParam {
+public class FestivalParam {
     private String numOfRows="";
     private String pageNo="";
     private String MobileOS="";
@@ -12,7 +12,7 @@ public class FestivalRequestParam {
     private String eventStartDate="";
     private String eventEndDate="";
 
-    public FestivalRequestParam(String numOfRows, String pageNo, String mobileOS, String mobileApp, String arrange, String listYN, String areaCode, String sigunguCode, String eventStartDate, String eventEndDate) {
+    public FestivalParam(String numOfRows, String pageNo, String mobileOS, String mobileApp, String arrange, String listYN, String areaCode, String sigunguCode, String eventStartDate, String eventEndDate) {
         this.numOfRows = numOfRows;
         this.pageNo = pageNo;
         MobileOS = mobileOS;

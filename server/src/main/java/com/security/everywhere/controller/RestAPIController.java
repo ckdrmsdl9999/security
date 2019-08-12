@@ -1,9 +1,10 @@
 package com.security.everywhere.controller;
 
 
-import com.security.everywhere.domain.FestivalRequestParam;
-import com.security.everywhere.domain.FestivalResponseDTO;
-import com.security.everywhere.domain.FestivalResponseItem;
+import com.security.everywhere.request.AirParam;
+import com.security.everywhere.request.FestivalParam;
+import com.security.everywhere.request.ObservatoryParam;
+import com.security.everywhere.response.*;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,8 +24,8 @@ public class RestAPIController {
     @Value("${festival_key}")
     private String festivalKey;
 
-    @PostMapping("/test")
-    public List<FestivalResponseItem> festivalInfo(FestivalRequestParam requestParam) throws IOException {
+    @PostMapping("/festivalInfo")
+    public List<FestivalItem> festivalInfo(FestivalParam requestParam) throws IOException {
 
         StringBuilder urlBuilder = new StringBuilder("http://api.visitkorea.or.kr/openapi/service/rest/KorService/searchFestival"); /*URL*/
         urlBuilder.append("?" + URLEncoder.encode("ServiceKey","UTF-8") + "=" +festivalKey); /*공공데이터포털에서 발급받은 인증키*/
@@ -41,16 +42,14 @@ public class RestAPIController {
         URL url = new URL(urlBuilder.toString());
 
         RestTemplate restTemplate = new RestTemplate();
-        FestivalResponseDTO responseResult = null;
+        FestivalDTO responseResult = null;
 
         try {
-            responseResult = restTemplate.getForObject(url.toURI(), FestivalResponseDTO.class);
+            responseResult = restTemplate.getForObject(url.toURI(), FestivalDTO.class);
         } catch (URISyntaxException e) {
             e.printStackTrace();
         }
 
-        System.out.println(requestParam.toString());
-        System.out.println(festivalKey);
         System.out.println("--------------------------------------------");
         System.out.println(responseResult.getHeader().toString());
         System.out.println(responseResult.getBody().toString());
@@ -59,4 +58,57 @@ public class RestAPIController {
         return responseResult.getBody().getItems();
     }
 
+    @PostMapping("/observatoryInfo")
+    public List<ObservatoryItem> observatoryInfo(ObservatoryParam requestParam) throws IOException {
+
+        StringBuilder urlBuilder = new StringBuilder("http://openapi.airkorea.or.kr/openapi/services/rest/MsrstnInfoInqireSvc/getNearbyMsrstnList");
+        urlBuilder.append("?" + URLEncoder.encode("tmX","UTF-8") + "=" + URLEncoder.encode(requestParam.getMapx(), "UTF-8"));
+        urlBuilder.append("&" + URLEncoder.encode("tmY","UTF-8") + "=" + URLEncoder.encode(requestParam.getMapy(), "UTF-8"));
+        urlBuilder.append("&" + URLEncoder.encode("ServiceKey","UTF-8") + "=" +festivalKey);
+        URL url = new URL(urlBuilder.toString());
+
+        RestTemplate restTemplate = new RestTemplate();
+        ObservatoryDTO responseResult = null;
+
+        try {
+            responseResult = restTemplate.getForObject(url.toURI(), ObservatoryDTO.class);
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+        }
+
+        System.out.println("--------------------------------------------");
+        System.out.println(responseResult.getHeader().toString());
+        System.out.println(responseResult.getBody().toString());
+        System.out.println("--------------------------------------------");
+
+        return responseResult.getBody().getItems();
+    }
+
+    @PostMapping("/airInfo")
+    public List<AirItem> airInfo(AirParam requestParam) throws IOException {
+        StringBuilder urlBuilder = new StringBuilder("http://openapi.airkorea.or.kr/openapi/services/rest/ArpltnInforInqireSvc/getMsrstnAcctoRltmMesureDnsty");
+        urlBuilder.append("?" + URLEncoder.encode("stationName","UTF-8") + "=" + URLEncoder.encode(requestParam.getStationName(), "UTF-8"));
+        urlBuilder.append("&" + URLEncoder.encode("dataTerm","UTF-8") + "=" + URLEncoder.encode(requestParam.getDataTerm(), "UTF-8"));
+        urlBuilder.append("&" + URLEncoder.encode("pageNo","UTF-8") + "=" + URLEncoder.encode(requestParam.getPageNo(), "UTF-8"));
+        urlBuilder.append("&" + URLEncoder.encode("numOfRows","UTF-8") + "=" + URLEncoder.encode(requestParam.getNumOfRows(), "UTF-8"));
+        urlBuilder.append("&" + URLEncoder.encode("ServiceKey","UTF-8") + "=" +festivalKey);
+        urlBuilder.append("&" + URLEncoder.encode("ver","UTF-8") + "=" + URLEncoder.encode(requestParam.getVer(), "UTF-8"));
+        URL url = new URL(urlBuilder.toString());
+
+        RestTemplate restTemplate = new RestTemplate();
+        AirDTO responseResult = null;
+
+        try {
+            responseResult = restTemplate.getForObject(url.toURI(), AirDTO.class);
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+        }
+
+        System.out.println("--------------------------------------------");
+        System.out.println(responseResult.getHeader().toString());
+        System.out.println(responseResult.getBody().toString());
+        System.out.println("--------------------------------------------");
+
+        return responseResult.getBody().getItems();
+    }
 }

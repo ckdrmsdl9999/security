@@ -1,13 +1,12 @@
-package com.security.everywhere.domain;
+package com.security.everywhere.response;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement(name="item")
 @XmlAccessorType(XmlAccessType.FIELD)
-public class FestivalResponseItem {
+public class FestivalItem {
     private String addr1;
     private String addr2;
     private String areacode;
