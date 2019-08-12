@@ -16,8 +16,9 @@ public class TestController {
     }
 
     @PostMapping("/")
-    public String postTesting(@RequestBody TestParam testParam, Model model) {
-        model.addAttribute("name", testParam.getName());
+    public String postTesting(TestParam testParam, Model model) {
+//        model.addAttribute("name", testParam.getClass().getName());
+        model.addAttribute("name", testParam.toString());
         return "test";
     }
 }

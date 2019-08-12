@@ -1,14 +1,16 @@
 package com.security.everywhere.domain;
 
 import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
-@AllArgsConstructor
 
 public class TestParam {
-    private String name;
+    private String name = "World";
 
     public String getName() {
-        return this.name;
+        return name;
     }
 
     public void setName(String name) {
