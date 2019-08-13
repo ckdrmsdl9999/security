@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons">
     <!-- Material Design for Bootstrap CSS -->
     <link rel="stylesheet" href="https://unpkg.com/bootstrap-material-design@4.1.1/dist/css/bootstrap-material-design.min.css" integrity="sha384-wXznGJNEXNG1NFsbm0ugrLFMQPWswR3lds2VeinahP8N0zJw9VWSopbjv2x7WCvX" crossorigin="anonymous">
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
     <script src="https://unpkg.com/popper.js@1.12.6/dist/umd/popper.js" integrity="sha384-fA23ZRQ3G/J53mElWqVJEGJzU0sTs+SvzG8fXVWP+kJQ1lwFAOkcUOysnlKJC33U" crossorigin="anonymous"></script>
     <script src="https://unpkg.com/bootstrap-material-design@4.1.1/dist/js/bootstrap-material-design.js" integrity="sha384-CauSuKpEqAFajSpkdjv3z9t8E7RlpJ1UP0lKM/+NdtSarroVKu069AlsRPKkFBz9" crossorigin="anonymous"></script>
     <script>$(document).ready(function() { $('body').bootstrapMaterialDesign(); });</script>
@@ -367,20 +367,20 @@
 
 
    <main class="bmd-layout-content mx-auto">
-       <ul class="list-unstyled video-list-thumbs row">
+       <ul class="list-unstyled list-thumbs row">
            <li class="col-lg-3 col-sm-4 col-xs-6">
                <a href="#" title="Claudio Bravo, antes su debut con el Barça en la Liga">
                    <img src="../image/dojagi.jpg" alt="Barca" class="img-responsive" height="130px" />
                    이천 도자기
                </a>
            </li>
-           <li class="col-lg-3 col-sm-4 col-xs-6">
+           <li class="col-lg-3 col-md-4 col-sm-4 col-xs-6">
                <a href="#" title="Claudio Bravo, antes su debut con el Barça en la Liga">
                    <img src="../image/dojagi.jpg" alt="Barca" class="img-responsive" height="130px" />
                    축제2
                </a>
            </li>
-           <li class="col-lg-3 col-sm-4 col-xs-6">
+           <li class="col-lg-3 col-md-4 col-sm-4 col-xs-6">
                <a href="#" title="Claudio Bravo, antes su debut con el Barça en la Liga">
                    <img src="../image/dojagi.jpg" alt="Barca" class="img-responsive" height="130px" />
                    축제3
@@ -396,6 +396,12 @@
                <a href="#" title="Claudio Bravo, antes su debut con el Barça en la Liga">
                    <img src="../image/dojagi.jpg" alt="Barca" class="img-responsive" height="130px" />
                    축제5
+               </a>
+           </li>
+           <li class="col-lg-3 col-md-4 col-sm-4 col-xs-6">
+               <a href="#" title="Claudio Bravo, antes su debut con el Barça en la Liga">
+                   <img src="../image/dojagi.jpg" alt="Barca" class="img-responsive" height="130px" />
+                   축제6
                </a>
            </li>
        </ul>
@@ -515,8 +521,66 @@
     $(document).on('click','.area_detail_button',function () {
         $('.area_detail_button').removeClass('active');
         $('this').addClass('active');
+        //alert($('.bmd-layout-content').height());
     });
 
+
+
+    //스크롤 이벤트
+    var myVar = setInterval(myTimer, 600);
+    var once;
+
+    function myTimer() {
+        once=0;
+    }
+
+    $('.bmd-layout-content').scroll(function() {
+            if($(this).children().height() - $(this).scrollTop() <= 500) {
+            if (once == 0) {
+                // alert('$(this).children().height() : ' + $(this).children().height() +
+                //         '$(this).scrollTop() : ' + $(this).scrollTop()
+                // );
+                $appendData = '<li class="col-lg-3 col-sm-4 col-xs-6">\n' +
+                    '               <a href="#" title="Claudio Bravo, antes su debut con el Barça en la Liga">\n' +
+                    '                   <img src="../image/dojagi.jpg" alt="Barca" class="img-responsive" height="130px" />\n' +
+                    '                   이천 도자기\n' +
+                    '               </a>\n' +
+                    '           </li>\n' +
+                    '           <li class="col-lg-3 col-md-4 col-sm-4 col-xs-6">\n' +
+                    '               <a href="#" title="Claudio Bravo, antes su debut con el Barça en la Liga">\n' +
+                    '                   <img src="../image/dojagi.jpg" alt="Barca" class="img-responsive" height="130px" />\n' +
+                    '                   축제2\n' +
+                    '               </a>\n' +
+                    '           </li>\n' +
+                    '           <li class="col-lg-3 col-md-4 col-sm-4 col-xs-6">\n' +
+                    '               <a href="#" title="Claudio Bravo, antes su debut con el Barça en la Liga">\n' +
+                    '                   <img src="../image/dojagi.jpg" alt="Barca" class="img-responsive" height="130px" />\n' +
+                    '                   축제3\n' +
+                    '               </a>\n' +
+                    '           </li>\n' +
+                    '           <li class="col-lg-3 col-md-4 col-sm-4 col-xs-6">\n' +
+                    '               <a href="#" title="Claudio Bravo, antes su debut con el Barça en la Liga">\n' +
+                    '                   <img src="../image/dojagi.jpg" alt="Barca" class="img-responsive" height="130px" />\n' +
+                    '                   축제4\n' +
+                    '               </a>\n' +
+                    '           </li>\n' +
+                    '           <li class="col-lg-3 col-md-4 col-sm-4 col-xs-6">\n' +
+                    '               <a href="#" title="Claudio Bravo, antes su debut con el Barça en la Liga">\n' +
+                    '                   <img src="../image/dojagi.jpg" alt="Barca" class="img-responsive" height="130px" />\n' +
+                    '                   축제5\n' +
+                    '               </a>\n' +
+                    '           </li>\n' +
+                    '           <li class="col-lg-3 col-md-4 col-sm-4 col-xs-6">\n' +
+                    '               <a href="#" title="Claudio Bravo, antes su debut con el Barça en la Liga">\n' +
+                    '                   <img src="../image/dojagi.jpg" alt="Barca" class="img-responsive" height="130px" />\n' +
+                    '                   축제6\n' +
+                    '               </a>\n' +
+                    '           </li>'
+                $('.list-thumbs').append($appendData).hide().fadeIn('slow');
+                once += 1;
+            }
+        }
+    });
 
 
 
