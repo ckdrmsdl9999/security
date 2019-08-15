@@ -2,7 +2,6 @@ package com.security.everywhere.controller;
 
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
 import com.security.everywhere.request.AirParam;
 import com.security.everywhere.request.FestivalParam;
 import com.security.everywhere.request.ObservatoryParam;
@@ -10,7 +9,6 @@ import com.security.everywhere.response.*;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
@@ -27,7 +25,6 @@ public class RestAPIController {
     @Value("${festival_key}")
     private String festivalKey;
 
-    @ResponseBody
     @PostMapping("/festivalInfo")
     public List<FestivalItem> festivalInfo(FestivalParam requestParam) throws IOException {
 
@@ -47,18 +44,7 @@ public class RestAPIController {
         URL url = new URL(urlBuilder.toString());
 
         ObjectMapper mapper = new ObjectMapper();
-        mapper.enable(SerializationFeature.WRAP_ROOT_VALUE);
-//        mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, true);
-        Festival responseResult = mapper.readValue(url, Festival.class);
-
-//        RestTemplate restTemplate = new RestTemplate();
-//        FestivalDTO responseResult = null;
-//
-//        try {
-//            responseResult = restTemplate.getForObject(url.toURI(), FestivalDTO.class);
-//        } catch (URISyntaxException e) {
-//            e.printStackTrace();
-//        }
+        FestivalResponse responseResult = mapper.readValue(url, FestivalResponse.class);
 
         System.out.println("--------------------------------------------");
         System.out.println(responseResult.getResponse().getHeader().toString());
@@ -68,8 +54,8 @@ public class RestAPIController {
         return responseResult.getResponse().getBody().getItems().getItem();
     }
 
-    @PostMapping("/observatoryInfo")
-    public List<ObservatoryItem> observatoryInfo(ObservatoryParam requestParam) throws IOException {
+    @PostMapping("/airInfo")
+    public List<AirItem> observatoryInfo(ObservatoryParam requestParam) throws IOException {
 
         StringBuilder urlBuilder = new StringBuilder("http://openapi.airkorea.or.kr/openapi/services/rest/MsrstnInfoInqireSvc/getNearbyMsrstnList");
         urlBuilder.append("?" + URLEncoder.encode("tmX","UTF-8") + "=" + URLEncoder.encode(requestParam.getMapx(), "UTF-8"));
@@ -78,47 +64,32 @@ public class RestAPIController {
         URL url = new URL(urlBuilder.toString());
 
         RestTemplate restTemplate = new RestTemplate();
-        ObservatoryDTO responseResult = null;
+        ObservatoryDTO observatoryDTO = null;
 
         try {
-            responseResult = restTemplate.getForObject(url.toURI(), ObservatoryDTO.class);
+            observatoryDTO = restTemplate.getForObject(url.toURI(), ObservatoryDTO.class);
         } catch (URISyntaxException e) {
             e.printStackTrace();
         }
 
-        System.out.println("--------------------------------------------");
-        System.out.println(responseResult.getHeader().toString());
-        System.out.println(responseResult.getBody().toString());
-        System.out.println("--------------------------------------------");
-
-        return responseResult.getBody().getItems();
-    }
-
-    @PostMapping("/airInfo")
-    public List<AirItem> airInfo(AirParam requestParam) throws IOException {
-        StringBuilder urlBuilder = new StringBuilder("http://openapi.airkorea.or.kr/openapi/services/rest/ArpltnInforInqireSvc/getMsrstnAcctoRltmMesureDnsty");
-        urlBuilder.append("?" + URLEncoder.encode("stationName","UTF-8") + "=" + URLEncoder.encode(requestParam.getStationName(), "UTF-8"));
-        urlBuilder.append("&" + URLEncoder.encode("dataTerm","UTF-8") + "=" + URLEncoder.encode(requestParam.getDataTerm(), "UTF-8"));
-        urlBuilder.append("&" + URLEncoder.encode("pageNo","UTF-8") + "=" + URLEncoder.encode(requestParam.getPageNo(), "UTF-8"));
-        urlBuilder.append("&" + URLEncoder.encode("numOfRows","UTF-8") + "=" + URLEncoder.encode(requestParam.getNumOfRows(), "UTF-8"));
+        urlBuilder = new StringBuilder("http://openapi.airkorea.or.kr/openapi/services/rest/ArpltnInforInqireSvc/getMsrstnAcctoRltmMesureDnsty");
+        urlBuilder.append("?" + URLEncoder.encode("stationName","UTF-8") + "=" + URLEncoder.encode(observatoryDTO.getBody().getItems().get(0).getStationName(), "UTF-8"));
+        urlBuilder.append("&" + URLEncoder.encode("dataTerm","UTF-8") + "=" + URLEncoder.encode("DAILY", "UTF-8"));
+        urlBuilder.append("&" + URLEncoder.encode("pageNo","UTF-8") + "=" + URLEncoder.encode("1", "UTF-8"));
+        urlBuilder.append("&" + URLEncoder.encode("numOfRows","UTF-8") + "=" + URLEncoder.encode("10", "UTF-8"));
         urlBuilder.append("&" + URLEncoder.encode("ServiceKey","UTF-8") + "=" +festivalKey);
-        urlBuilder.append("&" + URLEncoder.encode("ver","UTF-8") + "=" + URLEncoder.encode(requestParam.getVer(), "UTF-8"));
-        URL url = new URL(urlBuilder.toString());
+        urlBuilder.append("&" + URLEncoder.encode("ver","UTF-8") + "=" + URLEncoder.encode("1.3", "UTF-8"));
+        url = new URL(urlBuilder.toString());
 
-        RestTemplate restTemplate = new RestTemplate();
-        AirDTO responseResult = null;
+        AirDTO airDTO = null;
 
         try {
-            responseResult = restTemplate.getForObject(url.toURI(), AirDTO.class);
+            airDTO = restTemplate.getForObject(url.toURI(), AirDTO.class);
         } catch (URISyntaxException e) {
             e.printStackTrace();
         }
 
-        System.out.println("--------------------------------------------");
-        System.out.println(responseResult.getHeader().toString());
-        System.out.println(responseResult.getBody().toString());
-        System.out.println("--------------------------------------------");
-
-        return responseResult.getBody().getItems();
+        return airDTO.getBody().getItems();
     }
+
 }
