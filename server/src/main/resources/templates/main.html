@@ -9,7 +9,10 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons">
     <!-- Material Design for Bootstrap CSS -->
     <link rel="stylesheet" href="https://unpkg.com/bootstrap-material-design@4.1.1/dist/css/bootstrap-material-design.min.css" integrity="sha384-wXznGJNEXNG1NFsbm0ugrLFMQPWswR3lds2VeinahP8N0zJw9VWSopbjv2x7WCvX" crossorigin="anonymous">
-    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <!--jquery ui-->
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js" integrity="sha256-T0Vest3yCU7pafRw9r+settMBX6JkKN06dqBnpQ8d30=" crossorigin="anonymous"></script>
+
     <script src="https://unpkg.com/popper.js@1.12.6/dist/umd/popper.js" integrity="sha384-fA23ZRQ3G/J53mElWqVJEGJzU0sTs+SvzG8fXVWP+kJQ1lwFAOkcUOysnlKJC33U" crossorigin="anonymous"></script>
     <script src="https://unpkg.com/bootstrap-material-design@4.1.1/dist/js/bootstrap-material-design.js" integrity="sha384-CauSuKpEqAFajSpkdjv3z9t8E7RlpJ1UP0lKM/+NdtSarroVKu069AlsRPKkFBz9" crossorigin="anonymous"></script>
     <script>$(document).ready(function() { $('body').bootstrapMaterialDesign(); });</script>
@@ -17,51 +20,13 @@
     <style>
         .bmd-layout-container{
             width: 600px;
-            height: 600px;
-        }
-        .custom-search-input {
-            margin:0;
-            margin-top: 10px;
-            padding: 0;
-        }
-
-        .custom-search-input .search-query {
-            padding-right: 3px;
-            padding-right: 4px \9;
-            padding-left: 3px;
-            padding-left: 4px \9;
-            /* IE7-8 doesn't have border-radius, so don't indent the padding */
-
-            margin-bottom: 0;
-            -webkit-border-radius: 3px;
-            -moz-border-radius: 3px;
-            border-radius: 3px;
-        }
-
-        .custom-search-input button {
-            border: 0;
-            background: none;
-            /** belows styles are working good */
-            padding: 2px 5px;
-            margin-top: 2px;
-            position: relative;
-            left: -28px;
-            /* IE7-8 doesn't have border-radius, so don't indent the padding */
-            margin-bottom: 0;
-            -webkit-border-radius: 3px;
-            -moz-border-radius: 3px;
-            border-radius: 3px;
-            color:#D9230F;
+            height: 750px;
         }
 
         .search-query:focus + button {
             z-index: 3;
         }
-        .custom-search-input {
-            margin: 13%;
-            margin-top: 10px;
-            padding: 0;
-        }
+
         .col-xs-6 {
             flex: 0 0 50%;
             max-width: 50%;
@@ -80,45 +45,54 @@
             margin-left: 0px;
         }
         .navbar2 {
-            height: 80px;
-            margin-top: 23px;
+
         }
 
         .modal-body1 .row {
             padding-top: 10px;
         }
 
-        #searchbar2{
-
+        .form-control:focus {
+            box-shadow: none;
         }
+        .form-control::placeholder {
+            font-size: 0.95rem;
+            color: #aaa;
+            font-style: italic;
+        }
+        .rounded {
+            border-radius: 42.125rem!important;
+        }
+
 
     </style>
 </head>
 <body>
 <div class="bmd-layout-container bmd-drawer-f-l bmd-drawer-overlay mx-auto">
-   <header class="bmd-layout-header">
-       <div class="navbar navbar-light bg-faded">
+   <header class="bmd-layout-header" style="height: 12%">
+       <div class="navbar navbar-light bg-faded" style="height: 94%">
            <button class="navbar-toggler" type="button" data-toggle="drawer" data-target="#dw-s2">
                <span class="sr-only">Toggle drawer</span>
                <i class="material-icons">menu</i>
            </button>
            <ul class="nav navbar-nav mx-auto">
-               <li class="nav-item">Festival</li>
+               <li class="nav-item"><h4>FESTIVAL</h4></li>
            </ul>
        </div>
    </header>
-    <nav class="navbar2">
-        <div class="custom-search-input" id="searchbar1" style="width:70%">
-            <div class="input-group col-md-12">
-                <input type="text" class="search-query form-control" placeholder="Search" />
-                <span class="input-group-btn">
-                   <button class="btn btn-danger" type="button">
-                       <i class="fas fa-search"></i>
-                   </button>
-               </span>
+
+        <!-- 본문 검색창 -->
+        <form action="post" class="mb-0 mt-2" id="search_form1">
+        <div class="p-1 bg-light rounded shadow-sm mb-4 w-50 mx-auto" id="searchbar1">
+            <div class="input-group pl-3 ">
+                <input type="search" placeholder="What're you searching for?" aria-describedby="button-addon1" class="form-control border-0 bg-light">
+                <div class="input-group-append">
+                    <button id="button-addon1" type="submit" class="btn btn-link text-primary"><i class="fa fa-search"></i></button>
+                </div>
             </div>
         </div>
-    </nav>
+        </form>
+
    <div id="dw-s2" class="bmd-layout-drawer bg-faded">
        <header>
            <a class="navbar-brand">Sidebar</a>
@@ -420,6 +394,7 @@
             $(".calander_button").removeClass("active");
         }
     });
+
     $(document).on('click','.calander_button',function () {
         if($("#calendar_all_button").hasClass("active") == true) {
             $("#calendar_all_button").removeClass("active");
@@ -539,21 +514,25 @@
     }
 
     //제목창의 검색바
-    $('.nav.navbar-nav.mx-auto').append('        <li class="custom-search-input col" id="searchbar2" style="width:350px">\n' +
-        '            <div class="input-group col-md-12">\n' +
-        '                <input type="text" class="search-query form-control" placeholder="Search" />\n' +
-        '                <span class="input-group-btn">\n' +
-        '                   <button class="btn btn-danger" type="button">\n' +
-        '                       <i class="fas fa-search"></i>\n' +
-        '                   </button>\n' +
-        '               </span>\n' +
+    $('.nav.navbar-nav.mx-auto').append('<div class="p-1 bg-light rounded shadow-sm w-90 mx-auto" id="searchbar2">\n' +
+        '            <div class="input-group pl-3 ">\n' +
+        '                <input type="search" placeholder="What\'re you searching for?" aria-describedby="button-addon1" class="form-control border-0 bg-light">\n' +
+        '                <div class="input-group-append">\n' +
+        '                    <button id="button-addon1" type="submit" class="btn btn-link text-primary"><i class="fa fa-search"></i></button>\n' +
+        '                </div>\n' +
         '            </div>\n' +
-        '        </li>');
+        '        </div>');
     $('#searchbar2').hide(); //안보이게
+
+    //화면의 높이 구하는 식
+    $body_height_px = $('.bmd-layout-container').css('height');
+    $body_height = $body_height_px.substring(0,$body_height_px.length-2);
 
 
     $('.bmd-layout-content').scroll(function() {
-            if($(this).children().height() - $(this).scrollTop() <= 500) {
+
+            if($(this).children().height() - $(this).scrollTop() <= $body_height){
+
             if (once == 0) {
                 // alert('$(this).children().height() : ' + $(this).children().height() +
                 //         '$(this).scrollTop() : ' + $(this).scrollTop()
@@ -600,12 +579,12 @@
         }
         //검색창 사라지게
         if($(this).scrollTop() != 0) {
-            $('#searchbar1').hide();
+            $('#search_form1').hide("slide", { direction: "up" }, "fast");
             $('.nav-item').hide();
-            $('#searchbar2').show();
+            $('#searchbar2').show("bounce",500);
         }
         else {
-            $('#searchbar1').show();
+            $('#search_form1').show();
             $('.nav-item').show();
             $('#searchbar2').hide();
         }
