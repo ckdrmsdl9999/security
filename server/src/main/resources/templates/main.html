@@ -19,13 +19,13 @@
             width: 600px;
             height: 600px;
         }
-        #custom-search-input {
+        .custom-search-input {
             margin:0;
             margin-top: 10px;
             padding: 0;
         }
 
-        #custom-search-input .search-query {
+        .custom-search-input .search-query {
             padding-right: 3px;
             padding-right: 4px \9;
             padding-left: 3px;
@@ -38,7 +38,7 @@
             border-radius: 3px;
         }
 
-        #custom-search-input button {
+        .custom-search-input button {
             border: 0;
             background: none;
             /** belows styles are working good */
@@ -57,7 +57,7 @@
         .search-query:focus + button {
             z-index: 3;
         }
-        #custom-search-input {
+        .custom-search-input {
             margin: 13%;
             margin-top: 10px;
             padding: 0;
@@ -88,6 +88,10 @@
             padding-top: 10px;
         }
 
+        #searchbar2{
+
+        }
+
     </style>
 </head>
 <body>
@@ -104,7 +108,7 @@
        </div>
    </header>
     <nav class="navbar2">
-        <div id="custom-search-input" style="width:70%">
+        <div class="custom-search-input" id="searchbar1" style="width:70%">
             <div class="input-group col-md-12">
                 <input type="text" class="search-query form-control" placeholder="Search" />
                 <span class="input-group-btn">
@@ -534,6 +538,20 @@
         once=0;
     }
 
+    //제목창의 검색바
+    $('.nav.navbar-nav.mx-auto').append('        <li class="custom-search-input col" id="searchbar2" style="width:350px">\n' +
+        '            <div class="input-group col-md-12">\n' +
+        '                <input type="text" class="search-query form-control" placeholder="Search" />\n' +
+        '                <span class="input-group-btn">\n' +
+        '                   <button class="btn btn-danger" type="button">\n' +
+        '                       <i class="fas fa-search"></i>\n' +
+        '                   </button>\n' +
+        '               </span>\n' +
+        '            </div>\n' +
+        '        </li>');
+    $('#searchbar2').hide(); //안보이게
+
+
     $('.bmd-layout-content').scroll(function() {
             if($(this).children().height() - $(this).scrollTop() <= 500) {
             if (once == 0) {
@@ -580,7 +598,28 @@
                 once += 1;
             }
         }
+        //검색창 사라지게
+        if($(this).scrollTop() != 0) {
+            $('#searchbar1').hide();
+            $('.nav-item').hide();
+            $('#searchbar2').show();
+        }
+        else {
+            $('#searchbar1').show();
+            $('.nav-item').show();
+            $('#searchbar2').hide();
+        }
+        //다른거
+        // if($(this).scrollTop() != 0) {
+        //     $('.input-group.col-md-12').hide();
+        // }
+        // else
+        //     $('.input-group.col-md-12').show();
+
+
     });
+
+
 
 
 
