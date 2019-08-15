@@ -1,14 +1,7 @@
 package com.security.everywhere.response;
 
-import javax.xml.bind.annotation.*;
-import java.util.List;
-
-@XmlRootElement(name = "body")
-@XmlAccessorType(XmlAccessType.FIELD)
 public class FestivalBody {
-    @XmlElementWrapper(name = "items")
-    @XmlElement(name = "item")
-    private List<FestivalItem> items;
+    private FestivalList items;
     private String numOfRows;
     private String pageNo;
     private String totalCount;
@@ -37,11 +30,11 @@ public class FestivalBody {
         this.totalCount = totalCount;
     }
 
-    public List<FestivalItem> getItems() {
+    public FestivalList getItems() {
         return items;
     }
 
-    public void setItems(List<FestivalItem> items) {
+    public void setItems(FestivalList items) {
         this.items = items;
     }
 

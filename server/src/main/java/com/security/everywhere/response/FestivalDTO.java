@@ -1,8 +1,5 @@
 package com.security.everywhere.response;
 
-import javax.xml.bind.annotation.XmlRootElement;
-
-@XmlRootElement(name = "response")
 public class FestivalDTO {
     private FestivalHeader header;
     private FestivalBody body;
