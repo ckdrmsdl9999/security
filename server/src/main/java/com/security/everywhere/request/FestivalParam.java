@@ -1,45 +1,12 @@
 package com.security.everywhere.request;
 
 public class FestivalParam {
-    private String numOfRows="";
-    private String pageNo="";
-    private String MobileOS="";
-    private String MobileApp="";
-    private String arrange="";
-    private String listYN="";
-    private String areaCode="";
-    private String sigunguCode="";
-    private String eventStartDate="";
-    private String eventEndDate="";
-
-    public FestivalParam(String numOfRows, String pageNo, String mobileOS, String mobileApp, String arrange, String listYN, String areaCode, String sigunguCode, String eventStartDate, String eventEndDate) {
-        this.numOfRows = numOfRows;
-        this.pageNo = pageNo;
-        MobileOS = mobileOS;
-        MobileApp = mobileApp;
-        this.arrange = arrange;
-        this.listYN = listYN;
-        this.areaCode = areaCode;
-        this.sigunguCode = sigunguCode;
-        this.eventStartDate = eventStartDate;
-        this.eventEndDate = eventEndDate;
-    }
-
-    @Override
-    public String toString() {
-        return "FestivalRequestParam{" +
-                "numOfRows='" + numOfRows + '\'' +
-                ", pageNo='" + pageNo + '\'' +
-                ", MobileOS='" + MobileOS + '\'' +
-                ", MobileApp='" + MobileApp + '\'' +
-                ", arrange='" + arrange + '\'' +
-                ", listYN='" + listYN + '\'' +
-                ", areaCode='" + areaCode + '\'' +
-                ", sigunguCode='" + sigunguCode + '\'' +
-                ", eventStartDate='" + eventStartDate + '\'' +
-                ", eventEndDate='" + eventEndDate + '\'' +
-                '}';
-    }
+    private String numOfRows="";        // 한 페이지 결과 수
+    private String pageNo="";           // 페이지 번호
+    private String areaCode="";         // 지역코드
+    private String sigunguCode="";      // 시군구코드
+    private String eventStartDate="";   // 행사 시작일
+    private String eventEndDate="";     // 행사 종료일
 
     public String getNumOfRows() {
         return numOfRows;
@@ -55,38 +22,6 @@ public class FestivalParam {
 
     public void setPageNo(String pageNo) {
         this.pageNo = pageNo;
-    }
-
-    public String getMobileOS() {
-        return MobileOS;
-    }
-
-    public void setMobileOS(String mobileOS) {
-        MobileOS = mobileOS;
-    }
-
-    public String getMobileApp() {
-        return MobileApp;
-    }
-
-    public void setMobileApp(String mobileApp) {
-        MobileApp = mobileApp;
-    }
-
-    public String getArrange() {
-        return arrange;
-    }
-
-    public void setArrange(String arrange) {
-        this.arrange = arrange;
-    }
-
-    public String getListYN() {
-        return listYN;
-    }
-
-    public void setListYN(String listYN) {
-        this.listYN = listYN;
     }
 
     public String getAreaCode() {
