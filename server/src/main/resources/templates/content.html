@@ -86,11 +86,6 @@
             white-space:nowrap;
             -webkit-overflow-scrolling: touch;
         }
-
-        #week_weather{
-            height: 100px;
-        }
-
         .card {
             display: inline-block;
             margin-left: 28px;
@@ -100,20 +95,17 @@
             overflow:auto;
         }
 
-        .comment-wrapper .media-list .media img {
+        .media-list .media img {
             width:64px;
             height:64px;
             border:2px solid #e5e7e8;
         }
 
-        .comment-wrapper .media-list .media {
+        .media-list .media {
             border-bottom:1px dashed #efefef;
             margin-bottom:25px;
         }
-        ul > li > a > img{
-            margin-right: 32px;
-            margin-left: -40px;
-        }
+
         .card-img-overlay{
             zoom: 1; /* ie 5,6,7 bug fix */
             filter: alpha(opacity=80);
@@ -121,6 +113,35 @@
             background-image: linear-gradient(transparent, transparent, gray);
         }
 
+        .review_card{
+            margin-top: 1rem;
+        }
+        #tabs .nav-tabs .nav-item.show .nav-link, .nav-tabs .nav-link.active {
+            color: #0062cc;
+            background-color: transparent;
+            border-color: transparent transparent #f3f3f3;
+            border-bottom: 3px solid !important;
+            font-size: 16px;
+            font-weight: bold;
+        }
+        .nav-link {
+            border: 1px solid transparent;
+            border-top-left-radius: .25rem;
+            border-top-right-radius: .25rem;
+            color: #0062cc;
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        .nav-pills .nav-link, .nav-tabs .nav-link {
+            padding: 0.4286em 0.8575em;
+            font-size: .875rem;
+            font-weight: 500;
+            border: 0;
+        }
+        .best_review_img{
+            margin-left: -30px;
+        }
     </style>
 </head>
 <body>
@@ -149,8 +170,6 @@
             <a class="navbar-brand">Sidebar</a>
         </header>
         <ul class="list-group">
-            <a class="list-group-item"><i class="fas fa-map-signs"></i>지역검색</a>
-            <a class="list-group-item"><i class="fas fa-calendar-alt"></i>기간검색</a>
             <a class="list-group-item"><i class="fas fa-user"></i>로그인</a>
         </ul>
     </div>
@@ -289,67 +308,148 @@
                                 <button type="button" class="btn btn-info float-right">Post</button>
                                 <div class="clearfix"></div>
                                 <hr>
-                                <ul class="media-list">
-                                    <li class="media">
-                                        <a href="#" class="float-left">
-                                            <img src="https://bootdey.com/img/Content/user_1.jpg" alt="" class="rounded-circle">
-                                        </a>
-                                        <div class="media-body">
-                                            <strong class="text-success">MartinoMont</strong>
-                                            <span class="text-muted float-right">
-                                                <small class="text-muted">2019.08.11</small>
-                                            </span>
-                                            <p class="star_review">
-                                                <i class="fas fa-star"></i> 4.8
-                                            </p>
-                                            <p>
-                                                Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                                                Lorem ipsum dolor sit amet
-                                            </p>
-                                        </div>
-                                    </li>
-                                    <li class="media">
-                                        <a href="#" class="float-left">
-                                            <img src="https://bootdey.com/img/Content/user_2.jpg" alt="" class="rounded-circle">
-                                        </a>
-                                        <div class="media-body">
-                                <span class="text-muted float-right">
-                                    <small class="text-muted">2019.08.11</small>
-                                </span>
-
-                                            <strong class="text-success">LaurenceCorreil</strong>
-                                            <p class="star_review">
-                                                <i class="fas fa-star"></i> 4.8
-                                            </p>
-                                            <p>
-                                                Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                                                Lorem ipsum dolor <a href="#">#ipsumdolor </a>adipiscing elit.
-                                            </p>
-                                        </div>
-                                    </li>
-                                    <li class="media">
-                                        <a href="#" class="float-left">
-                                            <img src="https://bootdey.com/img/Content/user_3.jpg" alt=""class="rounded-circle">
-                                        </a>
-                                        <div class="media-body">
-                                <span class="text-muted float-right">
-                                    <small class="text-muted">2019.08.11</small>
-                                </span>
-                                            <strong class="text-success">JohnNida</strong>
-                                            <p class="star_review">
-                                                <i class="fas fa-star"></i> 4.8
-                                            </p>
-                                            <p>
-                                                Lorem ipsum dolor sitamet sit amet, consectetur adipiscing elit.
-                                            </p>
-                                        </div>
-                                    </li>
-                                </ul>
                             </div>
                         </div>
                     </div>
-
                 </div>
+
+                <nav>
+                    <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                        <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true">인기 리뷰</a>
+                        <a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-profile" role="tab" aria-controls="nav-profile" aria-selected="false">모든 리뷰</a>
+                    </div>
+                </nav>
+                <div class="tab-content mt-4" id="nav-tabContent">
+                    <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
+                        <!-- 긍정적 리뷰 -->
+                        <div class="card review_card mb-2" style="width: 35rem;">
+                            <div class="card-header">
+                                인기 리뷰(긍정적)
+                            </div>
+                            <div class="card-body">
+                                <blockquote class="blockquote mb-0">
+                                    <ul class="media-list">
+                                        <li class="media">
+                                            <a href="#" class="float-left mr-3 best_review_img">
+                                                <img src="https://bootdey.com/img/Content/user_1.jpg" alt="" class="rounded-circle">
+                                            </a>
+                                            <div class="media-body">
+                                                <strong class="text-success">MartinoMont</strong>
+                                                <span class="text-muted float-right">
+                                                <small class="text-muted">2019.08.11</small>
+                                            </span>
+                                                <p class="star_review">
+                                                    <i class="fas fa-star"></i> 4.8
+                                                </p>
+                                                <p>
+                                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                                                    Lorem ipsum dolor sit amet
+                                                </p>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                    <div class="row">
+                                        <footer class="blockquote-footer col-7"> 이 리뷰가 도움이 되었습니까?</footer>
+                                        <button class="btn btn-primary col-2">예</button> <button class="btn btn-primary col-2">아니오</button>
+                                    </div>
+                                </blockquote>
+                            </div>
+                        </div>
+                        <!-- 부정적 리뷰 -->
+                        <div class="card review_card mb-4" style="width: 35rem;">
+                            <div class="card-header">
+                                인기 리뷰(부정적)
+                            </div>
+                            <div class="card-body">
+                                <blockquote class="blockquote mb-0">
+                                    <ul class="media-list">
+                                        <li class="media">
+                                            <a href="#" class="float-left mr-3 best_review_img">
+                                                <img src="https://bootdey.com/img/Content/user_2.jpg" alt="" class="rounded-circle">
+                                            </a>
+                                            <div class="media-body">
+                                                <strong class="text-success">MartinoMont</strong>
+                                                <span class="text-muted float-right">
+                                                <small class="text-muted">2019.08.11</small>
+                                            </span>
+                                                <p class="star_review">
+                                                    <i class="fas fa-star"></i> 4.8
+                                                </p>
+                                                <p>
+                                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                                                    Lorem ipsum dolor sit amet
+                                                </p>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                    <div class="row">
+                                        <footer class="blockquote-footer col-7"> 이 리뷰가 도움이 되었습니까?</footer>
+                                        <button class="btn btn-primary col-2">예</button> <button class="btn btn-primary col-2">아니오</button>
+                                    </div>
+                                </blockquote>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
+                        <ul class="list-unstyled">
+                            <li class="media mb-1">
+                                <a href="#" class="float-left mr-4">
+                                    <img  src="https://bootdey.com/img/Content/user_1.jpg" alt="" class="rounded-circle">
+                                </a>
+                                <div class="media-body">
+                                    <strong class="text-success">MartinoMont</strong>
+                                    <span class="text-muted float-right">
+                                     <small class="text-muted">2019.08.11</small>
+                                    </span>
+                                    <p class="star_review">
+                                        <i class="fas fa-star"></i> 4.8
+                                    </p>
+                                    <p>
+                                        Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                                        Lorem ipsum dolor sit amet
+                                    </p>
+                                </div>
+                            </li>
+                            <li class="media mb-1">
+                                <a href="#" class="float-left mr-4">
+                                    <img src="https://bootdey.com/img/Content/user_2.jpg" alt="" class="rounded-circle">
+                                </a>
+                                <div class="media-body">
+                                <span class="text-muted float-right">
+                                    <small class="text-muted">2019.08.11</small>
+                                </span>
+
+                                    <strong class="text-success">LaurenceCorreil</strong>
+                                    <p class="star_review">
+                                        <i class="fas fa-star"></i> 4.8
+                                    </p>
+                                    <p>
+                                        Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                                        Lorem ipsum dolor <a href="#">#ipsumdolor </a>adipiscing elit.
+                                    </p>
+                                </div>
+                            </li>
+                            <li class="media mb-1">
+                                <a href="#" class="float-left mr-4">
+                                    <img src="https://bootdey.com/img/Content/user_3.jpg" alt=""class="rounded-circle">
+                                </a>
+                                <div class="media-body">
+                        <span class="text-muted float-right">
+                            <small class="text-muted">2019.08.11</small>
+                         </span>
+                                    <strong class="text-success">JohnNida</strong>
+                                    <p class="star_review">
+                                        <i class="fas fa-star"></i> 4.8
+                                    </p>
+                                    <p>
+                                        Lorem ipsum dolor sitamet sit amet, consectetur adipiscing elit.
+                                    </p>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
             </div>
         </div>
 
@@ -358,4 +458,8 @@
 
 </div>
 </body>
+<script type="text/javascript">
+
+
+</script>
 </html>
