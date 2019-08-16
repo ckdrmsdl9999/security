@@ -1,6 +1,6 @@
 package com.security.everywhere.response;
 
-public class Festival {
+public class FestivalResponse {
     private FestivalDTO response;
 
     public FestivalDTO getResponse() {

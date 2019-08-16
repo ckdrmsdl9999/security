@@ -2,7 +2,7 @@ package com.security.everywhere.response;
 
 public class FestivalDTO {
     private FestivalHeader header;
-    private FestivalBody body;
+    private FestivalBody body = null;
 
     public FestivalHeader getHeader() {
         return header;
