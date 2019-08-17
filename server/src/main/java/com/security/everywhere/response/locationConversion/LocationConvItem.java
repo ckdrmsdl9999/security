@@ -1,22 +1,22 @@
 package com.security.everywhere.response.locationConversion;
 
 public class LocationConvItem {
-    private String accessTimeout;
-    private String accessToken;
+    private String posY;
+    private String posX;
 
-    public String getAccessTimeout() {
-        return accessTimeout;
+    public String getPosY() {
+        return posY;
     }
 
-    public void setAccessTimeout(String accessTimeout) {
-        this.accessTimeout = accessTimeout;
+    public void setPosY(String posY) {
+        this.posY = posY;
     }
 
-    public String getAccessToken() {
-        return accessToken;
+    public String getPosX() {
+        return posX;
     }
 
-    public void setAccessToken(String accessToken) {
-        this.accessToken = accessToken;
+    public void setPosX(String posX) {
+        this.posX = posX;
     }
 }
