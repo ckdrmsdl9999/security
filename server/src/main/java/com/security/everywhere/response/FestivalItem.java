@@ -1,28 +1,28 @@
 package com.security.everywhere.response;
 
 public class FestivalItem {
-    private String addr1 = "";
-    private String addr2 = "";
-    private String areacode = "";
-    private String booktour = "";
-    private String cat1 = "";
-    private String cat2 = "";
-    private String cat3 = "";
-    private String contentid = "";
-    private String contenttypeid = "";
-    private String createdtime = "";
-    private String firstimage= "";
-    private String firstimage2= "";
-    private String mapx= "";
-    private String mapy= "";
-    private String mlevel= "";
-    private String modifiedtime = "";
-    private String readcount= "";
-    private String sigungucode= "";
-    private String tel= "";
-    private String title= "";
-    private String eventstartdate = "";
-    private String eventenddate = "";
+    private String addr1 = "";          // 주소
+    private String addr2 = "";          // 상세주소
+    private String areacode = "";       // 지역코드
+    private String booktour = "";       // 교과서 속 여행지 여부
+    private String cat1 = "";           // 대분류 코드
+    private String cat2 = "";           // 중분류 코드
+    private String cat3 = "";           // 소분류 코드
+    private String contentid = "";      // 콘텐츠ID
+    private String contenttypeid = "";  // 관광타입(관광지, 숙박 등) ID
+    private String createdtime = "";    // 콘텐츠 최초 등록일
+    private String firstimage= "";      // 원본 대표이미지 약 500x333 size
+    private String firstimage2= "";     // 썸네일 대표이미지 약 150x100 size
+    private String mapx= "";            // 경도
+    private String mapy= "";            // 위도
+    private String mlevel= "";          // map level 응답
+    private String modifiedtime = "";   // 콘텐츠 수정일
+    private String readcount= "";       // 콘텐츠 조회수
+    private String sigungucode= "";     // 시군구 코드
+    private String tel= "";             // 전화번호
+    private String title= "";           // 콘텐츠 제목
+    private String eventstartdate = ""; // 행사 시작일
+    private String eventenddate = "";   // 행사 종료일
 
     public String getAddr1() {
         return addr1;
