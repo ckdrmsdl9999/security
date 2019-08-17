@@ -1,12 +1,6 @@
-package com.security.everywhere.response;
+package com.security.everywhere.response.weatherForecast;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlRootElement;
-
-@XmlRootElement(name = "header")
-@XmlAccessorType(XmlAccessType.FIELD)
-public class AirHeader {
+public class WeatherForecastHeader {
     private String resultCode;
     private String resultMsg;
 

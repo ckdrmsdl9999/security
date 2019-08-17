@@ -1,14 +1,14 @@
-package com.security.everywhere.response;
+package com.security.everywhere.response.observatory;
 
 import javax.xml.bind.annotation.*;
 import java.util.List;
 
 @XmlRootElement(name = "body")
 @XmlAccessorType(XmlAccessType.FIELD)
-public class AirBody {
+public class ObservatoryBody {
     @XmlElementWrapper(name = "items")
     @XmlElement(name = "item")
-    private List<AirItem> items;
+    private List<ObservatoryItem> items;
     private String numOfRows;
     private String pageNo;
     private String totalCount;
@@ -37,11 +37,11 @@ public class AirBody {
         this.totalCount = totalCount;
     }
 
-    public List<AirItem> getItems() {
+    public List<ObservatoryItem> getItems() {
         return items;
     }
 
-    public void setItems(List<AirItem> items) {
+    public void setItems(List<ObservatoryItem> items) {
         this.items = items;
     }
 

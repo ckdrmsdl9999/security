@@ -1,4 +1,4 @@
-package com.security.everywhere.response;
+package com.security.everywhere.response.festival;
 
 public class FestivalResponse {
     private FestivalDTO response;

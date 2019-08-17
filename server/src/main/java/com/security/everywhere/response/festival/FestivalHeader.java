@@ -1,12 +1,6 @@
-package com.security.everywhere.response;
+package com.security.everywhere.response.festival;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlRootElement;
-
-@XmlRootElement(name = "header")
-@XmlAccessorType(XmlAccessType.FIELD)
-public class ObservatoryHeader {
+public class FestivalHeader {
     private String resultCode;
     private String resultMsg;
 

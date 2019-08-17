@@ -1,4 +1,4 @@
-package com.security.everywhere.response;
+package com.security.everywhere.response.weatherForecast;
 
 public class WeatherForecastDTO {
     private WeatherForecastHeader header;

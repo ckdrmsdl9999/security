@@ -1,4 +1,4 @@
-package com.security.everywhere.response;
+package com.security.everywhere.response.festival;
 
 public class FestivalItem {
     private String addr1 = "";          // 주소
