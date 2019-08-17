@@ -1,4 +1,4 @@
-package com.security.everywhere.response;
+package com.security.everywhere.response.festival;
 
 import java.util.List;
 

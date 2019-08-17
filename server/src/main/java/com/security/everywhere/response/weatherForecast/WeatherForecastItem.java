@@ -1,4 +1,4 @@
-package com.security.everywhere.response;
+package com.security.everywhere.response.weatherForecast;
 
 public class WeatherForecastItem {
     private String regId = "";      // 예보구역코드

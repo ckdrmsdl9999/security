@@ -4,8 +4,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.security.everywhere.model.Festival;
 import com.security.everywhere.repository.FestivalRepository;
-import com.security.everywhere.response.FestivalItem;
-import com.security.everywhere.response.FestivalResponse;
+import com.security.everywhere.response.festival.FestivalItem;
+import com.security.everywhere.response.festival.FestivalResponse;
 
 import java.io.IOException;
 import java.net.URL;

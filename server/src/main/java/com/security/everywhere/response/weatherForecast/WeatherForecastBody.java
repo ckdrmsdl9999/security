@@ -1,10 +1,18 @@
-package com.security.everywhere.response;
+package com.security.everywhere.response.weatherForecast;
 
-public class FestivalBody {
-    private FestivalList items;
+public class WeatherForecastBody {
+    private WeatherForecastList items;
     private String numOfRows;
     private String pageNo;
     private String totalCount;
+
+    public WeatherForecastList getItems() {
+        return items;
+    }
+
+    public void setItems(WeatherForecastList items) {
+        this.items = items;
+    }
 
     public String getNumOfRows() {
         return numOfRows;
@@ -28,22 +36,5 @@ public class FestivalBody {
 
     public void setTotalCount(String totalCount) {
         this.totalCount = totalCount;
-    }
-
-    public FestivalList getItems() {
-        return items;
-    }
-
-    public void setItems(FestivalList items) {
-        this.items = items;
-    }
-
-    @Override
-    public String toString() {
-        return "FestivalResponseBody{" +
-                "numOfRows='" + numOfRows + '\'' +
-                ", pageNo='" + pageNo + '\'' +
-                ", totalCount='" + totalCount + '\'' +
-                '}';
     }
 }
