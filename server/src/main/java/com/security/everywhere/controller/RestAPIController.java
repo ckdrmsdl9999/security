@@ -127,7 +127,7 @@ public class RestAPIController {
         if (standardMillis > currentMillis) {
             calendar.add(Calendar.DATE, -1);
         }
-        currentTime = currentTimeFormat.format(calendar.getTime());
+        currentTime = format.format(calendar.getTime()) + "0600";
 
         String addr = weatherForecastParam.getAddr();
         String regId = null;
@@ -157,7 +157,7 @@ public class RestAPIController {
 
 
 //        return "성공";
-        return weatherForecastResponse.getResponse().getBody().getItems();
+        return weatherForecastResponse.getResponse().getBody().getItems().getItem();
     }
 
 }

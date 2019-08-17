@@ -12,28 +12,28 @@ public class Festival implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    private String addr1 = "";
-    private String addr2 = "";
-    private String areaCode = "";
-    private String bookTour = "";
-    private String cat1 = "";
-    private String cat2 = "";
-    private String cat3 = "";
-    private String contentId = "";
-    private String contentTypeId = "";
-    private String createdTime = "";
-    private String firstImage= "";
-    private String firstImage2= "";
-    private String mapX= "";
-    private String mapY= "";
-    private String mLevel= "";
-    private String modifiedTime = "";
-    private String readCount= "";
-    private String sigunguCode= "";
-    private String tel= "";
-    private String title= "";
-    private String eventStartDate = "";
-    private String eventEndDate = "";
+    private String addr1 = "";          // 주소
+    private String addr2 = "";          // 상세주소
+    private String areaCode = "";       // 지역코드
+    private String bookTour = "";       // 교과서 속 여행지 여부
+    private String cat1 = "";           // 대분류 코드
+    private String cat2 = "";           // 중분류 코드
+    private String cat3 = "";           // 소분류 코드
+    private String contentId = "";      // 콘텐츠ID
+    private String contentTypeId = "";  // 관광타입(관광지, 숙박 등) ID
+    private String createdTime = "";    // 콘텐츠 최초 등록일
+    private String firstImage= "";      // 원본 대표이미지 약 500x333 size
+    private String firstImage2= "";     // 썸네일 대표이미지 약 150x100 size
+    private String mapX= "";            // 경도
+    private String mapY= "";            // 위도
+    private String mLevel= "";          // map level 응답
+    private String modifiedTime = "";   // 콘텐츠 수정일
+    private String readCount= "";       // 콘텐츠 조회수
+    private String sigunguCode= "";     // 시군구 코드
+    private String tel= "";             // 전화번호
+    private String title= "";           // 콘텐츠 제목
+    private String eventStartDate = ""; // 행사 시작일
+    private String eventEndDate = "";   // 행사 종료일
 
     protected Festival() {
     }

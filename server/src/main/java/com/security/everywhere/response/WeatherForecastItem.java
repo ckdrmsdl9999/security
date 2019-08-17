@@ -1,36 +1,33 @@
 package com.security.everywhere.response;
 
-import com.fasterxml.jackson.annotation.JsonRootName;
-
-@JsonRootName(value = "item")
 public class WeatherForecastItem {
-    private String regId = null;
-    private String rnSt3Am = null;
-    private String rnSt3Pm = null;
-    private String rnSt4Am = null;
-    private String rnSt4Pm = null;
-    private String rnSt5Am = null;
-    private String rnSt5Pm = null;
-    private String rnSt6Am = null;
-    private String rnSt6Pm = null;
-    private String rnSt7Am = null;
-    private String rnSt7Pm = null;
-    private String rnSt8 = null;
-    private String rnSt9 = null;
-    private String rnSt10 = null;
-    private String wf3Am = null;
-    private String wf3Pm = null;
-    private String wf4Am = null;
-    private String wf4Pm = null;
-    private String wf5Am = null;
-    private String wf5Pm = null;
-    private String wf6Am = null;
-    private String wf6Pm = null;
-    private String wf7Am = null;
-    private String wf7Pm = null;
-    private String wf8 = null;
-    private String wf9 = null;
-    private String wf10 = null;
+    private String regId = "";      // 예보구역코드
+    private String rnSt3Am = "";    // 3일 후 오전 강수 확률, 예: 30
+    private String rnSt3Pm = "";    // 3일 후 오후 강수 확률
+    private String rnSt4Am = "";    // 4일 후 오전 강수 확률
+    private String rnSt4Pm = "";    // 4일 후 오후 강수 확률
+    private String rnSt5Am = "";    // 5일 후 오전 강수 확률
+    private String rnSt5Pm = "";    // 5일 후 오후 강수 확률
+    private String rnSt6Am = "";    // 6일 후 오전 강수 확률
+    private String rnSt6Pm = "";    // 6일 후 오후 강수 확률
+    private String rnSt7Am = "";    // 7일 후 오전 강수 확률
+    private String rnSt7Pm = "";    // 7일 후 오후 강수 확률
+    private String rnSt8 = "";      // 8일 후 강수 확률
+    private String rnSt9 = "";      // 9일 후 강수 확률
+    private String rnSt10 = "";     // 10일 후 강수 확률
+    private String wf3Am = "";      // 3일 후 오전 날씨예보, 예: 구름많음, 흐리고 비
+    private String wf3Pm = "";      // 3일 후 오후 날씨예보
+    private String wf4Am = "";      // 4일 후 오전 날씨예보
+    private String wf4Pm = "";      // 4일 후 오후 날씨예보
+    private String wf5Am = "";      // 5일 후 오전 날씨예보
+    private String wf5Pm = "";      // 5일 후 오후 날씨예보
+    private String wf6Am = "";      // 6일 후 오전 날씨예보
+    private String wf6Pm = "";      // 6일 후 오후 날씨예보
+    private String wf7Am = "";      // 7일 후 오전 날씨예보
+    private String wf7Pm = "";      // 7일 후 오후 날씨예보
+    private String wf8 = "";        // 8일 후 날씨예보
+    private String wf9 = "";        // 9일 후 날씨예보
+    private String wf10 = "";       // 10일 후 날씨예보
 
     public String getRegId() {
         return regId;

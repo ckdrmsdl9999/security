@@ -1,16 +1,16 @@
 package com.security.everywhere.response;
 
 public class WeatherForecastBody {
-    private WeatherForecastItem items;
+    private WeatherForecastList items;
     private String numOfRows;
     private String pageNo;
     private String totalCount;
 
-    public WeatherForecastItem getItems() {
+    public WeatherForecastList getItems() {
         return items;
     }
 
-    public void setItems(WeatherForecastItem items) {
+    public void setItems(WeatherForecastList items) {
         this.items = items;
     }
 

@@ -7,26 +7,26 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement(name="item")
 @XmlAccessorType(XmlAccessType.FIELD)
 public class AirItem {
-    private String dataTime;
-    private String mangName;
-    private String so2Value;
-    private String coValue;
-    private String o3Value;
-    private String no2Value;
-    private String pm10Value;
-    private String pm10Value24;
-    private String pm25Value;
-    private String pm25Value24;
-    private String khaiValue;
-    private String khaiGrade;
-    private String so2Grade;
-    private String coGrade;
-    private String o3Grade;
-    private String no2Grade;
-    private String pm10Grade;
-    private String pm25Grade;
-    private String pm10Grade1h;
-    private String pm25Grade1h;
+    private String dataTime;        // 측정일
+    private String mangName;        // 측정망 정보
+    private String so2Value;        // 아황산가스 농도, 단위: ppm
+    private String coValue;         // 일산화탄소 농도, 단위: ppm
+    private String o3Value;         // 오존 농도, 단위: ppm
+    private String no2Value;        // 이산화질소 농도, 단위: ppm
+    private String pm10Value;       // 미세먼지(pm10) 농도, 단위: mg/m2
+    private String pm10Value24;     // 미세먼지(pm10) 24시간 예측 이동 농도
+    private String pm25Value;       // 미세먼지(pm25) 농도
+    private String pm25Value24;     // 미세먼지(pm25 24시간 예측 이동 농도
+    private String khaiValue;       // 통합대기 환경수치
+    private String khaiGrade;       // 통합대기 환경지수    Grade 값 1:좋음, 2:보통, 3:나쁨, 4:매우나쁨
+    private String so2Grade;        // 아황산가스 지수
+    private String coGrade;         // 일산화탄소 지수
+    private String o3Grade;         // 오존 지수
+    private String no2Grade;        // 이산화질소 지수
+    private String pm10Grade;       // 미세먼지(pm10) 24시간 등급
+    private String pm25Grade;       // 미세먼지(pm25) 24시간 등급
+    private String pm10Grade1h;     // 미세먼지(pm10) 1시간 등급
+    private String pm25Grade1h;     // 미세먼지(pm25) 1시간 등급
 
     public String getDataTime() {
         return dataTime;
