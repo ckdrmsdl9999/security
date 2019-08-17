@@ -10,6 +10,7 @@ import com.security.everywhere.request.FestivalParam;
 import com.security.everywhere.request.ObservatoryParam;
 import com.security.everywhere.request.WeatherForecastParam;
 import com.security.everywhere.response.air.AirDTO;
+import com.security.everywhere.response.locationConversion.LocationConvDTO;
 import com.security.everywhere.response.observatory.ObservatoryDTO;
 import com.security.everywhere.response.observatory.ObservatoryItem;
 import com.security.everywhere.response.weatherForecast.WeatherForecastItem;
@@ -74,6 +75,8 @@ public class RestAPIController {
         urlBuilder.append("&" + URLEncoder.encode("consumer_secret","UTF-8") + "=" + URLEncoder.encode(consumer_secret, "UTF-8"));
         URL url = new URL(urlBuilder.toString());
 
+        ObjectMapper mapper = new ObjectMapper();
+        LocationConvDTO locationConvDTO = mapper.readValue(url, LocationConvDTO.class);
 
         urlBuilder = new StringBuilder("http://openapi.airkorea.or.kr/openapi/services/rest/MsrstnInfoInqireSvc/getNearbyMsrstnList");
         urlBuilder.append("?" + URLEncoder.encode("tmX","UTF-8") + "=" + URLEncoder.encode(requestParam.getMapx(), "UTF-8"));
