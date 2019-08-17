@@ -337,97 +337,24 @@
         </div>
     </div>
 
-
-
    <main class="bmd-layout-content mx-auto h-50">
-       <ul class="list-unstyled list-thumbs row">
-           <!--
-           <li class="col-6">
-               <a href="#" title="Claudio Bravo, antes su debut con el Barça en la Liga">
-                   <img src="../image/dojagi.jpg" alt="Barca" class="img-responsive" height="130px" />
-                   <p>이천 도자기</p>
-               </a>
-           </li>
-           <li class="col-6">
-               <a href="#" title="Claudio Bravo, antes su debut con el Barça en la Liga">
-                   <img src="../image/dojagi.jpg" alt="Barca" class="img-responsive" height="130px" />
-                   <p>이천 도자기</p>
-               </a>
-           </li>
-           <li class="col-6">
-               <a href="#" title="Claudio Bravo, antes su debut con el Barça en la Liga">
-                   <img src="../image/dojagi.jpg" alt="Barca" class="img-responsive" height="130px" />
-                   <p>이천 도자기</p>
-               </a>
-           </li>
-           <li class="col-6">
-               <a href="#" title="Claudio Bravo, antes su debut con el Barça en la Liga">
-                   <img src="../image/dojagi.jpg" alt="Barca" class="img-responsive" height="130px" />
-                   <p>이천 도자기</p>
-               </a>
-           </li>
-           <li class="col-6">
-               <a href="#" title="Claudio Bravo, antes su debut con el Barça en la Liga">
-                   <img src="../image/dojagi.jpg" alt="Barca" class="img-responsive" height="130px" />
-                   <p>이천 도자기</p>
-               </a>
-           </li>
-           <li class="col-6">
-               <a href="#" title="Claudio Bravo, antes su debut con el Barça en la Liga">
-                   <img src="../image/dojagi.jpg" alt="Barca" class="img-responsive" height="130px" />
-                   <p>이천 도자기</p>
-               </a>
-           </li>
-           <li class="col-6">
-               <a href="#" title="Claudio Bravo, antes su debut con el Barça en la Liga">
-                   <img src="../image/dojagi.jpg" alt="Barca" class="img-responsive" height="130px" />
-                   <p>이천 도자기</p>
-               </a>
-           </li>
-           <li class="col-6">
-               <a href="#" title="Claudio Bravo, antes su debut con el Barça en la Liga">
-                   <img src="../image/dojagi.jpg" alt="Barca" class="img-responsive" height="130px" />
-                   <p>이천 도자기</p>
-               </a>
-           </li>
-           -->
+       <ul class="list-unstyled list-thumbs">
+
        </ul>
    </main>
 </div>
 </body>
 <script type="text/javascript">
 
+    var today = new Date();
+    var dd = String(today.getDate()).padStart(2, '0');
+    var mm = String(today.getMonth() + 1).padStart(2, '0');
+    var yyyy = today.getFullYear();
+    today = yyyy + mm + dd;
+
     //첫 화면의 축제 리스트 출력
     $( document ).ready(function() {
-
-        var param = {"pageNo": "1","numOfRows": "10","eventStartDate": "20190817"};
-        
-        $.ajax({
-            url: "/api/festivalInfo",
-            type: "POST",
-            dataType: "json",
-            contentType: "application/json",
-            data : JSON.stringify(param),
-        }).done(function( data ) {
-
-            for(var i=0;i<data.length;i++) {
-
-                $festival_item = $('<li class="col-6">\n' +
-                    '               <a href="#">\n' +
-                    '                   <img src="" alt="Barca" class="img-responsive" height="130px" />\n' +
-                    '                   <p></p>\n' +
-                    '               </a>\n' +
-                    '           </li>');
-
-                $festival_item.find('p').text(data[i].title);
-                $festival_item.children().children('img').attr('src',data[i].firstImage2);
-
-                $('.list-unstyled.list-thumbs.row').append($festival_item);
-
-            }
-        }).fail(function() {
-
-        });
+        print_festivalList(0, today);
     });
 
 
@@ -572,51 +499,14 @@
     $body_height = $body_height_px.substring(0,$body_height_px.length-2);
 
 
+    var pagenum = 0;
     $('.bmd-layout-content').scroll(function() {
 
             //스크롤 내리면 축제 리스트 추가
             if($(this).children().height() - $(this).scrollTop() <= $body_height){
 
             if (once == 0) {
-
-                //추가데이터
-                $appendData = '<li class="col-6">\n' +
-                    '               <a href="#" title="Claudio Bravo, antes su debut con el Barça en la Liga">\n' +
-                    '                   <img src="../image/dojagi.jpg" alt="Barca" class="img-responsive" height="130px" />\n' +
-                    '                   이천 도자기\n' +
-                    '               </a>\n' +
-                    '           </li>\n' +
-                    '           <li class="col-6">\n' +
-                    '               <a href="#" title="Claudio Bravo, antes su debut con el Barça en la Liga">\n' +
-                    '                   <img src="../image/dojagi.jpg" alt="Barca" class="img-responsive" height="130px" />\n' +
-                    '                   축제2\n' +
-                    '               </a>\n' +
-                    '           </li>\n' +
-                    '           <li class="col-6">\n' +
-                    '               <a href="#" title="Claudio Bravo, antes su debut con el Barça en la Liga">\n' +
-                    '                   <img src="../image/dojagi.jpg" alt="Barca" class="img-responsive" height="130px" />\n' +
-                    '                   축제3\n' +
-                    '               </a>\n' +
-                    '           </li>\n' +
-                    '           <li class="col-6">\n' +
-                    '               <a href="#" title="Claudio Bravo, antes su debut con el Barça en la Liga">\n' +
-                    '                   <img src="../image/dojagi.jpg" alt="Barca" class="img-responsive" height="130px" />\n' +
-                    '                   축제4\n' +
-                    '               </a>\n' +
-                    '           </li>\n' +
-                    '           <li class="col-6">\n' +
-                    '               <a href="#" title="Claudio Bravo, antes su debut con el Barça en la Liga">\n' +
-                    '                   <img src="../image/dojagi.jpg" alt="Barca" class="img-responsive" height="130px" />\n' +
-                    '                   축제5\n' +
-                    '               </a>\n' +
-                    '           </li>\n' +
-                    '           <li class="col-6">\n' +
-                    '               <a href="#" title="Claudio Bravo, antes su debut con el Barça en la Liga">\n' +
-                    '                   <img src="../image/dojagi.jpg" alt="Barca" class="img-responsive" height="130px" />\n' +
-                    '                   축제6\n' +
-                    '               </a>\n' +
-                    '           </li>'
-                $('.list-thumbs').append($appendData).hide().fadeIn('slow');
+                print_festivalList(++pagenum,today);
                 once += 1;
             }
         }
@@ -639,7 +529,41 @@
 
 
 
+    function print_festivalList(pagenum, date){
 
+        var param = {"pageNo": pagenum,"numOfRows": "10","eventStartDate": date};
+
+
+        $.ajax({
+            url: "/api/festivalInfo",
+            type: "POST",
+            dataType: "json",
+            contentType: "application/json",
+            data : JSON.stringify(param),
+        }).done(function( data ) {
+            $appendData = $('<div class="row"></div>');
+            for(var i=0;i<data.length;i++) {
+
+                $festival_item = $('<li class="col-6">\n' +
+                    '               <a href="#">\n' +
+                    '                   <img src="" alt="Barca" class="img-responsive" height="130px" />\n' +
+                    '                   <p></p>\n' +
+                    '               </a>\n' +
+                    '           </li>');
+
+                $festival_item.find('p').text(data[i].title);
+                $festival_item.find('a').attr('href',"content/" + data[i].contentId);
+                $festival_item.children().children('img').attr('src',data[i].firstImage2);
+                $appendData.append($festival_item);
+            }
+
+            $('.list-unstyled.list-thumbs').append($appendData);
+                //.hide().fadeIn("fast");
+
+        }).fail(function() {
+
+        });
+    }
 
 
 
