@@ -400,6 +400,8 @@
     //첫 화면의 축제 리스트 출력
     $( document ).ready(function() {
 
+        var param = {"pageNo": "1","numOfRows": "10","eventStartDate": "20190817"};
+        
         $.ajax({
             url: "/api/festivalInfo",
             type: "POST",
