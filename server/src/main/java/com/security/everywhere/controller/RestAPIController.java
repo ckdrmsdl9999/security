@@ -2,6 +2,8 @@ package com.security.everywhere.controller;
 
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.security.everywhere.data.TempForecastAreaCode;
+import com.security.everywhere.data.WeatherForecastAreaCode;
 import com.security.everywhere.model.Festival;
 import com.security.everywhere.repository.FestivalRepository;
 import com.security.everywhere.request.FestivalParam;
@@ -14,6 +16,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
@@ -29,40 +32,22 @@ import java.util.*;
 @RestController
 @RequestMapping("/api")
 public class RestAPIController {
-    private static final HashMap<Object, Object> areaName = new HashMap<>();
 
-    @Autowired
     private final FestivalRepository festivalRepository;
+    private TempForecastAreaCode tempForecastAreaCode;
+    private WeatherForecastAreaCode weatherForecastAreaCode;
 
     @Value("${festival_key}")
     private String festivalKey;
 
-    public RestAPIController(FestivalRepository festivalRepository) {
+    public RestAPIController(FestivalRepository festivalRepository, TempForecastAreaCode tempForecastAreaCode, WeatherForecastAreaCode weatherForecastAreaCode) {
         this.festivalRepository = festivalRepository;
-        if (areaName.isEmpty()) {
-            areaName.put("서울", "11B00000");
-            areaName.put("인천", "11B00000");
-            areaName.put("경기도", "11B00000");
-            areaName.put("강원도영서", "11D10000");
-            areaName.put("강원도영동", "11D20000");
-            areaName.put("대전", "11C20000");
-            areaName.put("세종", "11C20000");
-            areaName.put("충청남도", "11C20000");
-            areaName.put("충청북도", "11C10000");
-            areaName.put("광주", "  11F20000");
-            areaName.put("전라남도", "  11F20000");
-            areaName.put("전라북도", "11F10000");
-            areaName.put("대구", "11H10000");
-            areaName.put("경상북도", "11H10000");
-            areaName.put("부산", "11H20000");
-            areaName.put("울산", "11H20000");
-            areaName.put("경상남도", "11H20000");
-            areaName.put("제주도", "11G00000");
-        }
+        this.tempForecastAreaCode = tempForecastAreaCode;
+        this.weatherForecastAreaCode = weatherForecastAreaCode;
     }
 
     @PostMapping("/festivalInfo")
-    public List<Festival> festivalInfo(FestivalParam requestParam) {
+    public List<Festival> festivalInfo(@RequestBody FestivalParam requestParam) {
         int pageNo = Integer.parseInt(requestParam.getPageNo());
         int numOfRows = Integer.parseInt(requestParam.getNumOfRows());
         String eventStartDate = requestParam.getEventStartDate();
@@ -75,7 +60,7 @@ public class RestAPIController {
     }
 
     @PostMapping("/airInfo")
-    public AirItem observatoryInfo(ObservatoryParam requestParam) throws IOException {
+    public AirItem observatoryInfo(@RequestBody ObservatoryParam requestParam) throws IOException {
 
         StringBuilder urlBuilder = new StringBuilder("http://openapi.airkorea.or.kr/openapi/services/rest/MsrstnInfoInqireSvc/getNearbyMsrstnList");
         urlBuilder.append("?" + URLEncoder.encode("tmX","UTF-8") + "=" + URLEncoder.encode(requestParam.getMapx(), "UTF-8"));
@@ -113,7 +98,7 @@ public class RestAPIController {
     }
 
     @PostMapping("/weatherForecast")
-    public WeatherForecastItem weatherInfo(WeatherForecastParam weatherForecastParam) throws ParseException, IOException {
+    public WeatherForecastItem weatherInfo(@RequestBody WeatherForecastParam weatherForecastParam) throws ParseException, IOException {
         Calendar calendar = new GregorianCalendar(Locale.KOREA);
         SimpleDateFormat format = new SimpleDateFormat("yyyyMMdd", Locale.KOREA);
         SimpleDateFormat currentTimeFormat = new SimpleDateFormat("yyyyMMddHHmm", Locale.KOREA);
@@ -131,10 +116,11 @@ public class RestAPIController {
 
         String addr = weatherForecastParam.getAddr();
         String regId = null;
+        Map<String, String> weatherAreaCode = weatherForecastAreaCode.getAreaList();
 
-        for (var key : areaName.entrySet()) {
+        for (var key : weatherAreaCode.entrySet()) {
             if (addr.contains(key.getKey().toString())) {
-                regId = areaName.get(key.getKey()).toString();
+                regId = weatherAreaCode.get(key.getKey()).toString();
                 System.out.println(key.getKey().toString());
                 System.out.println(regId);
                 System.out.println(currentTime);
