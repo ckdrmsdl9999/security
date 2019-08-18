@@ -74,7 +74,7 @@ public class RestAPIController {
 
 
     @PostMapping("/festivalInfofromTitle")
-    public List<Festival> festivalInfofromTitle(@RequestBody FestivalParam requestParam) {
+    public List<Festival> festivalInfoFromTitle(@RequestBody FestivalParam requestParam) {
         List<Festival> festivals = festivalRepository.findAllByTitleIsLike("%"+requestParam.getTitle()+"%");
 
         return festivals;
@@ -166,6 +166,7 @@ public class RestAPIController {
         Date standardDate = currentTimeFormat.parse(today+"0600");    // api가 아침 6시를 기준으로 데이터가 갱신되므로
         Long standardMillis = standardDate.getTime();       // 기준 시간을 초로
 
+        // 새벽 6시 이전이면 하루 전 데이터 가져옴
         String currentTime;
         if (standardMillis > currentMillis) {
             calendar.add(Calendar.DATE, -1);
