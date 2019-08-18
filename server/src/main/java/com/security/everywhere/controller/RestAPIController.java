@@ -67,7 +67,7 @@ public class RestAPIController {
     @ResponseBody
     public List<Festival> festivalSearch(@RequestBody FestivalParam requestParam) {//requestParam-ajax통해서온값
         String title=requestParam.getTitle();
-       // System.out.println(requestParam.getTitle()+"은 제목이야");
+        System.out.println(requestParam.getTitle()+"은 제목이야");
         List<Festival> festivals = festivalRepository.findByTitleContaining(title);//jpa쿼리
         return festivals;
     }
