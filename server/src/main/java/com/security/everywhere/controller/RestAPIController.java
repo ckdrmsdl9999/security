@@ -206,4 +206,9 @@ public class RestAPIController {
         return weatherTempResponse.getResponse().getBody().getItems().getItem();
     }
 
+    @PostMapping("/festivalContent")
+    public Festival festivalContent(@RequestBody String contentid) {
+        return festivalRepository.findByContentId(contentid);
+    }
+
 }
