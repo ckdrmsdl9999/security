@@ -14,4 +14,7 @@ public interface FestivalRepository extends PagingAndSortingRepository<Festival,
     List<Festival> findAllByTitleIsLike(String title);
 
     Festival findByContentId(String contentid);
+
+    // searchword들어간값 찾기
+    List<Festival> findByTitleContaining(String title);
 }
