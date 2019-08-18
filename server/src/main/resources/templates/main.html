@@ -77,16 +77,14 @@
    </header>
 
         <!-- 본문 검색창 -->
-        <form action="post" class="mb-0 mt-2" id="search_form1">
         <div class="p-1 bg-light rounded shadow-sm mb-4 w-50 mx-auto" id="searchbar1">
             <div class="input-group pl-3 ">
-                <input type="search" placeholder="What're you searching for?" aria-describedby="button-addon1" class="form-control border-0 bg-light">
+                <input type="search" id="searchword" placeholder="What're you searching for" aria-describedby="button-addon1" class="form-control border-0 bg-light">
                 <div class="input-group-append">
-                    <button id="button-addon1" type="submit" class="btn btn-link text-primary"><i class="fa fa-search"></i></button>
+                    <button id="button-addon" type="submit" class="btn btn-link text-primary"><i class="fa fa-search"></i></button>
                 </div>
             </div>
         </div>
-        </form>
 
    <div id="dw-s2" class="bmd-layout-drawer bg-faded">
        <header>
@@ -358,6 +356,7 @@
     });
 
 
+
     // 기간 선택
     $(document).on('click','#calendar_all_button',function () {
         if($(this).hasClass("active") != true) {
@@ -522,18 +521,44 @@
             $('#searchbar2').hide();
         }
 
-
-
     });
 
+//검색
+    $(document).on('click','#button-addon',function (){
+        var str=document.getElementById("searchword").value;
+          // alert(str);
+        var param = {"pageNo": "1", "numOfRows": "11", "eventStartDate": "20190817", "title": str};
+        $.ajax({
+            url: "/api/festivalSearch",
+            type: "POST",
+            dataType: "json",
+            contentType: "application/json",
+            data: JSON.stringify(param),
+        }).done(function (data) {
+            $('.list-unstyled.list-thumbs').children().remove();//삭제해주고
+            $appendData = $('<div class="row"></div>');
+            for (var i = 0; i < data.length; i++) {
 
+                $festival_item = $('<li class="col-6">\n' +
+                    '               <a href="content">\n' +
+                    '                   <img src="" alt="Barca" class="img-responsive" height="130px" />\n' +
+                    '                   <p></p>\n' +
+                    '               </a>\n' +
+                    '           </li>');
+                $festival_item.find('p').text(data[i].title);
+                $festival_item.children().children('img').attr('src', data[i].firstImage2);
+                //    alert("done!" + data.length + data[i].title);
+                $appendData.append($festival_item);
 
+            }
+            $('.list-unstyled.list-thumbs').append($appendData);//띄어줌
+        }).fail(function () {
+        });
+    });
 
     function print_festivalList(pagenum, date){
 
         var param = {"pageNo": pagenum,"numOfRows": "10","eventStartDate": date};
-
-
         $.ajax({
             url: "/api/festivalInfo",
             type: "POST",
@@ -564,6 +589,8 @@
 
         });
     }
+
+
 
 
 

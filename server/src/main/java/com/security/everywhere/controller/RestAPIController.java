@@ -26,10 +26,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
 import java.io.IOException;
@@ -66,6 +63,15 @@ public class RestAPIController {
         this.mapper = new ObjectMapper();
         this.restTemplate = new RestTemplate();
     }
+    @PostMapping("/festivalSearch")
+    @ResponseBody
+    public List<Festival> festivalSearch(@RequestBody FestivalParam requestParam) {//requestParam-ajax통해서온값
+        String title=requestParam.getTitle();
+       // System.out.println(requestParam.getTitle()+"은 제목이야");
+        List<Festival> festivals = festivalRepository.findByTitleContaining(title);//jpa쿼리
+        return festivals;
+    }
+
 
     @PostMapping("/festivalInfofromTitle")
     public List<Festival> festivalInfofromTitle(@RequestBody FestivalParam requestParam) {
