@@ -181,8 +181,6 @@ public class TempForecastAreaCode {
         areaList.put("김제", "21F10502");
         areaList.put("고창", "21F10601");
         areaList.put("부안군", "21F10602");
-
-        logger.info("TempForecastAreaCode 생성");
     }
 
     public Map<String, String> getAreaList() {

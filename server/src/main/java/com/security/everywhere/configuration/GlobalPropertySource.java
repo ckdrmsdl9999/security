@@ -4,7 +4,6 @@
 
 package com.security.everywhere.configuration;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.annotation.PropertySources;
@@ -15,24 +14,4 @@ import org.springframework.context.annotation.PropertySources;
                 , ignoreResourceNotFound = true)
 })
 public class GlobalPropertySource {
-
-    @Value("${spring.datasource.driver-class-name}")
-    private String driverClassName;
-
-    @Value("${spring.datasource.url}")
-    private String url;
-
-    @Value("${spring.datasource.username}")
-    private String username;
-
-    @Value("${spring.datasource.password}")
-    private String password;
-
-//    @Override
-//    public void run(ApplicationArguments args) throws Exception {   // 잘 읽었는지 테스트 잘 되면 지워도 됨 단 위 implements ApplicationRunner도 지워야함
-//        System.out.println(driverClassName);
-//        System.out.println(url);
-//        System.out.println(username);
-//        System.out.println(password);
-//    }
 }
