@@ -16,8 +16,8 @@
     <script src="https://unpkg.com/popper.js@1.12.6/dist/umd/popper.js" integrity="sha384-fA23ZRQ3G/J53mElWqVJEGJzU0sTs+SvzG8fXVWP+kJQ1lwFAOkcUOysnlKJC33U" crossorigin="anonymous"></script>
     <script src="https://unpkg.com/bootstrap-material-design@4.1.1/dist/js/bootstrap-material-design.js" integrity="sha384-CauSuKpEqAFajSpkdjv3z9t8E7RlpJ1UP0lKM/+NdtSarroVKu069AlsRPKkFBz9" crossorigin="anonymous"></script>
 
-    <link href="../library/jquery.range.css" rel="stylesheet">
-    <script src="../library/jquery.range.js"></script>
+    <link href="../static/lib/jquery.range.css" rel="stylesheet">
+    <script src="../static/lib/jquery.range.js"></script>
 
     <script>$(document).ready(function() { $('body').bootstrapMaterialDesign(); });</script>
     <title>Hello, world!</title>
@@ -269,6 +269,15 @@
 </body>
 <script type="text/javascript">
 
+    $('.range-slider').jRange({
+        from: 1,
+        to: 12,
+        scale: [1,12],
+        isRange : true,
+        width: 420,
+        format: '%s월',
+
+    });
 
     var today = new Date();
     var dd = String(today.getDate()).padStart(2, '0');
@@ -280,15 +289,7 @@
     $( document ).ready(function() {
         print_festivalList(0, today);
         //날짜의 slider
-        $('.range-slider').jRange({
-            from: 1,
-            to: 12,
-            scale: [1,12],
-            isRange : true,
-            width: 420,
-            format: '%s월',
 
-        });
     });
 
 
