@@ -1,6 +1,6 @@
-package com.security.everywhere.response.middleLandWeather;
+package com.security.everywhere.response.middleTermWeather;
 
-public class MiddleLandWeatherItem {
+public class MiddleTermWeatherItem {
     private String regId = "";      // 예보구역코드
     private String rnSt3Am = "";    // 3일 후 오전 강수 확률, 예: 30
     private String rnSt3Pm = "";    // 3일 후 오후 강수 확률

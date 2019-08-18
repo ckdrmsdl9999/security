@@ -1,16 +1,16 @@
-package com.security.everywhere.response.middleLandWeather;
+package com.security.everywhere.response.shortTermWeather;
 
-public class MiddleLandWeatherBody {
-    private MiddleLandWeatherItems items;
+public class ShortTermWeatherBody {
+    private ShortTermWeatherItems items;
     private String numOfRows;
     private String pageNo;
     private String totalCount;
 
-    public MiddleLandWeatherItems getItems() {
+    public ShortTermWeatherItems getItems() {
         return items;
     }
 
-    public void setItems(MiddleLandWeatherItems items) {
+    public void setItems(ShortTermWeatherItems items) {
         this.items = items;
     }
 
@@ -36,5 +36,15 @@ public class MiddleLandWeatherBody {
 
     public void setTotalCount(String totalCount) {
         this.totalCount = totalCount;
+    }
+
+    @Override
+    public String toString() {
+        return "ShortTermWeatherBody{" +
+                "items=" + items +
+                ", numOfRows='" + numOfRows + '\'' +
+                ", pageNo='" + pageNo + '\'' +
+                ", totalCount='" + totalCount + '\'' +
+                '}';
     }
 }
