@@ -7,6 +7,7 @@ public class FestivalParam {
     private String sigunguCode="";      // 시군구코드
     private String eventStartDate="";   // 행사 시작일
     private String eventEndDate="";     // 행사 종료일
+    private String title="";
 
     public String getNumOfRows() {
         return numOfRows;
@@ -54,5 +55,13 @@ public class FestivalParam {
 
     public void setEventEndDate(String eventEndDate) {
         this.eventEndDate = eventEndDate;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
     }
 }

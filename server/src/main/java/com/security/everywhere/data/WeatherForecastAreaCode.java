@@ -33,7 +33,6 @@ public class WeatherForecastAreaCode {
             areaList.put("울산", "11H20000");
             areaList.put("경상남도", "11H20000");
             areaList.put("제주도", "11G00000");
-            logger.info("WeatherForecastAreaCode 생성");
         }
     }
 

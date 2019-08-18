@@ -1,5 +1,8 @@
 package com.security.everywhere.controller;
 
+import com.security.everywhere.configuration.GlobalPropertySource;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,6 +17,7 @@ public class MainPage {
     public String getTesting() {
         return "main";  // html name
     }
+
 
 //    @PostMapping("/")
 //    public String postTesting(TestParam testParam, Model model) {

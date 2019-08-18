@@ -1,6 +1,6 @@
-package com.security.everywhere.response.weatherForecast;
+package com.security.everywhere.response.weatherTemperature;
 
-public class WeatherForecastHeader {
+public class WeatherTempHeader {
     private String resultCode;
     private String resultMsg;
 
@@ -18,13 +18,5 @@ public class WeatherForecastHeader {
 
     public void setResultMsg(String resultMsg) {
         this.resultMsg = resultMsg;
-    }
-
-    @Override
-    public String toString() {
-        return "FestivalResponseHeader{" +
-                "resultCode='" + resultCode + '\'' +
-                ", resultMsg='" + resultMsg + '\'' +
-                '}';
     }
 }

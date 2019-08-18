@@ -1,16 +1,16 @@
-package com.security.everywhere.response.weatherForecast;
+package com.security.everywhere.response.middleLandWeather;
 
-public class WeatherForecastBody {
-    private WeatherForecastList items;
+public class MiddleLandWeatherBody {
+    private MiddleLandWeatherItems items;
     private String numOfRows;
     private String pageNo;
     private String totalCount;
 
-    public WeatherForecastList getItems() {
+    public MiddleLandWeatherItems getItems() {
         return items;
     }
 
-    public void setItems(WeatherForecastList items) {
+    public void setItems(MiddleLandWeatherItems items) {
         this.items = items;
     }
 

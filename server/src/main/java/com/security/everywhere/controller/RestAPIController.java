@@ -2,19 +2,26 @@ package com.security.everywhere.controller;
 
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.security.everywhere.configuration.GlobalPropertySource;
 import com.security.everywhere.data.TempForecastAreaCode;
 import com.security.everywhere.data.WeatherForecastAreaCode;
 import com.security.everywhere.model.Festival;
+import com.security.everywhere.model.Weather;
 import com.security.everywhere.repository.FestivalRepository;
 import com.security.everywhere.request.FestivalParam;
 import com.security.everywhere.request.ObservatoryParam;
 import com.security.everywhere.request.WeatherForecastParam;
 import com.security.everywhere.response.air.AirDTO;
 import com.security.everywhere.response.air.AirItem;
+import com.security.everywhere.response.locationConversion.LocationConvAuthDTO;
 import com.security.everywhere.response.locationConversion.LocationConvDTO;
 import com.security.everywhere.response.observatory.ObservatoryDTO;
-import com.security.everywhere.response.weatherForecast.WeatherForecastItem;
-import com.security.everywhere.response.weatherForecast.WeatherForecastResponse;
+import com.security.everywhere.response.middleLandWeather.MiddleLandWeatherItem;
+import com.security.everywhere.response.middleLandWeather.MiddleLandWeatherResponse;
+import com.security.everywhere.response.weatherTemperature.WeatherTempItem;
+import com.security.everywhere.response.weatherTemperature.WeatherTempResponse;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -38,8 +45,12 @@ import java.util.*;
 public class RestAPIController {
 
     private final FestivalRepository festivalRepository;
-    private TempForecastAreaCode tempForecastAreaCode;
-    private WeatherForecastAreaCode weatherForecastAreaCode;
+    private final TempForecastAreaCode tempForecastAreaCode;
+    private final WeatherForecastAreaCode weatherForecastAreaCode;
+    private static Logger logger = LoggerFactory.getLogger(GlobalPropertySource.class);
+
+    private final ObjectMapper mapper;
+    private final RestTemplate restTemplate;
 
     @Value("${festival_key}")
     private String festivalKey;
@@ -47,13 +58,20 @@ public class RestAPIController {
     private String consumerKey;
     @Value("${consumer_secret}")
     private String consumerSecret;
-    @Value("${access_token}")
-    private String accessToken;
 
     public RestAPIController(FestivalRepository festivalRepository, TempForecastAreaCode tempForecastAreaCode, WeatherForecastAreaCode weatherForecastAreaCode) {
         this.festivalRepository = festivalRepository;
         this.tempForecastAreaCode = tempForecastAreaCode;
         this.weatherForecastAreaCode = weatherForecastAreaCode;
+        this.mapper = new ObjectMapper();
+        this.restTemplate = new RestTemplate();
+    }
+
+    @PostMapping("/festivalInfofromTitle")
+    public List<Festival> festivalInfofromTitle(@RequestBody FestivalParam requestParam) {
+        List<Festival> festivals = festivalRepository.findAllByTitleIsLike("%"+requestParam.getTitle()+"%");
+
+        return festivals;
     }
 
     @PostMapping("/festivalInfo")
@@ -71,24 +89,22 @@ public class RestAPIController {
 
     @PostMapping("/airInfo")
     public AirItem observatoryInfo(@RequestBody ObservatoryParam requestParam) throws IOException {
-//        StringBuilder urlBuilder = new StringBuilder("https://sgisapi.kostat.go.kr/OpenAPI3/auth/authentication.json");
-//        urlBuilder.append("?" + URLEncoder.encode("consumer_key","UTF-8") + "=" + URLEncoder.encode(consumerKey, "UTF-8"));
-//        urlBuilder.append("&" + URLEncoder.encode("consumer_secret","UTF-8") + "=" + URLEncoder.encode(consumerSecret, "UTF-8"));
-//        URL url = new URL(urlBuilder.toString());
-//
-//        ObjectMapper mapper = new ObjectMapper();
-//        LocationConvAuthDTO locationConvAuthDTO = mapper.readValue(url, LocationConvAuthDTO.class);
+        StringBuilder urlBuilder = new StringBuilder("https://sgisapi.kostat.go.kr/OpenAPI3/auth/authentication.json");
+        urlBuilder.append("?" + URLEncoder.encode("consumer_key","UTF-8") + "=" + URLEncoder.encode(consumerKey, "UTF-8"));
+        urlBuilder.append("&" + URLEncoder.encode("consumer_secret","UTF-8") + "=" + URLEncoder.encode(consumerSecret, "UTF-8"));
+        URL url = new URL(urlBuilder.toString());
+
+        LocationConvAuthDTO locationConvAuthDTO = mapper.readValue(url, LocationConvAuthDTO.class);
 
         // WGS84 경/위도를 TM좌표 중부원점(GRS80)으로 변환
-        StringBuilder urlBuilder = new StringBuilder("https://sgisapi.kostat.go.kr/OpenAPI3/transformation/transcoord.json");
-        urlBuilder.append("?" + URLEncoder.encode("accessToken","UTF-8") + "=" + URLEncoder.encode(accessToken, "UTF-8"));
+        urlBuilder = new StringBuilder("https://sgisapi.kostat.go.kr/OpenAPI3/transformation/transcoord.json");
+        urlBuilder.append("?" + URLEncoder.encode("accessToken","UTF-8") + "=" + URLEncoder.encode(locationConvAuthDTO.getResult().getAccessToken(), "UTF-8"));
         urlBuilder.append("&" + URLEncoder.encode("src","UTF-8") + "=" + URLEncoder.encode("4326", "UTF-8"));
         urlBuilder.append("&" + URLEncoder.encode("dst","UTF-8") + "=" + URLEncoder.encode("5181", "UTF-8"));
         urlBuilder.append("&" + URLEncoder.encode("posX","UTF-8") + "=" + URLEncoder.encode(requestParam.getMapx(), "UTF-8"));
         urlBuilder.append("&" + URLEncoder.encode("posY","UTF-8") + "=" + URLEncoder.encode(requestParam.getMapy(), "UTF-8"));
-        URL url = new URL(urlBuilder.toString());
+        url = new URL(urlBuilder.toString());
 
-        ObjectMapper mapper = new ObjectMapper();
         LocationConvDTO locationConvDTO = mapper.readValue(url, LocationConvDTO.class);
 
         // 좌표기준 근접 측정소 정보 가져오기
@@ -98,9 +114,6 @@ public class RestAPIController {
         urlBuilder.append("&" + URLEncoder.encode("ServiceKey","UTF-8") + "=" +festivalKey);
         url = new URL(urlBuilder.toString());
 
-        System.out.println(url.toString());
-
-        RestTemplate restTemplate = new RestTemplate();
         ObservatoryDTO observatoryDTO = null;
 
         try {
@@ -131,7 +144,7 @@ public class RestAPIController {
     }
 
     @PostMapping("/weatherForecast")
-    public WeatherForecastItem weatherInfo(@RequestBody WeatherForecastParam weatherForecastParam) throws ParseException, IOException {
+    public WeatherTempItem weatherInfo(@RequestBody WeatherForecastParam weatherForecastParam) throws ParseException, IOException {
         Calendar calendar = new GregorianCalendar(Locale.KOREA);
         SimpleDateFormat format = new SimpleDateFormat("yyyyMMdd", Locale.KOREA);
         SimpleDateFormat currentTimeFormat = new SimpleDateFormat("yyyyMMddHHmm", Locale.KOREA);
@@ -154,29 +167,43 @@ public class RestAPIController {
         for (var key : weatherAreaCode.entrySet()) {
             if (addr.contains(key.getKey().toString())) {
                 regId = weatherAreaCode.get(key.getKey()).toString();
-                System.out.println(key.getKey().toString());
-                System.out.println(regId);
-                System.out.println(currentTime);
                 break;
             }
         }
 
         StringBuilder urlBuilder = new StringBuilder("http://newsky2.kma.go.kr/service/MiddleFrcstInfoService/getMiddleLandWeather");
-        urlBuilder.append("?" + URLEncoder.encode("ServiceKey","UTF-8") + "=" +festivalKey);
+        urlBuilder.append("?" + URLEncoder.encode("ServiceKey","UTF-8") + "=" + festivalKey);
         urlBuilder.append("&" + URLEncoder.encode("regId","UTF-8") + "=" + URLEncoder.encode(regId, "UTF-8"));
         urlBuilder.append("&" + URLEncoder.encode("tmFc","UTF-8") + "=" + URLEncoder.encode(currentTime, "UTF-8"));
         urlBuilder.append("&" + URLEncoder.encode("numOfRows","UTF-8") + "=" + URLEncoder.encode("10", "UTF-8"));
         urlBuilder.append("&" + URLEncoder.encode("pageNo","UTF-8") + "=" + URLEncoder.encode("1", "UTF-8"));
         urlBuilder.append("&" + URLEncoder.encode("_type","UTF-8") + "=" + URLEncoder.encode("json", "UTF-8"));
-
         URL url = new URL(urlBuilder.toString());
 
-        ObjectMapper mapper = new ObjectMapper();
-        WeatherForecastResponse weatherForecastResponse = mapper.readValue(url, WeatherForecastResponse.class);
+        MiddleLandWeatherResponse middleLandWeatherResponse = mapper.readValue(url, MiddleLandWeatherResponse.class);
+
+        Map<String, String> tempAreaCode = tempForecastAreaCode.getAreaList();
+
+        for (var key : tempAreaCode.entrySet()) {
+            if (addr.contains(key.getKey().toString())) {
+                regId = tempAreaCode.get(key.getKey()).toString();
+                break;
+            }
+        }
+
+        urlBuilder = new StringBuilder("http://newsky2.kma.go.kr/service/MiddleFrcstInfoService/getMiddleTemperature");
+        urlBuilder.append("?" + URLEncoder.encode("ServiceKey","UTF-8") + "=" + festivalKey);
+        urlBuilder.append("&" + URLEncoder.encode("regId","UTF-8") + "=" + URLEncoder.encode(regId, "UTF-8"));
+        urlBuilder.append("&" + URLEncoder.encode("tmFc","UTF-8") + "=" + URLEncoder.encode(currentTime, "UTF-8"));
+        urlBuilder.append("&" + URLEncoder.encode("numOfRows","UTF-8") + "=" + URLEncoder.encode("10", "UTF-8"));
+        urlBuilder.append("&" + URLEncoder.encode("pageNo","UTF-8") + "=" + URLEncoder.encode("1", "UTF-8"));
+        urlBuilder.append("&" + URLEncoder.encode("_type","UTF-8") + "=" + URLEncoder.encode("json", "UTF-8"));
+        url = new URL(urlBuilder.toString());
+
+        WeatherTempResponse weatherTempResponse = mapper.readValue(url, WeatherTempResponse.class);
 
 
-//        return "성공";
-        return weatherForecastResponse.getResponse().getBody().getItems().getItem();
+        return weatherTempResponse.getResponse().getBody().getItems().getItem();
     }
 
 }
