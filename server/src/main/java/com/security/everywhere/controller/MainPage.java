@@ -8,12 +8,17 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/")
 public class MainPage {
     @GetMapping("/main")
-    public String getTesting() {
-        return "main";  // html name
+    public String getTesting(
+            @RequestParam(value="month",required = false) String month, @RequestParam(value="area",required = false) String area, Model model) {
+
+        model.addAttribute("month", month);
+        model.addAttribute("area", area);
+
+        return "main";
     }
 
     @GetMapping("/content/{contentId}")
-    public String Contentpage(@PathVariable String contentId) {
+    public String Contentpage(@PathVariable String contentId, Model model) {
 
         return "content";  // html name
     }

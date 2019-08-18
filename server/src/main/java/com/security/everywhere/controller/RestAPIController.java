@@ -67,7 +67,7 @@ public class RestAPIController {
     @ResponseBody
     public List<Festival> festivalSearch(@RequestBody FestivalParam requestParam) {//requestParam-ajax통해서온값
         String title=requestParam.getTitle();
-       // System.out.println(requestParam.getTitle()+"은 제목이야");
+        System.out.println(requestParam.getTitle()+"은 제목이야");
         List<Festival> festivals = festivalRepository.findByTitleContaining(title);//jpa쿼리
         return festivals;
     }
@@ -93,10 +93,29 @@ public class RestAPIController {
         return festivals;
     }
 
+
+    @PostMapping("/conditional_festivalInfo")
+    public List<Festival> conditional_festivalInfo(@RequestBody FestivalParam requestParam) {
+        int pageNo = Integer.parseInt(requestParam.getPageNo());
+        int numOfRows = Integer.parseInt(requestParam.getNumOfRows());
+        String eventStartDate = requestParam.getEventStartDate();
+        String eventEndDate = requestParam.getEventEndDate();
+
+        Pageable pageElements = PageRequest.of(pageNo, numOfRows, Sort.by("eventStartDate"));
+
+        List<Festival> festivals
+                = festivalRepository.findAllByEventStartDateGreaterThanEqualAndEventEndDateLessThanEqual(eventStartDate, eventEndDate, pageElements);
+
+        return festivals;
+    }
+
+
+
     @PostMapping("/festivalContent")
     public Festival festivalContent(@RequestBody String contentid) {
         return festivalRepository.findByContentId(contentid);
     }
+
 
     @PostMapping("/airInfo")
     public AirItem observatoryInfo(@RequestBody ObservatoryParam requestParam) throws IOException {
