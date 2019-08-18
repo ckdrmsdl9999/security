@@ -19,7 +19,6 @@ import com.security.everywhere.response.observatory.ObservatoryDTO;
 import com.security.everywhere.response.middleTermWeather.MiddleTermWeatherResponse;
 import com.security.everywhere.response.shortTermWeather.ShortTermWeatherItem;
 import com.security.everywhere.response.shortTermWeather.ShortTermWeatherResponse;
-import com.security.everywhere.response.weatherTemperature.WeatherTempItem;
 import com.security.everywhere.response.weatherTemperature.WeatherTempResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
