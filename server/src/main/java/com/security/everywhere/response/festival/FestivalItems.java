@@ -2,7 +2,7 @@ package com.security.everywhere.response.festival;
 
 import java.util.List;
 
-public class FestivalList {
+public class FestivalItems {
     private List<FestivalItem> item;
 
     public List<FestivalItem> getItem() {

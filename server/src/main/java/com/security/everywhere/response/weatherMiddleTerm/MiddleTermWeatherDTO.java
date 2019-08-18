@@ -1,4 +1,4 @@
-package com.security.everywhere.response.middleTermWeather;
+package com.security.everywhere.response.weatherMiddleTerm;
 
 public class MiddleTermWeatherDTO {
     private MiddleTermWeatherHeader header;

@@ -7,6 +7,7 @@ import com.security.everywhere.data.TempForecastAreaCode;
 import com.security.everywhere.data.WeatherForecastAreaCode;
 import com.security.everywhere.model.Festival;
 import com.security.everywhere.model.Weather;
+import com.security.everywhere.repository.FestivalImagesRepository;
 import com.security.everywhere.repository.FestivalRepository;
 import com.security.everywhere.request.FestivalParam;
 import com.security.everywhere.request.ObservatoryParam;
@@ -16,9 +17,9 @@ import com.security.everywhere.response.air.AirItem;
 import com.security.everywhere.response.locationConversion.LocationConvAuthDTO;
 import com.security.everywhere.response.locationConversion.LocationConvDTO;
 import com.security.everywhere.response.observatory.ObservatoryDTO;
-import com.security.everywhere.response.middleTermWeather.MiddleTermWeatherResponse;
-import com.security.everywhere.response.shortTermWeather.ShortTermWeatherItem;
-import com.security.everywhere.response.shortTermWeather.ShortTermWeatherResponse;
+import com.security.everywhere.response.weatherMiddleTerm.MiddleTermWeatherResponse;
+import com.security.everywhere.response.weatherShortTerm.ShortTermWeatherItem;
+import com.security.everywhere.response.weatherShortTerm.ShortTermWeatherResponse;
 import com.security.everywhere.response.weatherTemperature.WeatherTempResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -43,6 +44,7 @@ import java.util.*;
 public class RestAPIController {
 
     private final FestivalRepository festivalRepository;
+    private final FestivalImagesRepository festivalImagesRepository;
     private final TempForecastAreaCode tempForecastAreaCode;
     private final WeatherForecastAreaCode weatherForecastAreaCode;
     private static Logger logger = LoggerFactory.getLogger(GlobalPropertySource.class);
@@ -57,10 +59,11 @@ public class RestAPIController {
     @Value("${consumer_secret}")
     private String consumerSecret;
 
-    public RestAPIController(FestivalRepository festivalRepository, TempForecastAreaCode tempForecastAreaCode, WeatherForecastAreaCode weatherForecastAreaCode) {
+    public RestAPIController(FestivalRepository festivalRepository, TempForecastAreaCode tempForecastAreaCode, WeatherForecastAreaCode weatherForecastAreaCode, FestivalImagesRepository festivalImagesRepository) {
         this.festivalRepository = festivalRepository;
         this.tempForecastAreaCode = tempForecastAreaCode;
         this.weatherForecastAreaCode = weatherForecastAreaCode;
+        this.festivalImagesRepository = festivalImagesRepository;
         this.mapper = new ObjectMapper();
         this.restTemplate = new RestTemplate();
     }

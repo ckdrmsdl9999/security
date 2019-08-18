@@ -1,6 +1,6 @@
-package com.security.everywhere.response.middleTermWeather;
+package com.security.everywhere.response.weatherShortTerm;
 
-public class MiddleTermWeatherHeader {
+public class ShortTermWeatherHeader {
     private String resultCode;
     private String resultMsg;
 
@@ -22,7 +22,7 @@ public class MiddleTermWeatherHeader {
 
     @Override
     public String toString() {
-        return "FestivalResponseHeader{" +
+        return "ShortTermWeatherHeader{" +
                 "resultCode='" + resultCode + '\'' +
                 ", resultMsg='" + resultMsg + '\'' +
                 '}';
