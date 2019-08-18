@@ -526,7 +526,7 @@
 //검색
     $(document).on('click','#button-addon',function (){
         var str=document.getElementById("searchword").value;
-           alert(str);
+          // alert(str);
         var param = {"pageNo": "1", "numOfRows": "11", "eventStartDate": "20190817", "title": str};
         $.ajax({
             url: "/api/festivalSearch",
