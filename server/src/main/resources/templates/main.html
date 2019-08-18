@@ -3,18 +3,22 @@
 <head>
     <!-- Required meta tags -->
     <meta charset="utf-8">
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css" integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <!-- Material Design for Bootstrap fonts and icons -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css" integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
+       <!-- Material Design for Bootstrap fonts and icons -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons">
     <!-- Material Design for Bootstrap CSS -->
     <link rel="stylesheet" href="https://unpkg.com/bootstrap-material-design@4.1.1/dist/css/bootstrap-material-design.min.css" integrity="sha384-wXznGJNEXNG1NFsbm0ugrLFMQPWswR3lds2VeinahP8N0zJw9VWSopbjv2x7WCvX" crossorigin="anonymous">
+
     <!--jquery ui-->
     <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js" integrity="sha256-T0Vest3yCU7pafRw9r+settMBX6JkKN06dqBnpQ8d30=" crossorigin="anonymous"></script>
-
     <script src="https://unpkg.com/popper.js@1.12.6/dist/umd/popper.js" integrity="sha384-fA23ZRQ3G/J53mElWqVJEGJzU0sTs+SvzG8fXVWP+kJQ1lwFAOkcUOysnlKJC33U" crossorigin="anonymous"></script>
     <script src="https://unpkg.com/bootstrap-material-design@4.1.1/dist/js/bootstrap-material-design.js" integrity="sha384-CauSuKpEqAFajSpkdjv3z9t8E7RlpJ1UP0lKM/+NdtSarroVKu069AlsRPKkFBz9" crossorigin="anonymous"></script>
+
+    <link href="../library/jquery.range.css" rel="stylesheet">
+    <script src="../library/jquery.range.js"></script>
+
     <script>$(document).ready(function() { $('body').bootstrapMaterialDesign(); });</script>
     <title>Hello, world!</title>
     <style>
@@ -114,90 +118,8 @@
                         <div class="col"><h5>날짜</h5></div>
                     </div>
                     <div class="row">
-                        <div class="col">
-                            <div class="btn-group-toggle" data-toggle="buttons">
-                            <label class="btn btn-secondary active" id="calendar_all_button">
-                               전체
-                            </label></div>
-                        </div>
-                        <div class="col">
-                                <div class="btn-group-toggle" data-toggle="buttons">
-                                    <label class="btn calander_button btn-secondary">
-                                        1월
-                                    </label></div>
-                        </div>
-                        <div class="col">
-                                <div class="btn-group-toggle" data-toggle="buttons">
-                                    <label class="btn calander_button btn-secondary">
-                                        2월
-                                    </label></div>
-                        </div>
-                        <div class="col">
-                                <div class="btn-group-toggle" data-toggle="buttons">
-                                    <label class="btn calander_button btn-secondary">
-                                        3월
-                                    </label></div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col">
-                            <div class="btn-group-toggle" data-toggle="buttons">
-                                <label class="btn calander_button btn-secondary">
-                                    4월
-                                </label></div>
-                        </div>
-                        <div class="col">
-                            <div class="btn-group-toggle" data-toggle="buttons">
-                                <label class="btn calander_button btn-secondary">
-                                    5월
-                                </label></div>
-                        </div>
-                        <div class="col">
-                            <div class="btn-group-toggle" data-toggle="buttons">
-                                <label class="btn calander_button btn-secondary">
-                                    6월
-                                </label></div>
-                        </div>
-                        <div class="col">
-
-                            <div class="btn-group-toggle" data-toggle="buttons">
-                                <label class="btn calander_button btn-secondary">
-                                    7월
-                                </label></div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col">
-                            <div class="btn-group-toggle" data-toggle="buttons">
-                                <label class="btn calander_button btn-secondary ">
-                                    8월
-                                </label></div>
-                        </div>
-                        <div class="col">
-                                <div class="btn-group-toggle" data-toggle="buttons">
-                                    <label class="btn calander_button btn-secondary">
-                                        9월
-                                    </label></div>
-                        </div>
-                        <div class="col">
-                                <div class="btn-group-toggle" data-toggle="buttons">
-                                    <label class="btn calander_button btn-secondary">
-                                        10월
-                                    </label></div>
-                        </div>
-                        <div class="col">
-                                <div class="btn-group-toggle" data-toggle="buttons">
-                                    <label class="btn calander_button btn-secondary">
-                                        11월
-                                    </label></div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col">
-                            <div class="btn-group-toggle" data-toggle="buttons">
-                                <label class="btn calander_button btn-secondary">
-                                    12월
-                                </label></div>
+                        <div class="col mb-4 ml-1">
+                            <input class="range-slider " type="hidden" value="3,9">
                         </div>
                     </div>
                 </div>
@@ -331,7 +253,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
-                    <button type="button" class="btn btn-primary">검색</button>
+                    <button type="button" class="btn btn-primary" onclick="conditional_search();">검색</button>
                 </div>
             </div>
         </div>
@@ -343,8 +265,10 @@
        </ul>
    </main>
 </div>
+
 </body>
 <script type="text/javascript">
+
 
     var today = new Date();
     var dd = String(today.getDate()).padStart(2, '0');
@@ -355,26 +279,34 @@
     //첫 화면의 축제 리스트 출력
     $( document ).ready(function() {
         print_festivalList(0, today);
+        //날짜의 slider
+        $('.range-slider').jRange({
+            from: 1,
+            to: 12,
+            scale: [1,12],
+            isRange : true,
+            width: 420,
+            format: '%s월',
+
+        });
     });
 
 
-    // 기간 선택
-    $(document).on('click','#calendar_all_button',function () {
-        if($(this).hasClass("active") != true) {
-            $(".calander_button").removeClass("active");
-        }
-    });
+    //조건 검색
+    function conditional_search() {
 
-    $(document).on('click','.calander_button',function () {
-        if($("#calendar_all_button").hasClass("active") == true) {
-            $("#calendar_all_button").removeClass("active");
-        }
-        else{
-            if($(".modal-body1 .active").length == 1 && $(this).hasClass('active') == true ){
-                $("#calendar_all_button").addClass("active");
-            }
-        }
-    });
+        var url = '?month=';
+        url += $('.pointer-label.low').text() + ',' + $('.pointer-label.high');
+
+        url += '&area=';
+        $('.modal-body2').find('.active').each(function() {
+            var temp = $(this).attr('id');
+            url += temp;
+        });
+
+        location.href =  location.href.split('?')[0] + url;
+
+    }
 
     //세부 지역 목록
     var area = Array(Array(),Array());
