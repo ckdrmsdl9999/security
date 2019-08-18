@@ -69,6 +69,22 @@ public class RestAPIController {
         return festivals;
     }
 
+    @PostMapping("/conditional_festivalInfo")
+    public List<Festival> conditional_festivalInfo(@RequestBody FestivalParam requestParam) {
+        int pageNo = Integer.parseInt(requestParam.getPageNo());
+        int numOfRows = Integer.parseInt(requestParam.getNumOfRows());
+        String eventStartDate = requestParam.getEventStartDate();
+        String eventEndDate = requestParam.getEventEndDate();
+
+        Pageable pageElements = PageRequest.of(pageNo, numOfRows, Sort.by("eventStartDate"));
+
+        List<Festival> festivals
+                = festivalRepository.findAllByEventStartDateGreaterThanEqualAndEventEndDateLessThanEqual(eventStartDate, eventEndDate, pageElements);
+
+        return festivals;
+    }
+
+
     @PostMapping("/airInfo")
     public AirItem observatoryInfo(@RequestBody ObservatoryParam requestParam) throws IOException {
 //        StringBuilder urlBuilder = new StringBuilder("https://sgisapi.kostat.go.kr/OpenAPI3/auth/authentication.json");
