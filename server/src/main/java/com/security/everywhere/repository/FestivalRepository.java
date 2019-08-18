@@ -11,5 +11,7 @@ public interface FestivalRepository extends PagingAndSortingRepository<Festival,
     // eventStartDate 이상의 값
     List<Festival> findAllByEventStartDateGreaterThanEqual(String startDate, Pageable pageable);
 
+    List<Festival> findAllByTitleIsLike(String title);
+
     Festival findByContentId(String contentid);
 }
