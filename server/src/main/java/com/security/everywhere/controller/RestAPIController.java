@@ -63,22 +63,7 @@ public class RestAPIController {
         this.mapper = new ObjectMapper();
         this.restTemplate = new RestTemplate();
     }
-    @PostMapping("/festivalSearch")
-    @ResponseBody
-    public List<Festival> festivalSearch(@RequestBody FestivalParam requestParam) {//requestParam-ajax통해서온값
-        String title=requestParam.getTitle();
-        System.out.println(requestParam.getTitle()+"은 제목이야");
-        List<Festival> festivals = festivalRepository.findByTitleContaining(title);//jpa쿼리
-        return festivals;
-    }
 
-
-    @PostMapping("/festivalInfofromTitle")
-    public List<Festival> festivalInfoFromTitle(@RequestBody FestivalParam requestParam) {
-        List<Festival> festivals = festivalRepository.findAllByTitleIsLike("%"+requestParam.getTitle()+"%");
-
-        return festivals;
-    }
 
     @PostMapping("/festivalInfo")
     public List<Festival> festivalInfo(@RequestBody FestivalParam requestParam) {
@@ -88,27 +73,23 @@ public class RestAPIController {
 
         Pageable pageElements = PageRequest.of(pageNo, numOfRows, Sort.by("eventStartDate"));
 
-        List<Festival> festivals = festivalRepository.findAllByEventStartDateGreaterThanEqual(eventStartDate, pageElements);
+        List<Festival> festivals = new ArrayList<Festival>();
 
+ //       System.out.println("주소:"+requestParam.getAddress());
+//        System.out.println("제목:"+requestParam.getTitle());
+
+        if("con".equals(requestParam.getCategory())) {
+            festivals = festivalRepository.findAllByEventStartDateGreaterThanEqualAndEventEndDateLessThanEqualAndAddr1Containing
+                    (eventStartDate, requestParam.getEventEndDate(), pageElements,requestParam.getAddress());
+        }
+        else if("search".equals(requestParam.getCategory())){
+            festivals = festivalRepository.findByTitleContaining(requestParam.getTitle());//jpa쿼리
+        }
+        else if("main".equals(requestParam.getCategory())) {
+            festivals = festivalRepository.findAllByEventStartDateGreaterThanEqual(eventStartDate, pageElements);
+        }
         return festivals;
     }
-
-
-    @PostMapping("/conditional_festivalInfo")
-    public List<Festival> conditional_festivalInfo(@RequestBody FestivalParam requestParam) {
-        int pageNo = Integer.parseInt(requestParam.getPageNo());
-        int numOfRows = Integer.parseInt(requestParam.getNumOfRows());
-        String eventStartDate = requestParam.getEventStartDate();
-        String eventEndDate = requestParam.getEventEndDate();
-
-        Pageable pageElements = PageRequest.of(pageNo, numOfRows, Sort.by("eventStartDate"));
-
-        List<Festival> festivals
-                = festivalRepository.findAllByEventStartDateGreaterThanEqualAndEventEndDateLessThanEqual(eventStartDate, eventEndDate, pageElements);
-
-        return festivals;
-    }
-
 
 
     @PostMapping("/festivalContent")

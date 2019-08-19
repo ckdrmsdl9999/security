@@ -9,10 +9,20 @@ import org.springframework.web.bind.annotation.*;
 public class MainPage {
     @GetMapping("/main")
     public String getTesting(
-            @RequestParam(value="month",required = false) String month, @RequestParam(value="area",required = false) String area, Model model) {
+            @RequestParam(value="startmonth",defaultValue = "0") String startmonth,
+            @RequestParam(value="endmonth",defaultValue = "0") String endmonth,
+            @RequestParam(value="area",defaultValue = "0") String area,
+            @RequestParam(value="search",defaultValue = "0") String search, Model model) {
 
-        model.addAttribute("month", month);
+            if (startmonth.length() == 1)
+                startmonth = "0" + startmonth;
+            if (endmonth.length() == 1)
+                endmonth = "0" + endmonth;
+
+        model.addAttribute("endmonth", endmonth);
+        model.addAttribute("startmonth", startmonth);
         model.addAttribute("area", area);
+        model.addAttribute("search",search);
 
         return "main";
     }

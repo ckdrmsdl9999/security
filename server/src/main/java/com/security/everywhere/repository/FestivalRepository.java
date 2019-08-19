@@ -11,13 +11,10 @@ public interface FestivalRepository extends PagingAndSortingRepository<Festival,
     // eventStartDate 이상의 값
     List<Festival> findAllByEventStartDateGreaterThanEqual(String startDate, Pageable pageable);
 
+    // eventStartDate 이상, eventendDate 이하의 값, address 포함하는지
+    List<Festival> findAllByEventStartDateGreaterThanEqualAndEventEndDateLessThanEqualAndAddr1Containing(String startDate, String endDate ,Pageable pageable, String address);
 
-    // eventStartDate 이상, eventendDate 이하의 값
-    List<Festival> findAllByEventStartDateGreaterThanEqualAndEventEndDateLessThanEqual(String startDate, String endDate ,Pageable pageable);
-
-    List<Festival> findAllByTitleIsLike(String title);
-
-
+    // 축제 id로 찾기
     Festival findByContentId(String contentid);
 
     // searchword들어간값 찾기
