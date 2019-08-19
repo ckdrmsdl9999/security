@@ -1,7 +1,7 @@
-package com.security.everywhere.response.tourFestival;
+package com.security.everywhere.response.tourBasicInformation;
 
-public class FestivalBody {
-    private FestivalItems items;
+public class TourBody {
+    private TourItems items;
     private String numOfRows;
     private String pageNo;
     private String totalCount;
@@ -30,11 +30,11 @@ public class FestivalBody {
         this.totalCount = totalCount;
     }
 
-    public FestivalItems getItems() {
+    public TourItems getItems() {
         return items;
     }
 
-    public void setItems(FestivalItems items) {
+    public void setItems(TourItems items) {
         this.items = items;
     }
 

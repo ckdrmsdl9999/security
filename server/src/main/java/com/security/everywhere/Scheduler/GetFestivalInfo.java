@@ -7,8 +7,8 @@ import com.security.everywhere.model.Festival;
 import com.security.everywhere.model.TourImages;
 import com.security.everywhere.repository.TourImagesRepository;
 import com.security.everywhere.repository.FestivalRepository;
-import com.security.everywhere.response.tourFestival.FestivalItem;
-import com.security.everywhere.response.tourFestival.FestivalResponse;
+import com.security.everywhere.response.tourBasicInformation.TourItem;
+import com.security.everywhere.response.tourBasicInformation.TourResponse;
 import com.security.everywhere.response.tourCommonInformation.ComInfoItem;
 import com.security.everywhere.response.tourCommonInformation.ComInfoResponse;
 import com.security.everywhere.response.tourImages.ImagesItem;
@@ -94,9 +94,9 @@ public class GetFestivalInfo {
                 .append(URLEncoder.encode("json", StandardCharsets.UTF_8)); /*행사 종료일(형식:YYYYMMDD)*/
         url = new URL(urlBuilder.toString());
 
-        FestivalResponse responseResult = mapper.readValue(url, FestivalResponse.class);
+        TourResponse responseResult = mapper.readValue(url, TourResponse.class);
 
-        List<FestivalItem> festivals = responseResult.getResponse().getBody().getItems().getItem();
+        List<TourItem> festivals = responseResult.getResponse().getBody().getItems().getItem();
 
 
         List<ImagesItem> imagesItems;
@@ -104,7 +104,7 @@ public class GetFestivalInfo {
         String homePage;
         String overView;
         int count = 0;
-        for (FestivalItem item: festivals) {
+        for (TourItem item: festivals) {
 
             try {
                 // 홈페이지와 개요 정보 가져옴
@@ -115,7 +115,6 @@ public class GetFestivalInfo {
                 homePage = "";
                 overView = "";
             }
-
 
             // 축제 정보 DB에 저장
             festivalRepository.save(new Festival(item
@@ -135,7 +134,7 @@ public class GetFestivalInfo {
         }
     }
 
-    private ComInfoItem getFestivalComInfo(FestivalItem festivalItem) throws IOException {
+    private ComInfoItem getFestivalComInfo(TourItem tourItem) throws IOException {
         urlBuilder = new StringBuilder("http://api.visitkorea.or.kr/openapi/service/rest/KorService/detailCommon"); /*URL*/
         urlBuilder.append("?")
                 .append(URLEncoder.encode("ServiceKey", StandardCharsets.UTF_8))
@@ -160,7 +159,7 @@ public class GetFestivalInfo {
         urlBuilder.append("&")
                 .append(URLEncoder.encode("contentId", StandardCharsets.UTF_8))
                 .append("=")
-                .append(URLEncoder.encode(festivalItem.getContentid(), StandardCharsets.UTF_8));    // 콘텐츠 ID
+                .append(URLEncoder.encode(tourItem.getContentid(), StandardCharsets.UTF_8));    // 콘텐츠 ID
         urlBuilder.append("&")
                 .append(URLEncoder.encode("contentTypeId", StandardCharsets.UTF_8))
                 .append("=")
@@ -204,7 +203,7 @@ public class GetFestivalInfo {
         return responseResult.getResponse().getBody().getItems().getItem();
     }
 
-    private List<ImagesItem> getImages(FestivalItem festivalItem) throws IOException {
+    private List<ImagesItem> getImages(TourItem tourItem) throws IOException {
         urlBuilder = new StringBuilder("http://api.visitkorea.or.kr/openapi/service/rest/KorService/detailImage"); /*URL*/
         urlBuilder.append("?")
                 .append(URLEncoder.encode("ServiceKey", StandardCharsets.UTF_8))
@@ -229,7 +228,7 @@ public class GetFestivalInfo {
         urlBuilder.append("&")
                 .append(URLEncoder.encode("contentId", StandardCharsets.UTF_8))
                 .append("=")
-                .append(URLEncoder.encode(festivalItem.getContentid(), StandardCharsets.UTF_8));    // 콘텐츠 ID
+                .append(URLEncoder.encode(tourItem.getContentid(), StandardCharsets.UTF_8));    // 콘텐츠 ID
         urlBuilder.append("&")
                 .append(URLEncoder.encode("imageYN", StandardCharsets.UTF_8))
                 .append("=")
