@@ -1,5 +1,9 @@
 package com.security.everywhere.request;
 
+
+/*
+ * eventStartDate만 필수, 나머지 옵션
+ * */
 public class FestivalParam {
     private String numOfRows="10";        // 한 페이지 결과 수
     private String pageNo="0";           // 페이지 번호

@@ -1,5 +1,8 @@
 package com.security.everywhere.request;
 
+/*
+ * 2개의 값 모두 필수
+ * */
 public class ObservatoryParam {
     private String mapx = "";
     private String mapy = "";

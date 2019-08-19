@@ -1,5 +1,9 @@
 package com.security.everywhere.request;
 
+
+/*
+ * mapX, mapY 필수, 나머지 옵션
+ * */
 public class NearbyTourParam {
     private String numOfRows = "10";    // 한 페이지 결과 수
     private String pageNo = "1";        // 현재 페이지 번호

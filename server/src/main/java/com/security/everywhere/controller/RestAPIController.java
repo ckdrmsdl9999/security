@@ -1,13 +1,15 @@
 package com.security.everywhere.controller;
 
-/*
-* /api/festivalInfo     <- 여러가지 축제 정보 리턴 (DB)
-* /api/festivalContent  <- 요청으로 들어온 컨텐츠ID에 해당되는 축제 정보 하나 리턴 (DB)
-* /api/festivalImages   <- 요청으로 들어온 컨텐츠 ID에 해당되는 축제 이미지들 리턴 (DB)
-* /api/nearbyTour       <- 공공 api를 통해  x, y축을 가지고 주변 관광지 정보 가져오기, 요청 보낼때 파라미터로 정렬과 거리를 조절할 수 있음
-* /api/detailIntro/tour <- 공공 api를 통해 관광지의 상세정보 가져와 리턴 (축제랑 form이 달라서 꼭 관광지만으로 사용해야함), 휴무일, 개장시간, 주차시설등
-* /api/airInfo          <- 공공 api를 통해 현재 대기상태 정보를 가져와 리턴
-* /api//weatherInfo     <- 공공 api를 통해 1~7일 날씨 정보를 가져와 리턴
+/* 뒤에 DB 안붙은 api는 실시간으로 이용해서 리턴해주는 메소드입니다.
+* /api/festivalInfo      <- 여러가지 축제 정보 리턴 (DB)
+* /api/festivalContent   <- 요청으로 들어온 컨텐츠ID에 해당되는 축제 정보 하나 리턴 (DB)
+* /api/festivalImages    <- 요청으로 들어온 컨텐츠 ID에 해당되는 축제 이미지들 리턴 (DB)
+* /api/nearbyTour        <- 공공 api를 통해  x, y축을 가지고 주변 관광지 정보 가져오기, 요청 보낼때 파라미터로 정렬과 거리를 조절할 수 있음
+* /api/tourImages        <- 관광지 이미지 추가로 가져오기 (관광지만 가능)
+* /api/detailIntro/tour  <- 공공 api를 통해 관광지의 상세정보 가져와 리턴 (축제랑 form이 달라서 꼭 관광지만으로 사용해야함), 휴무일, 개장시간, 주차시설등 (관광지만 가능)
+* /api/detailCommon/tour <- 개요, 홈페이지 정보 (관광지만 가능, 공통정보 조회 api)
+* /api/airInfo           <- 공공 api를 통해 현재 대기상태 정보를 가져와 리턴 (축제, 관광지 둘 다 가능)
+* /api//weatherInfo      <- 공공 api를 통해 1~7일 날씨 정보를 가져와 리턴 (축제, 관광지 둘 다 가능)
 * */
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
@@ -28,9 +30,12 @@ import com.security.everywhere.response.locationConversion.LocationConvDTO;
 import com.security.everywhere.response.observatory.ObservatoryDTO;
 import com.security.everywhere.response.tourBasicInfo.TourItem;
 import com.security.everywhere.response.tourBasicInfo.TourResponse;
+import com.security.everywhere.response.tourCommonInfo.ComInfoItem;
 import com.security.everywhere.response.tourCommonInfo.ComInfoResponse;
 import com.security.everywhere.response.tourDetailIntro.DetailIntroResponse;
 import com.security.everywhere.response.tourDetailIntro.DetailIntroitem;
+import com.security.everywhere.response.tourImages.ImagesItem;
+import com.security.everywhere.response.tourImages.ImagesResponse;
 import com.security.everywhere.response.weatherMiddleTerm.MiddleTermWeatherResponse;
 import com.security.everywhere.response.weatherShortTerm.ShortTermWeatherItem;
 import com.security.everywhere.response.weatherShortTerm.ShortTermWeatherResponse;
@@ -131,6 +136,54 @@ public class RestAPIController {
     @PostMapping("/festivalImages")
     public List<TourImages> festivalImages(@RequestBody String contentid) {
         return tourImagesRepository.findByContentid(contentid);
+    }
+
+
+    // 관광지 이미지 추가로 가져오기
+    @PostMapping("/tourImages")
+    public List<ImagesItem> tourImages(@RequestBody String contentid) throws IOException {
+        StringBuilder urlBuilder = new StringBuilder("http://api.visitkorea.or.kr/openapi/service/rest/KorService/detailImage"); /*URL*/
+        urlBuilder.append("?")
+                .append(URLEncoder.encode("ServiceKey", StandardCharsets.UTF_8))
+                .append("=")
+                .append(apiServiceKey); /*공공데이터포털에서 발급받은 인증키*/
+        urlBuilder.append("&")
+                .append(URLEncoder.encode("numOfRows", StandardCharsets.UTF_8))
+                .append("=")
+                .append(URLEncoder.encode("10", StandardCharsets.UTF_8)); /*한 페이지 결과 수*/
+        urlBuilder.append("&")
+                .append(URLEncoder.encode("pageNo", StandardCharsets.UTF_8))
+                .append("=")
+                .append(URLEncoder.encode("1", StandardCharsets.UTF_8)); /*현재 페이지 번호*/
+        urlBuilder.append("&")
+                .append(URLEncoder.encode("MobileOS", StandardCharsets.UTF_8))
+                .append("=")
+                .append(URLEncoder.encode("ETC", StandardCharsets.UTF_8)); /*IOS (아이폰), AND (안드로이드), WIN (원도우폰),ETC*/
+        urlBuilder.append("&")
+                .append(URLEncoder.encode("MobileApp", StandardCharsets.UTF_8))
+                .append("=")
+                .append(URLEncoder.encode("AppTest", StandardCharsets.UTF_8)); /*서비스명=어플명*/
+        urlBuilder.append("&")
+                .append(URLEncoder.encode("contentId", StandardCharsets.UTF_8))
+                .append("=")
+                .append(URLEncoder.encode(contentid, StandardCharsets.UTF_8));    // 콘텐츠 ID
+        urlBuilder.append("&")
+                .append(URLEncoder.encode("imageYN", StandardCharsets.UTF_8))
+                .append("=")
+                .append(URLEncoder.encode("Y", StandardCharsets.UTF_8));    // Y=콘텐츠 이미지 조회, N='음식점'타입의 음식메뉴 이미지
+        urlBuilder.append("&")
+                .append(URLEncoder.encode("subImageYN", StandardCharsets.UTF_8))
+                .append("=")
+                .append(URLEncoder.encode("Y", StandardCharsets.UTF_8));    // Y=원본,썸네일 이미지 조회 N=Null
+        urlBuilder.append("&")
+                .append(URLEncoder.encode("_type", StandardCharsets.UTF_8))
+                .append("=")
+                .append(URLEncoder.encode("json", StandardCharsets.UTF_8));    // 콘텐츠 개요 조회여부
+        URL url = new URL(urlBuilder.toString());
+
+        ImagesResponse imagesResponse = mapper.readValue(url, ImagesResponse.class);
+
+        return imagesResponse.getResponse().getBody().getItems().getItem();
     }
 
 
@@ -238,8 +291,9 @@ public class RestAPIController {
     }
 
 
+    // 개요, 홈페이지 정보 (관광지 공통정보 조회 api)
     @PostMapping("/detailCommon/tour")
-    public void tourDetailCommon (@RequestBody TourDetailCommonParam tourItem) throws IOException {
+    public ComInfoItem tourDetailCommon (@RequestBody TourDetailCommonParam tourItem) throws IOException {
         StringBuilder urlBuilder = new StringBuilder("http://api.visitkorea.or.kr/openapi/service/rest/KorService/detailCommon"); /*URL*/
         urlBuilder.append("?")
                 .append(URLEncoder.encode("ServiceKey", StandardCharsets.UTF_8))
@@ -303,7 +357,11 @@ public class RestAPIController {
                 .append(URLEncoder.encode("json", StandardCharsets.UTF_8));
         URL url = new URL(urlBuilder.toString());
 
+        System.out.println(url.toString());
+
         ComInfoResponse responseResult = mapper.readValue(url, ComInfoResponse.class);
+
+        return responseResult.getResponse().getBody().getItems().getItem();
     }
 
 
@@ -485,8 +543,6 @@ public class RestAPIController {
                 .append(URLEncoder.encode("json", StandardCharsets.UTF_8));
         URL url = new URL(urlBuilder.toString());
 
-        System.out.println(url.toString());
-
         MiddleTermWeatherResponse middleTermWeatherResponse = mapper.readValue(url, MiddleTermWeatherResponse.class);
 
         Map<String, String> tempAreaCode = tempForecastAreaCode.getAreaList();
@@ -526,8 +582,6 @@ public class RestAPIController {
                 .append(URLEncoder.encode("json", StandardCharsets.UTF_8));
         url = new URL(urlBuilder.toString());
 
-        System.out.println(url.toString());
-
         WeatherTempResponse weatherTempResponse = mapper.readValue(url, WeatherTempResponse.class);
 
         double x = Double.parseDouble(weatherForecastParam.getMapX());
@@ -536,7 +590,6 @@ public class RestAPIController {
 
         calendar = new GregorianCalendar(Locale.KOREA);
 
-        System.out.println(today);
         standardDate = currentTimeFormat.parse(today+"0210");
         standardMillis = standardDate.getTime();
 
@@ -589,8 +642,6 @@ public class RestAPIController {
                 .append("=")
                 .append(URLEncoder.encode("json", StandardCharsets.UTF_8));
         url = new URL(urlBuilder.toString());
-
-        System.out.println(url.toString());
 
         ShortTermWeatherResponse shortTermWeatherResponse = mapper.readValue(url, ShortTermWeatherResponse.class);
 
