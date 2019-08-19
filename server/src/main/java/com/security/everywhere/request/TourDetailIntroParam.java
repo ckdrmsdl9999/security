@@ -1,5 +1,9 @@
 package com.security.everywhere.request;
 
+
+/*
+ * contentId만 필수, 나머지 옵션
+ * */
 public class TourDetailIntroParam {
     private String numOfRows = "10";       // 한 페이지 결과수
     private String pageNo = "1";          // 현재 페이지 번호

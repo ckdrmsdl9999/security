@@ -1,5 +1,9 @@
 package com.security.everywhere.request;
 
+
+/*
+* 3개의 값 모두 필수
+* */
 public class WeatherForecastParam {
     private String addr;    // 축제 or 관광지 주소
     private String mapX;    // x 좌표
