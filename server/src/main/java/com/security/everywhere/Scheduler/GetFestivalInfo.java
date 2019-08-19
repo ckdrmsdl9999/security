@@ -7,10 +7,10 @@ import com.security.everywhere.model.Festival;
 import com.security.everywhere.model.TourImages;
 import com.security.everywhere.repository.TourImagesRepository;
 import com.security.everywhere.repository.FestivalRepository;
-import com.security.everywhere.response.tourBasicInformation.TourItem;
-import com.security.everywhere.response.tourBasicInformation.TourResponse;
-import com.security.everywhere.response.tourCommonInformation.ComInfoItem;
-import com.security.everywhere.response.tourCommonInformation.ComInfoResponse;
+import com.security.everywhere.response.tourBasicInfo.TourItem;
+import com.security.everywhere.response.tourBasicInfo.TourResponse;
+import com.security.everywhere.response.tourCommonInfo.ComInfoItem;
+import com.security.everywhere.response.tourCommonInfo.ComInfoResponse;
 import com.security.everywhere.response.tourImages.ImagesItem;
 import com.security.everywhere.response.tourImages.ImagesResponse;
 
@@ -195,7 +195,7 @@ public class GetFestivalInfo {
         urlBuilder.append("&")
                 .append(URLEncoder.encode("_type", StandardCharsets.UTF_8))
                 .append("=")
-                .append(URLEncoder.encode("json", StandardCharsets.UTF_8));    // 콘텐츠 개요 조회여부
+                .append(URLEncoder.encode("json", StandardCharsets.UTF_8));
         url = new URL(urlBuilder.toString());
 
         ComInfoResponse responseResult = mapper.readValue(url, ComInfoResponse.class);

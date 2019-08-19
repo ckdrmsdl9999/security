@@ -28,7 +28,7 @@ public class MainPage {
     }
 
     @GetMapping("/content/{contentId}")
-    public String Contentpage(@PathVariable String contentId, Model model) {
+    public String ContentPage(@PathVariable String contentId, Model model) {
 
         return "content";  // html name
     }

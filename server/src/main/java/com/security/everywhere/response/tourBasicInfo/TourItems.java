@@ -1,4 +1,4 @@
-package com.security.everywhere.response.tourBasicInformation;
+package com.security.everywhere.response.tourBasicInfo;
 
 import java.util.List;
 
