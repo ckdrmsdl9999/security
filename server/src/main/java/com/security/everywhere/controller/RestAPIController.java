@@ -17,9 +17,10 @@ import com.security.everywhere.response.air.AirItem;
 import com.security.everywhere.response.locationConversion.LocationConvAuthDTO;
 import com.security.everywhere.response.locationConversion.LocationConvDTO;
 import com.security.everywhere.response.observatory.ObservatoryDTO;
+import com.security.everywhere.response.tourBasicInformation.TourItem;
+import com.security.everywhere.response.tourBasicInformation.TourResponse;
 import com.security.everywhere.response.tourDetailIntro.DetailIntroResponse;
 import com.security.everywhere.response.tourDetailIntro.DetailIntroitem;
-import com.security.everywhere.response.tourImages.ImagesItem;
 import com.security.everywhere.response.weatherMiddleTerm.MiddleTermWeatherResponse;
 import com.security.everywhere.response.weatherShortTerm.ShortTermWeatherItem;
 import com.security.everywhere.response.weatherShortTerm.ShortTermWeatherResponse;
@@ -95,10 +96,7 @@ public class RestAPIController {
 
         Pageable pageElements = PageRequest.of(pageNo, numOfRows, Sort.by("eventStartDate"));
 
-        List<Festival> festivals = new ArrayList<Festival>();
-
- //       System.out.println("주소:"+requestParam.getAddress());
-//        System.out.println("제목:"+requestParam.getTitle());
+        List<Festival> festivals = new ArrayList<>();
 
         if("con".equals(requestParam.getCategory())) {
             festivals = festivalRepository.findAllByEventStartDateGreaterThanEqualAndEventEndDateLessThanEqualAndAddr1Containing
@@ -132,6 +130,67 @@ public class RestAPIController {
     public List<TourImages> festivalImages(@RequestBody String contentid) {
         return tourImagesRepository.findByContentid(contentid);
     }
+
+
+    @PostMapping("/nearbyTour")
+    public List<TourItem> nearbyTour(@RequestBody NearbyTourParam nearbyTourParam) throws IOException {
+        StringBuilder urlBuilder = new StringBuilder("http://api.visitkorea.or.kr/openapi/service/rest/KorService/locationBasedList"); /*URL*/
+        urlBuilder.append("?")
+                .append(URLEncoder.encode("serviceKey", StandardCharsets.UTF_8))
+                .append("=")
+                .append(apiServiceKey); /*공공데이터포털에서 발급받은 인증키*/
+        urlBuilder.append("&")
+                .append(URLEncoder.encode("numOfRows", StandardCharsets.UTF_8))
+                .append("=")
+                .append(URLEncoder.encode(nearbyTourParam.getNumOfRows(), StandardCharsets.UTF_8)); /*한 페이지 결과 수*/
+        urlBuilder.append("&")
+                .append(URLEncoder.encode("pageNo", StandardCharsets.UTF_8))
+                .append("=")
+                .append(URLEncoder.encode(nearbyTourParam.getPageNo(), StandardCharsets.UTF_8)); /*현재 페이지 번호*/
+        urlBuilder.append("&")
+                .append(URLEncoder.encode("MobileOS", StandardCharsets.UTF_8))
+                .append("=")
+                .append(URLEncoder.encode("ETC", StandardCharsets.UTF_8)); /*IOS (아이폰), AND (안드로이드), WIN (원도우폰),ETC*/
+        urlBuilder.append("&")
+                .append(URLEncoder.encode("MobileApp", StandardCharsets.UTF_8))
+                .append("=")
+                .append(URLEncoder.encode("AppTest", StandardCharsets.UTF_8)); /*서비스명=어플명*/
+        urlBuilder.append("&")
+                .append(URLEncoder.encode("arrange", StandardCharsets.UTF_8))
+                .append("=")
+                .append(URLEncoder.encode(nearbyTourParam.getArrange(), StandardCharsets.UTF_8)); /*(A=제목순, B=조회순, C=수정순, D=생성일순) 대표이미지가 반드시 있는 정렬 (O=제목순, P=조회순, Q=수정일순, R=생성일순)*/
+        urlBuilder.append("&")
+                .append(URLEncoder.encode("contentTypeId", StandardCharsets.UTF_8))
+                .append("=")
+                .append(URLEncoder.encode("12", StandardCharsets.UTF_8));       // 관광타입(관광지, 숙박 등) ID 관광지:12, 축제:15
+        urlBuilder.append("&")
+                .append(URLEncoder.encode("mapX", StandardCharsets.UTF_8))
+                .append("=")
+                .append(URLEncoder.encode(nearbyTourParam.getMapX(), StandardCharsets.UTF_8));  // GPS X좌표(WGS84 경도 좌표)
+        urlBuilder.append("&")
+                .append(URLEncoder.encode("mapY", StandardCharsets.UTF_8))
+                .append("=")
+                .append(URLEncoder.encode(nearbyTourParam.getMapY(), StandardCharsets.UTF_8));  // GPS Y좌표(WGS84 위도 좌표)
+        urlBuilder.append("&")
+                .append(URLEncoder.encode("radius", StandardCharsets.UTF_8))
+                .append("=")
+                .append(URLEncoder.encode(nearbyTourParam.getRadius(), StandardCharsets.UTF_8));    // 거리 반경(단위m), Max값 20000m=20Km
+        urlBuilder.append("&")
+                .append(URLEncoder.encode("listYN", StandardCharsets.UTF_8))
+                .append("=")
+                .append(URLEncoder.encode("Y", StandardCharsets.UTF_8)); /*목록 구분(Y=목록, N=개수)*/
+        urlBuilder.append("&")
+                .append(URLEncoder.encode("_type", StandardCharsets.UTF_8))
+                .append("=")
+                .append(URLEncoder.encode("json", StandardCharsets.UTF_8));
+        URL url = new URL(urlBuilder.toString());
+
+        TourResponse tourResponse = mapper.readValue(url, TourResponse.class);
+
+        return tourResponse.getResponse().getBody().getItems().getItem();
+    }
+
+
 
 
     // 축제, 관광지의 상세정보
@@ -172,8 +231,6 @@ public class RestAPIController {
                 .append("=")
                 .append(URLEncoder.encode("json", StandardCharsets.UTF_8));
         URL url = new URL(urlBuilder.toString());
-
-        System.out.println(url.toString());
 
         DetailIntroResponse detailIntroResponse = mapper.readValue(url, DetailIntroResponse.class);
 

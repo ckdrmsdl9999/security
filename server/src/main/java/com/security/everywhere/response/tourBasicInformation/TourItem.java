@@ -1,6 +1,6 @@
-package com.security.everywhere.response.tourFestival;
+package com.security.everywhere.response.tourBasicInformation;
 
-public class FestivalItem {
+public class TourItem {
     private String addr1 = "";          // 주소
     private String addr2 = "";          // 상세주소
     private String areacode = "";       // 지역코드
@@ -11,6 +11,7 @@ public class FestivalItem {
     private String contentid = "";      // 콘텐츠ID
     private String contenttypeid = "";  // 관광타입(관광지, 숙박 등) ID
     private String createdtime = "";    // 콘텐츠 최초 등록일
+    private String dist = "";           // 중심 좌표로부터 거리 (단위:m)
     private String firstimage= "";      // 원본 대표이미지 약 500x333 size
     private String firstimage2= "";     // 썸네일 대표이미지 약 150x100 size
     private String mapx= "";            // 경도
@@ -102,6 +103,14 @@ public class FestivalItem {
 
     public void setCreatedtime(String createdtime) {
         this.createdtime = createdtime;
+    }
+
+    public String getDist() {
+        return dist;
+    }
+
+    public void setDist(String dist) {
+        this.dist = dist;
     }
 
     public String getFirstimage() {
@@ -199,5 +208,4 @@ public class FestivalItem {
     public void setEventenddate(String eventenddate) {
         this.eventenddate = eventenddate;
     }
-
 }

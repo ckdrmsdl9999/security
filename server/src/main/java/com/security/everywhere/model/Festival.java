@@ -1,6 +1,6 @@
 package com.security.everywhere.model;
 
-import com.security.everywhere.response.tourFestival.FestivalItem;
+import com.security.everywhere.response.tourBasicInformation.TourItem;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -43,7 +43,7 @@ public class Festival implements Serializable {
     protected Festival() {
     }
 
-    public Festival(FestivalItem item, String homepage, String overview) {
+    public Festival(TourItem item, String homepage, String overview) {
         this.addr1 = item.getAddr1();
         this.addr2 = item.getAddr2();
         this.areaCode = item.getAreacode();
