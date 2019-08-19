@@ -483,7 +483,7 @@
     var mapx="126.9787932340";
     var mapy="37.5659098804";
     var val=param[1];
-    alert(val+"param값");
+  //  alert(val+"param값");
     $( document ).ready(function() {
         var param = {"addr": addr, "mapX": mapx, "mapY": mapy,"contentid" : val};
 
@@ -513,7 +513,10 @@
         }).fail(function () {
         });
     });
-
+    var aa="좋음"
+    var bb="보통"
+    var cc="나쁨"
+    var dd="매우나쁨"
 
     $( document ).ready(function() {
         var param = { "mapX": mapx, "mapY": mapy,"contentid" : val};
@@ -525,16 +528,19 @@
             contentType: "application/json",
             data: JSON.stringify(param),
         }).done(function (data) {
+      //      alert("시작");
+         //   alert(data.khaiGrade);
             for (var i = 0; i < 1; i++) {
-                $festival_item7 = $('<p>굿 (80)</p>\n');
-                if(data[0].khaiGrade==1)
-                $festival_item7.find('p').text("좋음");
-                if(data[0].khaiGrade==2)
-                    $festival_item7.find('p').text("보통");
-                if(data[0].khaiGrade==3)
-                    $festival_item7.find('p').text("나쁨");
-                if(data[0].khaiGrade==4)
-                    $festival_item7.find('p').text("매우나쁨");
+                $festival_item7 = $('<p></p>\n');
+                if(data.khaiGrade==1)
+                $festival_item7.text(aa);
+                if(data.khaiGrade==2)
+                    $festival_item7.text(bb);
+
+                if(data.khaiGrade==3)
+                    $festival_item7.text(cc);
+                if(data.khaiGrade==4)
+                    $festival_item7.text(dd);
 
                // $festival_item3.find('p').text(data[i].state);
                 $("#atmosphere").append($festival_item7);

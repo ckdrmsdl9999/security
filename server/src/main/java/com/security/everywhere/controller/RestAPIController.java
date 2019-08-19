@@ -372,7 +372,7 @@ public class RestAPIController {
         festivals3=festivalRepository.findByContentId(requestParam.getContentid());
         requestParam.setMapx(festivals3.getMapX());
         requestParam.setMapy(festivals3.getMapY());
-        System.out.println("값체크요-"+festivals3.getMapX()+" "+festivals3.getMapY());
+      //  System.out.println("airinfo의 getmapx값체크요-"+festivals3.getMapX()+" "+festivals3.getMapY());
 
         // 좌표 변환해주는 api 사용하기 전에 키를 받아야함
         StringBuilder urlBuilder = new StringBuilder("https://sgisapi.kostat.go.kr/OpenAPI3/auth/authentication.json");
@@ -430,7 +430,7 @@ public class RestAPIController {
         url = new URL(urlBuilder.toString());
 
         ObservatoryDTO observatoryDTO = null;
-        System.out.println("pos값확인:"+locationConvDTO.getResult().getPosX()+"  "+locationConvDTO.getResult().getPosY());
+       // System.out.println("pos값확인:"+locationConvDTO.getResult().getPosX()+"  "+locationConvDTO.getResult().getPosY());
         try {
             observatoryDTO = restTemplate.getForObject(url.toURI(), ObservatoryDTO.class);
         } catch (URISyntaxException e) {
@@ -463,7 +463,7 @@ public class RestAPIController {
                 .append("=")
                 .append(URLEncoder.encode("1.3", StandardCharsets.UTF_8));
         url = new URL(urlBuilder.toString());
-
+       // System.out.println("stationname확인-"+observatoryDTO.getBody().getItems().get(0).getStationName());
         AirDTO airDTO = null;
 
         try {
@@ -471,7 +471,7 @@ public class RestAPIController {
         } catch (URISyntaxException e) {
             e.printStackTrace();
         }
-
+    System.out.println(airDTO.getBody().getItems().get(0).getKhaiGrade()+"농도이다");
 
         return airDTO.getBody().getItems().get(0);
     }
@@ -488,13 +488,13 @@ public class RestAPIController {
         Date standardDate = currentTimeFormat.parse(today+"0600");    // api가 아침 6시를 기준으로 데이터가 갱신되므로
         long standardMillis = standardDate.getTime();       // 기준 시간을 초로
 
-        System.out.println("넘어온contentid이거다"+weatherForecastParam.getContentid());
+       // System.out.println("넘어온contentid이거다"+weatherForecastParam.getContentid());
         Festival festivals2 = new Festival();
         festivals2=festivalRepository.findByContentId(weatherForecastParam.getContentid());
         weatherForecastParam.setAddr(festivals2.getAddr1());
         weatherForecastParam.setMapX(festivals2.getMapX());
         weatherForecastParam.setMapY(festivals2.getMapY());
-        System.out.println("값체크"+weatherForecastParam.getAddr()+" "+weatherForecastParam.getMapX()+" "+weatherForecastParam.getMapY());
+     //   System.out.println("값체크"+weatherForecastParam.getAddr()+" "+weatherForecastParam.getMapX()+" "+weatherForecastParam.getMapY());
 
 
         // 새벽 6시 이전이면 하루 전 데이터 가져옴
