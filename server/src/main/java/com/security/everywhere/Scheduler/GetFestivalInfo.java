@@ -1,20 +1,18 @@
 package com.security.everywhere.Scheduler;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
 import com.security.everywhere.model.Festival;
-import com.security.everywhere.model.FestivalImages;
-import com.security.everywhere.repository.FestivalImagesRepository;
+import com.security.everywhere.model.TourImages;
+import com.security.everywhere.repository.TourImagesRepository;
 import com.security.everywhere.repository.FestivalRepository;
-import com.security.everywhere.response.festival.FestivalItem;
-import com.security.everywhere.response.festival.FestivalResponse;
-import com.security.everywhere.response.festivalCommonInformation.FestivalComInfoItem;
-import com.security.everywhere.response.festivalCommonInformation.FestivalComInfoResponse;
-import com.security.everywhere.response.festivalImages.FestivalImagesItem;
-import com.security.everywhere.response.festivalImages.FestivalImagesResponse;
+import com.security.everywhere.response.tourFestival.FestivalItem;
+import com.security.everywhere.response.tourFestival.FestivalResponse;
+import com.security.everywhere.response.tourCommonInformation.ComInfoItem;
+import com.security.everywhere.response.tourCommonInformation.ComInfoResponse;
+import com.security.everywhere.response.tourImages.ImagesItem;
+import com.security.everywhere.response.tourImages.ImagesResponse;
 
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
@@ -23,15 +21,15 @@ import java.util.List;
 public class GetFestivalInfo {
 
     private final FestivalRepository festivalRepository;
-    private final FestivalImagesRepository festivalImagesRepository;
+    private final TourImagesRepository tourImagesRepository;
     private String festivalKey;
     private StringBuilder urlBuilder;
     private URL url;
     private ObjectMapper mapper;
 
-    public GetFestivalInfo(FestivalRepository festivalRepository, FestivalImagesRepository festivalImagesRepository, String festivalKey) {
+    public GetFestivalInfo(FestivalRepository festivalRepository, TourImagesRepository tourImagesRepository, String festivalKey) {
         this.festivalRepository = festivalRepository;
-        this.festivalImagesRepository = festivalImagesRepository;
+        this.tourImagesRepository = tourImagesRepository;
         this.festivalKey = festivalKey;
         this.mapper = new ObjectMapper();
     }
@@ -93,26 +91,26 @@ public class GetFestivalInfo {
         List<FestivalItem> festivals = responseResult.getResponse().getBody().getItems().getItem();
 
 
-        List<FestivalImagesItem> festivalImagesItems;
-        FestivalComInfoItem festivalComInfoItem;
+        List<ImagesItem> imagesItems;
+        ComInfoItem comInfoItem;
         for (FestivalItem item: festivals) {
             // 홈페이지와 개요 정보 가져옴
-            festivalComInfoItem = getFestivalComInfo(item);
+            comInfoItem = getFestivalComInfo(item);
 
             // 축제 정보 DB에 저장
             festivalRepository.save(new Festival(item
-                    , festivalComInfoItem.getHomepage()
-                    , festivalComInfoItem.getOverview()));
+                    , comInfoItem.getHomepage()
+                    , comInfoItem.getOverview()));
 
             // 여러장의 이미지를 가져와 DB에 저장
-            festivalImagesItems = getImages(item);
-            for (FestivalImagesItem imagesItem: festivalImagesItems) {
-                festivalImagesRepository.save(new FestivalImages(imagesItem));
+            imagesItems = getImages(item);
+            for (ImagesItem imagesItem: imagesItems) {
+                tourImagesRepository.save(new TourImages(imagesItem));
             }
         }
     }
 
-    private FestivalComInfoItem getFestivalComInfo(FestivalItem festivalItem) throws IOException {
+    private ComInfoItem getFestivalComInfo(FestivalItem festivalItem) throws IOException {
         urlBuilder = new StringBuilder("http://api.visitkorea.or.kr/openapi/service/rest/KorService/detailCommon"); /*URL*/
         urlBuilder.append("?")
                 .append(URLEncoder.encode("ServiceKey", StandardCharsets.UTF_8))
@@ -172,12 +170,12 @@ public class GetFestivalInfo {
                 .append(URLEncoder.encode("Y", StandardCharsets.UTF_8));    // 콘텐츠 개요 조회여부
         url = new URL(urlBuilder.toString());
 
-        FestivalComInfoResponse responseResult = mapper.readValue(url, FestivalComInfoResponse.class);
+        ComInfoResponse responseResult = mapper.readValue(url, ComInfoResponse.class);
 
         return responseResult.getResponse().getBody().getItems().getItem();
     }
 
-    private List<FestivalImagesItem> getImages(FestivalItem festivalItem) throws IOException {
+    private List<ImagesItem> getImages(FestivalItem festivalItem) throws IOException {
         urlBuilder = new StringBuilder("http://api.visitkorea.or.kr/openapi/service/rest/KorService/detailImage"); /*URL*/
         urlBuilder.append("?")
                 .append(URLEncoder.encode("ServiceKey", StandardCharsets.UTF_8))
@@ -213,7 +211,7 @@ public class GetFestivalInfo {
                 .append(URLEncoder.encode("Y", StandardCharsets.UTF_8));    // Y=원본,썸네일 이미지 조회 N=Null
         url = new URL(urlBuilder.toString());
 
-        FestivalImagesResponse responseResult = mapper.readValue(url, FestivalImagesResponse.class);
+        ImagesResponse responseResult = mapper.readValue(url, ImagesResponse.class);
 
         return responseResult.getResponse().getBody().getItems().getItem();
     }

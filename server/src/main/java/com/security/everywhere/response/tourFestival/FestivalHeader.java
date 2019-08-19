@@ -1,6 +1,6 @@
-package com.security.everywhere.response.tour;
+package com.security.everywhere.response.tourFestival;
 
-public class TourHeader {
+public class FestivalHeader {
     private String resultCode;
     private String resultMsg;
 
@@ -18,5 +18,13 @@ public class TourHeader {
 
     public void setResultMsg(String resultMsg) {
         this.resultMsg = resultMsg;
+    }
+
+    @Override
+    public String toString() {
+        return "FestivalResponseHeader{" +
+                "resultCode='" + resultCode + '\'' +
+                ", resultMsg='" + resultMsg + '\'' +
+                '}';
     }
 }

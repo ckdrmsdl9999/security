@@ -1,10 +1,18 @@
-package com.security.everywhere.response.tour;
+package com.security.everywhere.response.tourCommonInformation;
 
-public class TourDTO {
-    private TourList items;
+public class ComInfoBody {
+    private ComInfoItems items;
     private String numOfRows;
     private String pageNo;
     private String totalCount;
+
+    public ComInfoItems getItems() {
+        return items;
+    }
+
+    public void setItems(ComInfoItems items) {
+        this.items = items;
+    }
 
     public String getNumOfRows() {
         return numOfRows;
@@ -28,13 +36,5 @@ public class TourDTO {
 
     public void setTotalCount(String totalCount) {
         this.totalCount = totalCount;
-    }
-
-    public TourList getItems() {
-        return items;
-    }
-
-    public void setItems(TourList items) {
-        this.items = items;
     }
 }

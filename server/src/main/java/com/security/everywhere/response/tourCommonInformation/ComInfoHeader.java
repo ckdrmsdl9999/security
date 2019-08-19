@@ -1,6 +1,6 @@
-package com.security.everywhere.response.festivalCommonInformation;
+package com.security.everywhere.response.tourCommonInformation;
 
-public class FestivalComInfoHeader {
+public class ComInfoHeader {
     private String resultCode;
     private String resultMsg;
 

@@ -1,6 +1,6 @@
 package com.security.everywhere.model;
 
-import com.security.everywhere.response.festival.FestivalItem;
+import com.security.everywhere.response.tourFestival.FestivalItem;
 
 import javax.persistence.*;
 import java.io.Serializable;

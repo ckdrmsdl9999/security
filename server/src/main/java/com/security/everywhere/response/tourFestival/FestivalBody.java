@@ -1,4 +1,4 @@
-package com.security.everywhere.response.festival;
+package com.security.everywhere.response.tourFestival;
 
 public class FestivalBody {
     private FestivalItems items;

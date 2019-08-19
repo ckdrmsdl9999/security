@@ -1,8 +1,9 @@
-package com.security.everywhere.response.festivalCommonInformation;
+package com.security.everywhere.response.tourCommonInformation;
 
-public class FestivalComInfoItem {
+public class ComInfoItem {
     private String contentid;       // 콘텐츠ID
     private String contenttypeid;   // 콘텐츠타입ID
+    private String booktour;        // 교과서 속 여행지 여부
     private String createdtime;     // 콘텐츠 최초 등록일
     private String homepage;        // 홈페이지 주소
     private String modifiedtime;    // 콘텐츠 수정일
@@ -17,6 +18,14 @@ public class FestivalComInfoItem {
 
     public void setContentid(String contentid) {
         this.contentid = contentid;
+    }
+
+    public String getBooktour() {
+        return booktour;
+    }
+
+    public void setBooktour(String booktour) {
+        this.booktour = booktour;
     }
 
     public String getContenttypeid() {

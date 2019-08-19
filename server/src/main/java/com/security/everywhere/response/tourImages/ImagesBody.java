@@ -1,11 +1,18 @@
-package com.security.everywhere.response.tour;
+package com.security.everywhere.response.tourImages;
 
-
-public class TourBody {
-    private TourList items;
+public class ImagesBody {
+    private ImagesItems items;
     private String numOfRows;
     private String pageNo;
     private String totalCount;
+
+    public ImagesItems getItems() {
+        return items;
+    }
+
+    public void setItems(ImagesItems items) {
+        this.items = items;
+    }
 
     public String getNumOfRows() {
         return numOfRows;
@@ -29,13 +36,5 @@ public class TourBody {
 
     public void setTotalCount(String totalCount) {
         this.totalCount = totalCount;
-    }
-
-    public TourList getItems() {
-        return items;
-    }
-
-    public void setItems(TourList items) {
-        this.items = items;
     }
 }

@@ -1,13 +1,13 @@
 package com.security.everywhere.model;
 
-import com.security.everywhere.response.festivalImages.FestivalImagesItem;
+import com.security.everywhere.response.tourImages.ImagesItem;
 
 import javax.persistence.*;
 import java.io.Serializable;
 
 @Entity
-@Table(name = "festivalImages")
-public class FestivalImages implements Serializable {
+@Table(name = "tourImages")
+public class TourImages implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
@@ -17,17 +17,17 @@ public class FestivalImages implements Serializable {
     private String serialnum;       // 이미지 일련번호
     private String smallimageurl;   // 썸네일 이미지, 약 160*100 size
 
-    protected FestivalImages() {
+    protected TourImages() {
     }
 
-    public FestivalImages(FestivalImagesItem item) {
+    public TourImages(ImagesItem item) {
         this.contentid = item.getContentid();
         this.originimgurl = item.getOriginimgurl();
         this.serialnum = item.getSerialnum();
         this.smallimageurl = item.getSmallimageurl();
     }
 
-    public FestivalImages(String contentid, String originimgurl, String serialnum, String smallimageurl) {
+    public TourImages(String contentid, String originimgurl, String serialnum, String smallimageurl) {
         this.contentid = contentid;
         this.originimgurl = originimgurl;
         this.serialnum = serialnum;
