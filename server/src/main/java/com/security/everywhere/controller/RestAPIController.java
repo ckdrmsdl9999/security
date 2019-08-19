@@ -651,7 +651,6 @@ public class RestAPIController {
     // 요일 설정
     private String setDayOfWeek(int dayOfWeekCode) {//dayofweekCode-1~13까지
         String dayOfWeek = null;
-        //System.out.println("---*"+dayOfWeekCode+"*---");
         if(dayOfWeekCode>=9)///8--일    9---일  10--월 처리
             ++dayOfWeekCode;
         dayOfWeekCode= dayOfWeekCode % 8;
