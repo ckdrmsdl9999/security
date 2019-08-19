@@ -96,20 +96,23 @@ public class RestAPIController {
 
         Pageable pageElements = PageRequest.of(pageNo, numOfRows, Sort.by("eventStartDate"));
 
-        return festivalRepository.findAllByEventStartDateGreaterThanEqual(eventStartDate, pageElements);
-    }
+        List<Festival> festivals = new ArrayList<Festival>();
 
+ //       System.out.println("주소:"+requestParam.getAddress());
+//        System.out.println("제목:"+requestParam.getTitle());
 
-    @PostMapping("/conditional_festivalInfo")
-    public List<Festival> conditional_festivalInfo(@RequestBody FestivalParam requestParam) {
-        int pageNo = Integer.parseInt(requestParam.getPageNo());
-        int numOfRows = Integer.parseInt(requestParam.getNumOfRows());
-        String eventStartDate = requestParam.getEventStartDate();
-        String eventEndDate = requestParam.getEventEndDate();
+        if("con".equals(requestParam.getCategory())) {
+            festivals = festivalRepository.findAllByEventStartDateGreaterThanEqualAndEventEndDateLessThanEqualAndAddr1Containing
+                    (eventStartDate, requestParam.getEventEndDate(), pageElements,requestParam.getAddress());
+        }
+        else if("search".equals(requestParam.getCategory())){
+            festivals = festivalRepository.findByTitleContaining(requestParam.getTitle());//jpa쿼리
+        }
+        else if("main".equals(requestParam.getCategory())) {
+            festivals = festivalRepository.findAllByEventStartDateGreaterThanEqual(eventStartDate, pageElements);
+        }
+        return festivals;
 
-        Pageable pageElements = PageRequest.of(pageNo, numOfRows, Sort.by("eventStartDate"));
-
-        return festivalRepository.findAllByEventStartDateGreaterThanEqualAndEventEndDateLessThanEqual(eventStartDate, eventEndDate, pageElements);
     }
 
 
