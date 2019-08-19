@@ -1,8 +1,8 @@
 package com.security.everywhere.request;
 
 public class FestivalParam {
-    private String numOfRows="";        // 한 페이지 결과 수
-    private String pageNo="";           // 페이지 번호
+    private String numOfRows="10";        // 한 페이지 결과 수
+    private String pageNo="0";           // 페이지 번호
     private String areaCode="";         // 지역코드
     private String sigunguCode="";      // 시군구코드
     private String eventStartDate="";   // 행사 시작일

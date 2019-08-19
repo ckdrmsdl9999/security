@@ -47,8 +47,8 @@ public class TempForecastAreaCode {
         areaList.put("이천", "11B20701");
         areaList.put("광주시", "11B20702");
         areaList.put("여주", "11B20703");
-        areaList.put("서울특별시", "11B10101");
-        areaList.put("인천광역시", "11B20201");
+        areaList.put("서울", "11B10101");
+        areaList.put("인천", "11B20201");
         areaList.put("충주", "11C10101");
         areaList.put("진천", "11C10102");
         areaList.put("음성", "11C10103");
@@ -76,8 +76,8 @@ public class TempForecastAreaCode {
         areaList.put("청양", "11C20502");
         areaList.put("금산", "11C20601");
         areaList.put("논산", "11C20602");
-        areaList.put("대전광역시", "11C20401");
-        areaList.put("세종특별자치시", "11C20404");
+        areaList.put("대전", "11C20401");
+        areaList.put("세종", "11C20404");
         areaList.put("철원", "11D10101");
         areaList.put("화천군", "11D10102");
         areaList.put("인제군", "11D10201");
@@ -156,7 +156,7 @@ public class TempForecastAreaCode {
         areaList.put("경산", "11H10703");
         areaList.put("청도군", "11H10704");
         areaList.put("칠곡군", "11H10705");
-        areaList.put("대구광역시", "11H10701");
+        areaList.put("대구", "11H10701");
         areaList.put("양산", "11H20102");
         areaList.put("창원", "11H20301");
         areaList.put("김해", "11H20304");
@@ -175,8 +175,8 @@ public class TempForecastAreaCode {
         areaList.put("진주", "11H20701");
         areaList.put("산청", "11H20703");
         areaList.put("하동군", "11H20704");
-        areaList.put("울산광역시", "11H20101");
-        areaList.put("부산광역시", "11H20201");
+        areaList.put("울산", "11H20101");
+        areaList.put("부산", "11H20201");
         areaList.put("군산", "21F10501");
         areaList.put("김제", "21F10502");
         areaList.put("고창", "21F10601");

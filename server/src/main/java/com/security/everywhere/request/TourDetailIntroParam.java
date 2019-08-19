@@ -1,10 +1,10 @@
 package com.security.everywhere.request;
 
 public class TourDetailIntroParam {
-    private String numOfRows;       // 한 페이지 결과수
-    private String pageNo;          // 현재 페이지 번호
+    private String numOfRows = "10";       // 한 페이지 결과수
+    private String pageNo = "1";          // 현재 페이지 번호
     private String contentId;       // 콘텐츠 ID
-    private String contentTypeId;   // 관광타입(관광지, 숙박 등) ID 관광지:12, 축제:15
+    private String contentTypeId = "12";   // 관광타입(관광지, 숙박 등) ID 관광지:12
 
     public String getNumOfRows() {
         return numOfRows;

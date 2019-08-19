@@ -1,5 +1,14 @@
 package com.security.everywhere.controller;
 
+/*
+* /api/festivalInfo     <- 여러가지 축제 정보 리턴 (DB)
+* /api/festivalContent  <- 요청으로 들어온 컨텐츠ID에 해당되는 축제 정보 하나 리턴 (DB)
+* /api/festivalImages   <- 요청으로 들어온 컨텐츠 ID에 해당되는 축제 이미지들 리턴 (DB)
+* /api/nearbyTour       <- 공공 api를 통해  x, y축을 가지고 주변 관광지 정보 가져오기, 요청 보낼때 파라미터로 정렬과 거리를 조절할 수 있음
+* /api/detailIntro/tour <- 공공 api를 통해 관광지의 상세정보 가져와 리턴 (축제랑 form이 달라서 꼭 관광지만으로 사용해야함)
+* /api/airInfo          <- 공공 api를 통해 현재 대기상태 정보를 가져와 리턴
+* /api//weatherInfo     <- 공공 api를 통해 1~7일 날씨 정보를 가져와 리턴
+* */
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -79,15 +88,6 @@ public class RestAPIController {
     }
 
 
-    @PostMapping("/festivalSearch")
-    @ResponseBody
-    public List<Festival> festivalSearch(@RequestBody FestivalParam requestParam) {//requestParam-ajax통해서온값
-        String title = requestParam.getTitle();
-
-        return festivalRepository.findByTitleContaining(title);
-    }
-
-
     @PostMapping("/festivalInfo")
     public List<Festival> festivalInfo(@RequestBody FestivalParam requestParam) {
         int pageNo = Integer.parseInt(requestParam.getPageNo());
@@ -118,13 +118,15 @@ public class RestAPIController {
         return festivalRepository.findByContentId(contentid);
     }
 
-    // 관광지의 이미지 가져오기
+
+    // 축제 이미지 추가로 가져오기
     @PostMapping("/festivalImages")
     public List<TourImages> festivalImages(@RequestBody FestivalImagesParam festivalImagesParam) {
         return tourImagesRepository.findByContentid(festivalImagesParam.getContentid());
     }
 
 
+    //x, y축을 가지고 주변 관광지 정보 가져오기
     @PostMapping("/nearbyTour")
     public List<TourItem> nearbyTour(@RequestBody NearbyTourParam nearbyTourParam) throws IOException {
         StringBuilder urlBuilder = new StringBuilder("http://api.visitkorea.or.kr/openapi/service/rest/KorService/locationBasedList"); /*URL*/
@@ -184,9 +186,7 @@ public class RestAPIController {
     }
 
 
-
-
-    // 축제, 관광지의 상세정보
+    // 관광지의 상세정보
     @PostMapping("/detailIntro/tour")
     public DetailIntroitem tourDetailIntro(@RequestBody TourDetailIntroParam detailIntroParam) throws IOException {
         System.out.println(detailIntroParam.toString());
