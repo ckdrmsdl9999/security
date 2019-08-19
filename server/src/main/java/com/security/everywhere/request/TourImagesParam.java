@@ -1,7 +1,6 @@
 package com.security.everywhere.request;
 
 public class TourImagesParam {
-    private String ServiceKey;              // 공공데이터포털에서 발급받은 인증키
     private String numOfRows = "10";        // 한 페이지 결과 수
     private String pageNo = "1";            // 현재 페이지 번호
     private String MobileOS = "ETC";        // IOS(아이폰),AND(안드로이드),WIN(원도우폰),ETC
@@ -9,14 +8,6 @@ public class TourImagesParam {
     private String contentId;               // 콘텐츠 ID
     private String imageYN = "Y";           // Y=콘텐츠 이미지 조회, N='음식점'타입의 음식메뉴 이미지
     private String subImageYN = "Y";        // Y=원본,썸네일 이미지 조회 N=Null
-
-    public String getServiceKey() {
-        return ServiceKey;
-    }
-
-    public void setServiceKey(String serviceKey) {
-        ServiceKey = serviceKey;
-    }
 
     public String getNumOfRows() {
         return numOfRows;
