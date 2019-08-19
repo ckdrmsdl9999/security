@@ -7,13 +7,11 @@ import com.security.everywhere.configuration.GlobalPropertySource;
 import com.security.everywhere.data.TempForecastAreaCode;
 import com.security.everywhere.data.WeatherForecastAreaCode;
 import com.security.everywhere.model.Festival;
+import com.security.everywhere.model.TourImages;
 import com.security.everywhere.model.Weather;
 import com.security.everywhere.repository.TourImagesRepository;
 import com.security.everywhere.repository.FestivalRepository;
-import com.security.everywhere.request.FestivalParam;
-import com.security.everywhere.request.ObservatoryParam;
-import com.security.everywhere.request.TourDetailIntroParam;
-import com.security.everywhere.request.WeatherForecastParam;
+import com.security.everywhere.request.*;
 import com.security.everywhere.response.air.AirDTO;
 import com.security.everywhere.response.air.AirItem;
 import com.security.everywhere.response.locationConversion.LocationConvAuthDTO;
@@ -21,6 +19,7 @@ import com.security.everywhere.response.locationConversion.LocationConvDTO;
 import com.security.everywhere.response.observatory.ObservatoryDTO;
 import com.security.everywhere.response.tourDetailIntro.DetailIntroResponse;
 import com.security.everywhere.response.tourDetailIntro.DetailIntroitem;
+import com.security.everywhere.response.tourImages.ImagesItem;
 import com.security.everywhere.response.weatherMiddleTerm.MiddleTermWeatherResponse;
 import com.security.everywhere.response.weatherShortTerm.ShortTermWeatherItem;
 import com.security.everywhere.response.weatherShortTerm.ShortTermWeatherResponse;
@@ -121,9 +120,15 @@ public class RestAPIController {
         return festivalRepository.findByContentId(contentid);
     }
 
+    // 관광지의 이미지 가져오기
+    @PostMapping("/festivalImages")
+    public List<TourImages> festivalImages(@RequestBody FestivalImagesParam festivalImagesParam) {
+        return tourImagesRepository.findByContentid(festivalImagesParam.getContentid());
+    }
+
 
     // 축제, 관광지의 상세정보
-    @PostMapping("/DetailIntro/tour")
+    @PostMapping("/detailIntro/tour")
     public DetailIntroitem tourDetailIntro(@RequestBody TourDetailIntroParam detailIntroParam) throws IOException {
         System.out.println(detailIntroParam.toString());
         StringBuilder urlBuilder = new StringBuilder("http://api.visitkorea.or.kr/openapi/service/rest/KorService/detailIntro");
