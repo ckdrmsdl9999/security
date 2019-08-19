@@ -1,4 +1,4 @@
-package com.security.everywhere.response.shortTermWeather;
+package com.security.everywhere.response.weatherShortTerm;
 
 public class ShortTermWeatherBody {
     private ShortTermWeatherItems items;

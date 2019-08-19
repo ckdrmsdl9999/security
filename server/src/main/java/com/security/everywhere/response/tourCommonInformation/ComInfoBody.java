@@ -1,16 +1,16 @@
-package com.security.everywhere.response.middleTermWeather;
+package com.security.everywhere.response.tourCommonInformation;
 
-public class MiddleTermWeatherBody {
-    private MiddleTermWeatherItems items;
+public class ComInfoBody {
+    private ComInfoItems items;
     private String numOfRows;
     private String pageNo;
     private String totalCount;
 
-    public MiddleTermWeatherItems getItems() {
+    public ComInfoItems getItems() {
         return items;
     }
 
-    public void setItems(MiddleTermWeatherItems items) {
+    public void setItems(ComInfoItems items) {
         this.items = items;
     }
 

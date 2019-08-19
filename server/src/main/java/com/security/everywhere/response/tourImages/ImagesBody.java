@@ -1,10 +1,18 @@
-package com.security.everywhere.response.festival;
+package com.security.everywhere.response.tourImages;
 
-public class FestivalBody {
-    private FestivalList items;
+public class ImagesBody {
+    private ImagesItems items;
     private String numOfRows;
     private String pageNo;
     private String totalCount;
+
+    public ImagesItems getItems() {
+        return items;
+    }
+
+    public void setItems(ImagesItems items) {
+        this.items = items;
+    }
 
     public String getNumOfRows() {
         return numOfRows;
@@ -28,22 +36,5 @@ public class FestivalBody {
 
     public void setTotalCount(String totalCount) {
         this.totalCount = totalCount;
-    }
-
-    public FestivalList getItems() {
-        return items;
-    }
-
-    public void setItems(FestivalList items) {
-        this.items = items;
-    }
-
-    @Override
-    public String toString() {
-        return "FestivalResponseBody{" +
-                "numOfRows='" + numOfRows + '\'' +
-                ", pageNo='" + pageNo + '\'' +
-                ", totalCount='" + totalCount + '\'' +
-                '}';
     }
 }

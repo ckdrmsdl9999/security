@@ -7,6 +7,7 @@ import com.security.everywhere.data.TempForecastAreaCode;
 import com.security.everywhere.data.WeatherForecastAreaCode;
 import com.security.everywhere.model.Festival;
 import com.security.everywhere.model.Weather;
+import com.security.everywhere.repository.TourImagesRepository;
 import com.security.everywhere.repository.FestivalRepository;
 import com.security.everywhere.request.FestivalParam;
 import com.security.everywhere.request.ObservatoryParam;
@@ -16,9 +17,9 @@ import com.security.everywhere.response.air.AirItem;
 import com.security.everywhere.response.locationConversion.LocationConvAuthDTO;
 import com.security.everywhere.response.locationConversion.LocationConvDTO;
 import com.security.everywhere.response.observatory.ObservatoryDTO;
-import com.security.everywhere.response.middleTermWeather.MiddleTermWeatherResponse;
-import com.security.everywhere.response.shortTermWeather.ShortTermWeatherItem;
-import com.security.everywhere.response.shortTermWeather.ShortTermWeatherResponse;
+import com.security.everywhere.response.weatherMiddleTerm.MiddleTermWeatherResponse;
+import com.security.everywhere.response.weatherShortTerm.ShortTermWeatherItem;
+import com.security.everywhere.response.weatherShortTerm.ShortTermWeatherResponse;
 import com.security.everywhere.response.weatherTemperature.WeatherTempResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,6 +34,7 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -42,6 +44,7 @@ import java.util.*;
 public class RestAPIController {
 
     private final FestivalRepository festivalRepository;
+    private final TourImagesRepository tourImagesRepository;
     private final TempForecastAreaCode tempForecastAreaCode;
     private final WeatherForecastAreaCode weatherForecastAreaCode;
     private static Logger logger = LoggerFactory.getLogger(GlobalPropertySource.class);
@@ -56,13 +59,16 @@ public class RestAPIController {
     @Value("${consumer_secret}")
     private String consumerSecret;
 
-    public RestAPIController(FestivalRepository festivalRepository, TempForecastAreaCode tempForecastAreaCode, WeatherForecastAreaCode weatherForecastAreaCode) {
+    public RestAPIController(FestivalRepository festivalRepository, TempForecastAreaCode tempForecastAreaCode, WeatherForecastAreaCode weatherForecastAreaCode, TourImagesRepository tourImagesRepository) {
         this.festivalRepository = festivalRepository;
         this.tempForecastAreaCode = tempForecastAreaCode;
         this.weatherForecastAreaCode = weatherForecastAreaCode;
+        this.tourImagesRepository = tourImagesRepository;
         this.mapper = new ObjectMapper();
         this.restTemplate = new RestTemplate();
     }
+
+
 
 
     @PostMapping("/festivalInfo")
@@ -89,6 +95,7 @@ public class RestAPIController {
             festivals = festivalRepository.findAllByEventStartDateGreaterThanEqual(eventStartDate, pageElements);
         }
         return festivals;
+
     }
 
 
@@ -102,28 +109,58 @@ public class RestAPIController {
     public AirItem observatoryInfo(@RequestBody ObservatoryParam requestParam) throws IOException {
         // 좌표 변환해주는 api 사용하기 전에 키를 받아야함
         StringBuilder urlBuilder = new StringBuilder("https://sgisapi.kostat.go.kr/OpenAPI3/auth/authentication.json");
-        urlBuilder.append("?" + URLEncoder.encode("consumer_key","UTF-8") + "=" + URLEncoder.encode(consumerKey, "UTF-8"));
-        urlBuilder.append("&" + URLEncoder.encode("consumer_secret","UTF-8") + "=" + URLEncoder.encode(consumerSecret, "UTF-8"));
+        urlBuilder.append("?")
+                .append(URLEncoder.encode("consumer_key", StandardCharsets.UTF_8))
+                .append("=")
+                .append(URLEncoder.encode(consumerKey, StandardCharsets.UTF_8));
+        urlBuilder.append("&")
+                .append(URLEncoder.encode("consumer_secret", StandardCharsets.UTF_8))
+                .append("=")
+                .append(URLEncoder.encode(consumerSecret, StandardCharsets.UTF_8));
         URL url = new URL(urlBuilder.toString());
 
         LocationConvAuthDTO locationConvAuthDTO = mapper.readValue(url, LocationConvAuthDTO.class);
 
         // WGS84 경/위도를 TM좌표 중부원점(GRS80)으로 변환
         urlBuilder = new StringBuilder("https://sgisapi.kostat.go.kr/OpenAPI3/transformation/transcoord.json");
-        urlBuilder.append("?" + URLEncoder.encode("accessToken","UTF-8") + "=" + URLEncoder.encode(locationConvAuthDTO.getResult().getAccessToken(), "UTF-8"));
-        urlBuilder.append("&" + URLEncoder.encode("src","UTF-8") + "=" + URLEncoder.encode("4326", "UTF-8"));
-        urlBuilder.append("&" + URLEncoder.encode("dst","UTF-8") + "=" + URLEncoder.encode("5181", "UTF-8"));
-        urlBuilder.append("&" + URLEncoder.encode("posX","UTF-8") + "=" + URLEncoder.encode(requestParam.getMapx(), "UTF-8"));
-        urlBuilder.append("&" + URLEncoder.encode("posY","UTF-8") + "=" + URLEncoder.encode(requestParam.getMapy(), "UTF-8"));
+        urlBuilder.append("?")
+                .append(URLEncoder.encode("accessToken", StandardCharsets.UTF_8))
+                .append("=")
+                .append(URLEncoder.encode(locationConvAuthDTO.getResult().getAccessToken(), StandardCharsets.UTF_8));
+        urlBuilder.append("&")
+                .append(URLEncoder.encode("src", StandardCharsets.UTF_8))
+                .append("=")
+                .append(URLEncoder.encode("4326", StandardCharsets.UTF_8));
+        urlBuilder.append("&")
+                .append(URLEncoder.encode("dst", StandardCharsets.UTF_8))
+                .append("=")
+                .append(URLEncoder.encode("5181", StandardCharsets.UTF_8));
+        urlBuilder.append("&")
+                .append(URLEncoder.encode("posX", StandardCharsets.UTF_8))
+                .append("=")
+                .append(URLEncoder.encode(requestParam.getMapx(), StandardCharsets.UTF_8));
+        urlBuilder.append("&")
+                .append(URLEncoder.encode("posY", StandardCharsets.UTF_8))
+                .append("=")
+                .append(URLEncoder.encode(requestParam.getMapy(), StandardCharsets.UTF_8));
         url = new URL(urlBuilder.toString());
 
         LocationConvDTO locationConvDTO = mapper.readValue(url, LocationConvDTO.class);
 
         // 좌표기준 근접 측정소 정보 가져오기
         urlBuilder = new StringBuilder("http://openapi.airkorea.or.kr/openapi/services/rest/MsrstnInfoInqireSvc/getNearbyMsrstnList");
-        urlBuilder.append("?" + URLEncoder.encode("tmX","UTF-8") + "=" + URLEncoder.encode(locationConvDTO.getResult().getPosX(), "UTF-8"));
-        urlBuilder.append("&" + URLEncoder.encode("tmY","UTF-8") + "=" + URLEncoder.encode(locationConvDTO.getResult().getPosY(), "UTF-8"));
-        urlBuilder.append("&" + URLEncoder.encode("ServiceKey","UTF-8") + "=" +festivalKey);
+        urlBuilder.append("?")
+                .append(URLEncoder.encode("tmX", StandardCharsets.UTF_8))
+                .append("=")
+                .append(URLEncoder.encode(locationConvDTO.getResult().getPosX(), StandardCharsets.UTF_8));
+        urlBuilder.append("&")
+                .append(URLEncoder.encode("tmY", StandardCharsets.UTF_8))
+                .append("=")
+                .append(URLEncoder.encode(locationConvDTO.getResult().getPosY(), StandardCharsets.UTF_8));
+        urlBuilder.append("&")
+                .append(URLEncoder.encode("ServiceKey", StandardCharsets.UTF_8))
+                .append("=")
+                .append(festivalKey);
         url = new URL(urlBuilder.toString());
 
         ObservatoryDTO observatoryDTO = null;
@@ -136,12 +173,29 @@ public class RestAPIController {
 
         // 측정소 이름으로 대기정보 가져오기
         urlBuilder = new StringBuilder("http://openapi.airkorea.or.kr/openapi/services/rest/ArpltnInforInqireSvc/getMsrstnAcctoRltmMesureDnsty");
-        urlBuilder.append("?" + URLEncoder.encode("stationName","UTF-8") + "=" + URLEncoder.encode(observatoryDTO.getBody().getItems().get(0).getStationName(), "UTF-8"));
-        urlBuilder.append("&" + URLEncoder.encode("dataTerm","UTF-8") + "=" + URLEncoder.encode("DAILY", "UTF-8"));
-        urlBuilder.append("&" + URLEncoder.encode("pageNo","UTF-8") + "=" + URLEncoder.encode("1", "UTF-8"));
-        urlBuilder.append("&" + URLEncoder.encode("numOfRows","UTF-8") + "=" + URLEncoder.encode("10", "UTF-8"));
-        urlBuilder.append("&" + URLEncoder.encode("ServiceKey","UTF-8") + "=" +festivalKey);
-        urlBuilder.append("&" + URLEncoder.encode("ver","UTF-8") + "=" + URLEncoder.encode("1.3", "UTF-8"));
+        urlBuilder.append("?")
+                .append(URLEncoder.encode("stationName", StandardCharsets.UTF_8))
+                .append("=")
+                .append(URLEncoder.encode(observatoryDTO.getBody().getItems().get(0).getStationName(), StandardCharsets.UTF_8));
+        urlBuilder.append("&")
+                .append(URLEncoder.encode("dataTerm", StandardCharsets.UTF_8))
+                .append("=")
+                .append(URLEncoder.encode("DAILY", StandardCharsets.UTF_8));
+        urlBuilder.append("&").append(URLEncoder.encode("pageNo", StandardCharsets.UTF_8))
+                .append("=")
+                .append(URLEncoder.encode("1", StandardCharsets.UTF_8));
+        urlBuilder.append("&")
+                .append(URLEncoder.encode("numOfRows", StandardCharsets.UTF_8))
+                .append("=")
+                .append(URLEncoder.encode("10", StandardCharsets.UTF_8));
+        urlBuilder.append("&")
+                .append(URLEncoder.encode("ServiceKey", StandardCharsets.UTF_8))
+                .append("=")
+                .append(festivalKey);
+        urlBuilder.append("&")
+                .append(URLEncoder.encode("ver", StandardCharsets.UTF_8))
+                .append("=")
+                .append(URLEncoder.encode("1.3", StandardCharsets.UTF_8));
         url = new URL(urlBuilder.toString());
 
         AirDTO airDTO = null;
@@ -155,7 +209,8 @@ public class RestAPIController {
         return airDTO.getBody().getItems().get(0);
     }
 
-    @PostMapping("/weatherForecast")
+
+    @PostMapping("/weatherInfo")
     public List<Weather> weatherInfo(@RequestBody WeatherForecastParam weatherForecastParam) throws ParseException, IOException {
         Calendar calendar = new GregorianCalendar(Locale.KOREA);
         SimpleDateFormat format = new SimpleDateFormat("yyyyMMdd", Locale.KOREA);
@@ -164,7 +219,7 @@ public class RestAPIController {
         String today = format.format(calendar.getTime());     // 현재 날짜
         long currentMillis = calendar.getTimeInMillis();    // 현재 시간을 초로
         Date standardDate = currentTimeFormat.parse(today+"0600");    // api가 아침 6시를 기준으로 데이터가 갱신되므로
-        Long standardMillis = standardDate.getTime();       // 기준 시간을 초로
+        long standardMillis = standardDate.getTime();       // 기준 시간을 초로
 
         // 새벽 6시 이전이면 하루 전 데이터 가져옴
         String currentTime;
@@ -186,12 +241,30 @@ public class RestAPIController {
 
         // 중기예보정보 3~10일의 데이터가 들어있음
         StringBuilder urlBuilder = new StringBuilder("http://newsky2.kma.go.kr/service/MiddleFrcstInfoService/getMiddleLandWeather");
-        urlBuilder.append("?" + URLEncoder.encode("ServiceKey","UTF-8") + "=" + festivalKey);
-        urlBuilder.append("&" + URLEncoder.encode("regId","UTF-8") + "=" + URLEncoder.encode(regId, "UTF-8"));
-        urlBuilder.append("&" + URLEncoder.encode("tmFc","UTF-8") + "=" + URLEncoder.encode(currentTime, "UTF-8"));
-        urlBuilder.append("&" + URLEncoder.encode("numOfRows","UTF-8") + "=" + URLEncoder.encode("10", "UTF-8"));
-        urlBuilder.append("&" + URLEncoder.encode("pageNo","UTF-8") + "=" + URLEncoder.encode("1", "UTF-8"));
-        urlBuilder.append("&" + URLEncoder.encode("_type","UTF-8") + "=" + URLEncoder.encode("json", "UTF-8"));
+        urlBuilder.append("?")
+                .append(URLEncoder.encode("ServiceKey", StandardCharsets.UTF_8))
+                .append("=")
+                .append(festivalKey);
+        urlBuilder.append("&")
+                .append(URLEncoder.encode("regId", StandardCharsets.UTF_8))
+                .append("=")
+                .append(URLEncoder.encode(regId, StandardCharsets.UTF_8));
+        urlBuilder.append("&")
+                .append(URLEncoder.encode("tmFc", StandardCharsets.UTF_8))
+                .append("=")
+                .append(URLEncoder.encode(currentTime, StandardCharsets.UTF_8));
+        urlBuilder.append("&")
+                .append(URLEncoder.encode("numOfRows", StandardCharsets.UTF_8))
+                .append("=")
+                .append(URLEncoder.encode("10", StandardCharsets.UTF_8));
+        urlBuilder.append("&")
+                .append(URLEncoder.encode("pageNo", StandardCharsets.UTF_8))
+                .append("=")
+                .append(URLEncoder.encode("1", StandardCharsets.UTF_8));
+        urlBuilder.append("&")
+                .append(URLEncoder.encode("_type", StandardCharsets.UTF_8))
+                .append("=")
+                .append(URLEncoder.encode("json", StandardCharsets.UTF_8));
         URL url = new URL(urlBuilder.toString());
 
         MiddleTermWeatherResponse middleTermWeatherResponse = mapper.readValue(url, MiddleTermWeatherResponse.class);
@@ -207,12 +280,30 @@ public class RestAPIController {
 
         // 3~7일 기온의 정보가 있음
         urlBuilder = new StringBuilder("http://newsky2.kma.go.kr/service/MiddleFrcstInfoService/getMiddleTemperature");
-        urlBuilder.append("?" + URLEncoder.encode("ServiceKey","UTF-8") + "=" + festivalKey);
-        urlBuilder.append("&" + URLEncoder.encode("regId","UTF-8") + "=" + URLEncoder.encode(regId, "UTF-8"));
-        urlBuilder.append("&" + URLEncoder.encode("tmFc","UTF-8") + "=" + URLEncoder.encode(currentTime, "UTF-8"));
-        urlBuilder.append("&" + URLEncoder.encode("numOfRows","UTF-8") + "=" + URLEncoder.encode("10", "UTF-8"));
-        urlBuilder.append("&" + URLEncoder.encode("pageNo","UTF-8") + "=" + URLEncoder.encode("1", "UTF-8"));
-        urlBuilder.append("&" + URLEncoder.encode("_type","UTF-8") + "=" + URLEncoder.encode("json", "UTF-8"));
+        urlBuilder.append("?")
+                .append(URLEncoder.encode("ServiceKey", StandardCharsets.UTF_8))
+                .append("=")
+                .append(festivalKey);
+        urlBuilder.append("&")
+                .append(URLEncoder.encode("regId", StandardCharsets.UTF_8))
+                .append("=")
+                .append(URLEncoder.encode(regId, StandardCharsets.UTF_8));
+        urlBuilder.append("&")
+                .append(URLEncoder.encode("tmFc", StandardCharsets.UTF_8))
+                .append("=")
+                .append(URLEncoder.encode(currentTime, StandardCharsets.UTF_8));
+        urlBuilder.append("&")
+                .append(URLEncoder.encode("numOfRows", StandardCharsets.UTF_8))
+                .append("=")
+                .append(URLEncoder.encode("10", StandardCharsets.UTF_8));
+        urlBuilder.append("&")
+                .append(URLEncoder.encode("pageNo", StandardCharsets.UTF_8))
+                .append("=")
+                .append(URLEncoder.encode("1", StandardCharsets.UTF_8));
+        urlBuilder.append("&")
+                .append(URLEncoder.encode("_type", StandardCharsets.UTF_8))
+                .append("=")
+                .append(URLEncoder.encode("json", StandardCharsets.UTF_8));
         url = new URL(urlBuilder.toString());
 
         WeatherTempResponse weatherTempResponse = mapper.readValue(url, WeatherTempResponse.class);
@@ -240,14 +331,38 @@ public class RestAPIController {
 
         // 3일치 기후 정보 가져오기
         urlBuilder = new StringBuilder("http://newsky2.kma.go.kr/service/SecndSrtpdFrcstInfoService2/ForecastSpaceData");
-        urlBuilder.append("?" + URLEncoder.encode("serviceKey","UTF-8") + "=" + festivalKey);
-        urlBuilder.append("&" + URLEncoder.encode("base_date","UTF-8") + "=" + URLEncoder.encode(base_date, "UTF-8"));
-        urlBuilder.append("&" + URLEncoder.encode("base_time","UTF-8") + "=" + URLEncoder.encode(base_time, "UTF-8"));
-        urlBuilder.append("&" + URLEncoder.encode("nx","UTF-8") + "=" + URLEncoder.encode(nx, "UTF-8"));
-        urlBuilder.append("&" + URLEncoder.encode("ny","UTF-8") + "=" + URLEncoder.encode(ny, "UTF-8"));
-        urlBuilder.append("&" + URLEncoder.encode("numOfRows","UTF-8") + "=" + URLEncoder.encode("255", "UTF-8"));
-        urlBuilder.append("&" + URLEncoder.encode("pageNo","UTF-8") + "=" + URLEncoder.encode("1", "UTF-8"));
-        urlBuilder.append("&" + URLEncoder.encode("_type","UTF-8") + "=" + URLEncoder.encode("json", "UTF-8"));
+        urlBuilder.append("?")
+                .append(URLEncoder.encode("serviceKey", StandardCharsets.UTF_8))
+                .append("=")
+                .append(festivalKey);
+        urlBuilder.append("&")
+                .append(URLEncoder.encode("base_date", StandardCharsets.UTF_8))
+                .append("=")
+                .append(URLEncoder.encode(base_date, StandardCharsets.UTF_8));
+        urlBuilder.append("&")
+                .append(URLEncoder.encode("base_time", StandardCharsets.UTF_8))
+                .append("=")
+                .append(URLEncoder.encode(base_time, StandardCharsets.UTF_8));
+        urlBuilder.append("&")
+                .append(URLEncoder.encode("nx", StandardCharsets.UTF_8))
+                .append("=")
+                .append(URLEncoder.encode(nx, StandardCharsets.UTF_8));
+        urlBuilder.append("&")
+                .append(URLEncoder.encode("ny", StandardCharsets.UTF_8))
+                .append("=")
+                .append(URLEncoder.encode(ny, StandardCharsets.UTF_8));
+        urlBuilder.append("&")
+                .append(URLEncoder.encode("numOfRows", StandardCharsets.UTF_8))
+                .append("=")
+                .append(URLEncoder.encode("255", StandardCharsets.UTF_8));
+        urlBuilder.append("&")
+                .append(URLEncoder.encode("pageNo", StandardCharsets.UTF_8))
+                .append("=")
+                .append(URLEncoder.encode("1", StandardCharsets.UTF_8));
+        urlBuilder.append("&")
+                .append(URLEncoder.encode("_type", StandardCharsets.UTF_8))
+                .append("=")
+                .append(URLEncoder.encode("json", StandardCharsets.UTF_8));
         url = new URL(urlBuilder.toString());
 
         ShortTermWeatherResponse shortTermWeatherResponse = mapper.readValue(url, ShortTermWeatherResponse.class);
@@ -305,8 +420,9 @@ public class RestAPIController {
         return weatherList;
     }
 
+
     // 요일 설정
-    public String setDayOfWeek(int dayOfWeekCode) {
+    private String setDayOfWeek(int dayOfWeekCode) {
         String dayOfWeek = null;
 
         dayOfWeekCode = dayOfWeekCode % 8;
@@ -341,8 +457,9 @@ public class RestAPIController {
         return dayOfWeek;
     }
 
+
     // 1,2일의 날씨 정보는 3일 이후의 데이터와 형식이 달라서 따로 설정
-    public void setDay12Info (List<ShortTermWeatherItem> shortTermWeatherItems, List<Weather> weatherList, String day, int dayOfWeekCode) {
+    private void setDay12Info(List<ShortTermWeatherItem> shortTermWeatherItems, List<Weather> weatherList, String day, int dayOfWeekCode) {
         Weather weatherInfo = new Weather();
 
         int skyStateCode;
@@ -374,8 +491,9 @@ public class RestAPIController {
         weatherList.add(weatherInfo);
     }
 
+
     // 동네예보 좌표 구하는 메소드
-    public Map<String, Object> getGridxy(double orgLat, double orgLon) {
+    private Map<String, Object> getGridxy(double orgLat, double orgLon) {
 
         double RE = 6371.00877; // 지구 반경(km)
         double GRID = 5.0; // 격자 간격(km)

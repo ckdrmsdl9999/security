@@ -1,6 +1,4 @@
-package com.security.everywhere.response.shortTermWeather;
-
-import org.springframework.scheduling.support.SimpleTriggerContext;
+package com.security.everywhere.response.weatherShortTerm;
 
 public class ShortTermWeatherItem {
     private String baseDate;    // 발표 일자

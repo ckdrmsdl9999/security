@@ -1,6 +1,6 @@
 package com.security.everywhere.model;
 
-import com.security.everywhere.response.festival.FestivalItem;
+import com.security.everywhere.response.tourFestival.FestivalItem;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -34,11 +34,14 @@ public class Festival implements Serializable {
     private String title= "";           // 콘텐츠 제목
     private String eventStartDate = ""; // 행사 시작일
     private String eventEndDate = "";   // 행사 종료일
+    private String homepage;        // 홈페이지 주소
+    private String overview;        // 콘텐츠 개요 조회
+
 
     protected Festival() {
     }
 
-    public Festival(FestivalItem item) {
+    public Festival(FestivalItem item, String homepage, String overview) {
         this.addr1 = item.getAddr1();
         this.addr2 = item.getAddr2();
         this.areaCode = item.getAreacode();
@@ -61,31 +64,24 @@ public class Festival implements Serializable {
         this.title = item.getTitle();
         this.eventStartDate = item.getEventstartdate();
         this.eventEndDate = item.getEventenddate();
+        this.homepage = homepage;
+        this.overview = overview;
     }
 
-    public Festival(String addr1, String addr2, String areaCode, String bookTour, String cat1, String cat2, String cat3, String contentId, String contentTypeId, String createdTime, String firstImage, String firstImage2, String mapX, String mapY, String mLevel, String modifiedTime, String readCount, String sigunguCode, String tel, String title, String eventStartDate, String eventEndDate) {
-        this.addr1 = addr1;
-        this.addr2 = addr2;
-        this.areaCode = areaCode;
-        this.bookTour = bookTour;
-        this.cat1 = cat1;
-        this.cat2 = cat2;
-        this.cat3 = cat3;
-        this.contentId = contentId;
-        this.contentTypeId = contentTypeId;
-        this.createdTime = createdTime;
-        this.firstImage = firstImage;
-        this.firstImage2 = firstImage2;
-        this.mapX = mapX;
-        this.mapY = mapY;
-        this.mLevel = mLevel;
-        this.modifiedTime = modifiedTime;
-        this.readCount = readCount;
-        this.sigunguCode = sigunguCode;
-        this.tel = tel;
-        this.title = title;
-        this.eventStartDate = eventStartDate;
-        this.eventEndDate = eventEndDate;
+    public String getHomepage() {
+        return homepage;
+    }
+
+    public void setHomepage(String homepage) {
+        this.homepage = homepage;
+    }
+
+    public String getOverview() {
+        return overview;
+    }
+
+    public void setOverview(String overview) {
+        this.overview = overview;
     }
 
     public long getId() {

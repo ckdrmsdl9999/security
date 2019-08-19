@@ -1,6 +1,6 @@
-package com.security.everywhere.response.middleTermWeather;
+package com.security.everywhere.response.tourImages;
 
-public class MiddleTermWeatherHeader {
+public class ImagesHeader {
     private String resultCode;
     private String resultMsg;
 
@@ -18,13 +18,5 @@ public class MiddleTermWeatherHeader {
 
     public void setResultMsg(String resultMsg) {
         this.resultMsg = resultMsg;
-    }
-
-    @Override
-    public String toString() {
-        return "FestivalResponseHeader{" +
-                "resultCode='" + resultCode + '\'' +
-                ", resultMsg='" + resultMsg + '\'' +
-                '}';
     }
 }

@@ -1,8 +1,8 @@
-package com.security.everywhere.response.festival;
+package com.security.everywhere.response.tourFestival;
 
 import java.util.List;
 
-public class FestivalList {
+public class FestivalItems {
     private List<FestivalItem> item;
 
     public List<FestivalItem> getItem() {

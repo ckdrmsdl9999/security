@@ -3,15 +3,11 @@ package com.security.everywhere.Scheduler;
 import com.security.everywhere.repository.FestivalRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
-
-import java.io.IOException;
 
 @Component
 public class CronTable {
 
-    @Autowired
     private final FestivalRepository festivalRepository;
 
     @Value("${festival_key}")
@@ -20,6 +16,7 @@ public class CronTable {
     public CronTable(FestivalRepository festivalRepository) {
         this.festivalRepository = festivalRepository;
     }
+
 
 //        // 매일 21시 30분 0초에 실행
 //    @Scheduled(cron = "0 30 21 * * *")
