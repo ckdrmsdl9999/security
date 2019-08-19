@@ -115,14 +115,21 @@ public class RestAPIController {
 
     @PostMapping("/festivalContent")
     public Festival festivalContent(@RequestBody String contentid) {
-        return festivalRepository.findByContentId(contentid);
+        Festival festival;
+        festival = festivalRepository.findByContentId(contentid);
+
+        String result = festival.getOverview().replaceAll("<br>","");
+        result = result.replaceAll("<br />","");
+        festival.setOverview(result);
+
+        return festival;
     }
 
 
     // 축제 이미지 추가로 가져오기
     @PostMapping("/festivalImages")
-    public List<TourImages> festivalImages(@RequestBody FestivalImagesParam festivalImagesParam) {
-        return tourImagesRepository.findByContentid(festivalImagesParam.getContentid());
+    public List<TourImages> festivalImages(@RequestBody String contentid) {
+        return tourImagesRepository.findByContentid(contentid);
     }
 
 

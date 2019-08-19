@@ -1,0 +1,195 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css" integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Material Design for Bootstrap fonts and icons -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons">
+    <!-- Material Design for Bootstrap CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/bootstrap-material-design@4.1.1/dist/css/bootstrap-material-design.min.css" integrity="sha384-wXznGJNEXNG1NFsbm0ugrLFMQPWswR3lds2VeinahP8N0zJw9VWSopbjv2x7WCvX" crossorigin="anonymous">
+    <!--jquery ui-->
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js" integrity="sha256-T0Vest3yCU7pafRw9r+settMBX6JkKN06dqBnpQ8d30=" crossorigin="anonymous"></script>
+
+    <script src="https://unpkg.com/popper.js@1.12.6/dist/umd/popper.js" integrity="sha384-fA23ZRQ3G/J53mElWqVJEGJzU0sTs+SvzG8fXVWP+kJQ1lwFAOkcUOysnlKJC33U" crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/bootstrap-material-design@4.1.1/dist/js/bootstrap-material-design.js" integrity="sha384-CauSuKpEqAFajSpkdjv3z9t8E7RlpJ1UP0lKM/+NdtSarroVKu069AlsRPKkFBz9" crossorigin="anonymous"></script>
+    <script>$(document).ready(function() { $('body').bootstrapMaterialDesign(); });</script>
+    <title>Hello, world!</title>
+    <style>
+        .bmd-layout-container{
+            width: 600px;
+            height: 600px;
+        }
+
+
+        #custom-search-input .search-query {
+            padding-right: 3px;
+            padding-right: 4px \9;
+            padding-left: 3px;
+            padding-left: 4px \9;
+            /* IE7-8 doesn't have border-radius, so don't indent the padding */
+
+            margin-bottom: 0;
+            -webkit-border-radius: 3px;
+            -moz-border-radius: 3px;
+            border-radius: 3px;
+        }
+
+        #custom-search-input button {
+            border: 0;
+            background: none;
+            /** belows styles are working good */
+            padding: 2px 5px;
+            margin-top: 2px;
+            position: relative;
+            left: -28px;
+            /* IE7-8 doesn't have border-radius, so don't indent the padding */
+            margin-bottom: 0;
+            -webkit-border-radius: 3px;
+            -moz-border-radius: 3px;
+            border-radius: 3px;
+            color:#D9230F;
+        }
+
+        .search-query:focus + button {
+            z-index: 3;
+        }
+        .col-xs-6 img{
+            width: 250px;
+            height: 200px;
+        }
+
+        #content_img
+        {
+            height: 400px;
+        }
+        .content-item{
+            padding-top: 10px;
+            padding-bottom: 10px;
+        }
+        .content-items{
+            padding-top: 23px;
+        }
+
+        .content-item .row{
+            height: 25px;
+        }
+        .card {
+            display: inline-block;
+            margin-left: 28px;
+        }
+        .comment-wrapper .panel-body {
+            max-height:650px;
+            overflow:auto;
+        }
+
+        .media-list .media img {
+            width:64px;
+            height:64px;
+            border:2px solid #e5e7e8;
+        }
+
+        .media-list .media {
+            border-bottom:1px dashed #efefef;
+            margin-bottom:25px;
+        }
+
+        .card-img-overlay{
+            zoom: 1; /* ie 5,6,7 bug fix */
+            filter: alpha(opacity=80);
+            opacity: 0.8;
+            background-image: linear-gradient(transparent, transparent, gray);
+        }
+
+        #tabs .nav-tabs .nav-item.show .nav-link, .nav-tabs .nav-link.active {
+            color: #0062cc;
+            background-color: transparent;
+            border-color: transparent transparent #f3f3f3;
+            border-bottom: 3px solid !important;
+            font-size: 16px;
+            font-weight: bold;
+        }
+        .nav-link {
+            border: 1px solid transparent;
+            border-top-left-radius: .25rem;
+            border-top-right-radius: .25rem;
+            color: #0062cc;
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        .nav-pills .nav-link, .nav-tabs .nav-link {
+            padding: 0.4286em 0.8575em;
+            font-size: .875rem;
+            font-weight: 500;
+            border: 0;
+        }
+
+    </style>
+</head>
+<body>
+<div class="bmd-layout-container bmd-drawer-f-l bmd-drawer-overlay mx-auto">
+    <header class="bmd-layout-header">
+        <div class="navbar navbar-light bg-faded">
+            <button class="navbar-toggler" type="button" data-toggle="drawer" data-target="#dw-s2">
+                <span class="sr-only">Toggle drawer</span>
+                <i class="material-icons">menu</i>
+            </button>
+            <ul class="nav navbar-nav mx-auto">
+                <li class="nav-item">MyPage</li>
+            </ul>
+        </div>
+    </header>
+    <div class="card bg-dark text-white mx-auto">
+        <img id="content_img" src="../image/yahefestival.JPG" class="img-fluid" style="width: 600px" />
+        <div class="card-img-overlay d-flex h-100 flex-column justify-content-end">
+            <h5 class="card-title"> </h5>
+            <p class="card-text"><i class="far fa-star"style="color:red"></i> 4.5</p>
+        </div>
+    </div>
+
+    <div id="dw-s2" class="bmd-layout-drawer bg-faded">
+        <header>
+            <a class="navbar-brand">Sidebar</a>
+        </header>
+        <ul class="list-group">
+            <a class="list-group-item"><i class="fas fa-user"></i>로그아웃</a>
+        </ul>
+    </div>
+    <div class="container">
+        <div class="content-items border-bottom border-dark">
+            <div class="border-bottom content-item" id="address">
+                <div class="row">
+                    <div class="col-2 ">
+                        <h5><p class="font-weight-bold">주소</p></h5>
+                    </div>
+                </div>
+                <p class="mt-2"></p>
+            </div>
+            <div class="border-bottom content-item" id="term">
+                <div class="row">
+                    <div class="col-2 ">
+                        <h5><p class="font-weight-bold">기간</p></h5>
+                    </div>
+                </div>
+                <p class="mt-2"> </p>
+            </div>
+            <div class="border-bottom content-item" id="tel">
+                <div class="row">
+                    <div class="col-2 text-truncate">
+                        <h5><p class="font-weight-bold">전화번호</p></h5>
+                    </div>
+                </div>
+                <p class="mt-2"></p>
+            </div>
+        </div>
+
+
+    </div>
+
+
+</div>
+</body>
+</html>
