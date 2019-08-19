@@ -40,7 +40,7 @@ public class Festival implements Serializable {
     private String overview;        // 콘텐츠 개요 조회
 
 
-    protected Festival() {}
+    public Festival() {}
 
 
     public Festival(TourItem item, String homepage, String overview) {
