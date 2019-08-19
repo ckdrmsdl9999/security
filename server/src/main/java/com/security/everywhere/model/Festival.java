@@ -34,7 +34,9 @@ public class Festival implements Serializable {
     private String title= "";           // 콘텐츠 제목
     private String eventStartDate = ""; // 행사 시작일
     private String eventEndDate = "";   // 행사 종료일
+    @Lob
     private String homepage;        // 홈페이지 주소
+    @Lob
     private String overview;        // 콘텐츠 개요 조회
 
 

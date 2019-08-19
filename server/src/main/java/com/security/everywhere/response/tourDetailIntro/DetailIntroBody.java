@@ -1,17 +1,16 @@
-package com.security.everywhere.response.tourImages;
+package com.security.everywhere.response.tourDetailIntro;
 
-public class ImagesBody {
-
-    private ImagesItems items;
+public class DetailIntroBody {
+    private DetailIntroItems items;
     private String numOfRows;
     private String pageNo;
     private String totalCount;
 
-    public ImagesItems getItems() {
+    public DetailIntroItems getItems() {
         return items;
     }
 
-    public void setItems(ImagesItems items) {
+    public void setItems(DetailIntroItems items) {
         this.items = items;
     }
 

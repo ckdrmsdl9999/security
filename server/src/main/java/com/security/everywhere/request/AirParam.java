@@ -1,7 +1,7 @@
 package com.security.everywhere.request;
 
 public class AirParam {
-    private String stationName;
+    private String stationName = "";
     private String dataTerm = "month";
     private String pageNo = "1";
     private String numOfRows = "1";

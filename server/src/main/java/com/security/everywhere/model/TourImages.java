@@ -13,6 +13,7 @@ public class TourImages implements Serializable {
     private long id;
 
     private String contentid;       // 콘텐츠ID
+    private String imgname;         // 이미지명
     private String originimgurl;    // 원본 이미지, 약 500*333 size
     private String serialnum;       // 이미지 일련번호
     private String smallimageurl;   // 썸네일 이미지, 약 160*100 size
@@ -22,13 +23,15 @@ public class TourImages implements Serializable {
 
     public TourImages(ImagesItem item) {
         this.contentid = item.getContentid();
+        this.imgname = item.getImgname();
         this.originimgurl = item.getOriginimgurl();
         this.serialnum = item.getSerialnum();
         this.smallimageurl = item.getSmallimageurl();
     }
 
-    public TourImages(String contentid, String originimgurl, String serialnum, String smallimageurl) {
+    public TourImages(String contentid, String imgname, String originimgurl, String serialnum, String smallimageurl) {
         this.contentid = contentid;
+        this.imgname = imgname;
         this.originimgurl = originimgurl;
         this.serialnum = serialnum;
         this.smallimageurl = smallimageurl;
@@ -40,6 +43,14 @@ public class TourImages implements Serializable {
 
     public void setId(long id) {
         this.id = id;
+    }
+
+    public String getImgname() {
+        return imgname;
+    }
+
+    public void setImgname(String imgname) {
+        this.imgname = imgname;
     }
 
     public String getContentid() {

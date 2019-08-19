@@ -1,6 +1,8 @@
 package com.security.everywhere.Scheduler;
 
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.exc.MismatchedInputException;
 import com.security.everywhere.model.Festival;
 import com.security.everywhere.model.TourImages;
 import com.security.everywhere.repository.TourImagesRepository;
@@ -32,6 +34,12 @@ public class GetFestivalInfo {
         this.tourImagesRepository = tourImagesRepository;
         this.festivalKey = festivalKey;
         this.mapper = new ObjectMapper();
+
+        // 모르는 property에 대해 무시하고 넘어간다. DTO의 하위 호환성 보장에 필요하다
+        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+
+        // ENUM 값이 존재하지 않으면 null로 설정한다. Enum 항목이 추가되어도 무시하고 넘어가게 할 때 필요하다.
+        mapper.configure(DeserializationFeature.READ_UNKNOWN_ENUM_VALUES_AS_NULL, true);
     }
 
     public void run() throws IOException {
@@ -93,20 +101,37 @@ public class GetFestivalInfo {
 
         List<ImagesItem> imagesItems;
         ComInfoItem comInfoItem;
+        String homePage;
+        String overView;
+        int count = 0;
         for (FestivalItem item: festivals) {
-            // 홈페이지와 개요 정보 가져옴
-            comInfoItem = getFestivalComInfo(item);
+
+            try {
+                // 홈페이지와 개요 정보 가져옴
+                comInfoItem = getFestivalComInfo(item);
+                homePage = comInfoItem.getHomepage();
+                overView = comInfoItem.getOverview();
+            } catch (NullPointerException e) {
+                homePage = "";
+                overView = "";
+            }
+
 
             // 축제 정보 DB에 저장
             festivalRepository.save(new Festival(item
-                    , comInfoItem.getHomepage()
-                    , comInfoItem.getOverview()));
+                    , homePage
+                    , overView));
 
             // 여러장의 이미지를 가져와 DB에 저장
-            imagesItems = getImages(item);
-            for (ImagesItem imagesItem: imagesItems) {
-                tourImagesRepository.save(new TourImages(imagesItem));
+            try {
+                imagesItems = getImages(item);
+
+                for (ImagesItem imagesItem: imagesItems) {
+                    tourImagesRepository.save(new TourImages(imagesItem));
+                }
+            } catch (NullPointerException e) {
             }
+            count += 1;
         }
     }
 
@@ -168,6 +193,10 @@ public class GetFestivalInfo {
                 .append(URLEncoder.encode("overviewYN", StandardCharsets.UTF_8))
                 .append("=")
                 .append(URLEncoder.encode("Y", StandardCharsets.UTF_8));    // 콘텐츠 개요 조회여부
+        urlBuilder.append("&")
+                .append(URLEncoder.encode("_type", StandardCharsets.UTF_8))
+                .append("=")
+                .append(URLEncoder.encode("json", StandardCharsets.UTF_8));    // 콘텐츠 개요 조회여부
         url = new URL(urlBuilder.toString());
 
         ComInfoResponse responseResult = mapper.readValue(url, ComInfoResponse.class);
@@ -209,9 +238,18 @@ public class GetFestivalInfo {
                 .append(URLEncoder.encode("subImageYN", StandardCharsets.UTF_8))
                 .append("=")
                 .append(URLEncoder.encode("Y", StandardCharsets.UTF_8));    // Y=원본,썸네일 이미지 조회 N=Null
+        urlBuilder.append("&")
+                .append(URLEncoder.encode("_type", StandardCharsets.UTF_8))
+                .append("=")
+                .append(URLEncoder.encode("json", StandardCharsets.UTF_8));    // 콘텐츠 개요 조회여부
         url = new URL(urlBuilder.toString());
 
-        ImagesResponse responseResult = mapper.readValue(url, ImagesResponse.class);
+        ImagesResponse responseResult = null;
+        try {
+            responseResult = mapper.readValue(url, ImagesResponse.class);
+        } catch (MismatchedInputException e) {
+            return null;
+        }
 
         return responseResult.getResponse().getBody().getItems().getItem();
     }

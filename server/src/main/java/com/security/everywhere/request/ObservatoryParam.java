@@ -1,8 +1,8 @@
 package com.security.everywhere.request;
 
 public class ObservatoryParam {
-    private String mapx;
-    private String mapy;
+    private String mapx = "";
+    private String mapy = "";
 
     public String getMapx() {
         return mapx;

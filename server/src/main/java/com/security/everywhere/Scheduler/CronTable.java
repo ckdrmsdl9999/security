@@ -1,20 +1,25 @@
 package com.security.everywhere.Scheduler;
 
 import com.security.everywhere.repository.FestivalRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.security.everywhere.repository.TourImagesRepository;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
+
+import java.io.IOException;
 
 @Component
 public class CronTable {
 
     private final FestivalRepository festivalRepository;
+    private final TourImagesRepository tourImagesRepository;
 
     @Value("${festival_key}")
     private String festivalKey;
 
-    public CronTable(FestivalRepository festivalRepository) {
+    public CronTable(FestivalRepository festivalRepository, TourImagesRepository tourImagesRepository) {
         this.festivalRepository = festivalRepository;
+        this.tourImagesRepository = tourImagesRepository;
     }
 
 
@@ -31,12 +36,14 @@ public class CronTable {
 //    }
 //
 //
-//    //서버 시작하고 10초후에 실행 후 30분마다 실행
+//    //서버 시작하고 10초후에 실행 후 30분마다 실행끝
 //    @Scheduled(initialDelay = 10000, fixedDelay = 1800000)
 //    public void Job() throws IOException {
+//        System.out.println("시작");
 //        //축제 정보 가져와서 디비에 저장 *현재 실행 시키면 안됨*
-//        GetFestivalInfo getFestivalInfo = new GetFestivalInfo(festivalRepository, festivalKey);
+//        GetFestivalInfo getFestivalInfo = new GetFestivalInfo(festivalRepository, tourImagesRepository, festivalKey);
 //        getFestivalInfo.run();
+//        System.out.println("끝");
 //    }
 
 }

@@ -1,9 +1,9 @@
 package com.security.everywhere.request;
 
 public class WeatherForecastParam {
-    private String addr;
-    private String mapX;
-    private String mapY;
+    private String addr;    // 축제 or 관광지 주소
+    private String mapX;    // x 좌표
+    private String mapY;    // y 좌표
 
     public String getAddr() {
         return addr;

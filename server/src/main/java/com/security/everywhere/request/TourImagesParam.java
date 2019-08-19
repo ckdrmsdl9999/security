@@ -1,6 +1,6 @@
 package com.security.everywhere.request;
 
-public class FestivalImagesParam {
+public class TourImagesParam {
     private String ServiceKey;              // 공공데이터포털에서 발급받은 인증키
     private String numOfRows = "10";        // 한 페이지 결과 수
     private String pageNo = "1";            // 현재 페이지 번호

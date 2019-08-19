@@ -1,6 +1,7 @@
 package com.security.everywhere.controller;
 
 
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.security.everywhere.configuration.GlobalPropertySource;
 import com.security.everywhere.data.TempForecastAreaCode;
@@ -11,12 +12,15 @@ import com.security.everywhere.repository.TourImagesRepository;
 import com.security.everywhere.repository.FestivalRepository;
 import com.security.everywhere.request.FestivalParam;
 import com.security.everywhere.request.ObservatoryParam;
+import com.security.everywhere.request.TourDetailIntroParam;
 import com.security.everywhere.request.WeatherForecastParam;
 import com.security.everywhere.response.air.AirDTO;
 import com.security.everywhere.response.air.AirItem;
 import com.security.everywhere.response.locationConversion.LocationConvAuthDTO;
 import com.security.everywhere.response.locationConversion.LocationConvDTO;
 import com.security.everywhere.response.observatory.ObservatoryDTO;
+import com.security.everywhere.response.tourDetailIntro.DetailIntroResponse;
+import com.security.everywhere.response.tourDetailIntro.DetailIntroitem;
 import com.security.everywhere.response.weatherMiddleTerm.MiddleTermWeatherResponse;
 import com.security.everywhere.response.weatherShortTerm.ShortTermWeatherItem;
 import com.security.everywhere.response.weatherShortTerm.ShortTermWeatherResponse;
@@ -52,8 +56,8 @@ public class RestAPIController {
     private final ObjectMapper mapper;
     private final RestTemplate restTemplate;
 
-    @Value("${festival_key}")
-    private String festivalKey;
+    @Value("${api_service_key}")
+    private String apiServiceKey;
     @Value("${consumer_key}")
     private String consumerKey;
     @Value("${consumer_secret}")
@@ -66,23 +70,21 @@ public class RestAPIController {
         this.tourImagesRepository = tourImagesRepository;
         this.mapper = new ObjectMapper();
         this.restTemplate = new RestTemplate();
+
+        // 모르는 property에 대해 무시하고 넘어간다. DTO의 하위 호환성 보장에 필요하다
+        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+
+        // ENUM 값이 존재하지 않으면 null로 설정한다. Enum 항목이 추가되어도 무시하고 넘어가게 할 때 필요하다.
+        mapper.configure(DeserializationFeature.READ_UNKNOWN_ENUM_VALUES_AS_NULL, true);
     }
 
 
     @PostMapping("/festivalSearch")
     @ResponseBody
     public List<Festival> festivalSearch(@RequestBody FestivalParam requestParam) {//requestParam-ajax통해서온값
-        String title=requestParam.getTitle();
-        System.out.println(requestParam.getTitle()+"은 제목이야");
+        String title = requestParam.getTitle();
 
         return festivalRepository.findByTitleContaining(title);
-    }
-
-
-    @PostMapping("/festivalInfofromTitle")
-    public List<Festival> festivalInfoFromTitle(@RequestBody FestivalParam requestParam) {
-
-        return festivalRepository.findAllByTitleIsLike("%"+requestParam.getTitle()+"%");
     }
 
 
@@ -111,13 +113,60 @@ public class RestAPIController {
     }
 
 
-
     @PostMapping("/festivalContent")
     public Festival festivalContent(@RequestBody String contentid) {
         return festivalRepository.findByContentId(contentid);
     }
 
 
+    // 축제, 관광지의 상세정보
+    @PostMapping("/DetailIntro/tour")
+    public DetailIntroitem tourDetailIntro(@RequestBody TourDetailIntroParam detailIntroParam) throws IOException {
+        System.out.println(detailIntroParam.toString());
+        StringBuilder urlBuilder = new StringBuilder("http://api.visitkorea.or.kr/openapi/service/rest/KorService/detailIntro");
+        urlBuilder.append("?")
+                .append(URLEncoder.encode("ServiceKey", StandardCharsets.UTF_8))
+                .append("=")
+                .append(apiServiceKey);
+        urlBuilder.append("&")
+                .append(URLEncoder.encode("numOfRows", StandardCharsets.UTF_8))
+                .append("=")
+                .append(URLEncoder.encode(detailIntroParam.getNumOfRows(), StandardCharsets.UTF_8));
+        urlBuilder.append("&")
+                .append(URLEncoder.encode("pageNo", StandardCharsets.UTF_8))
+                .append("=")
+                .append(URLEncoder.encode(detailIntroParam.getPageNo(), StandardCharsets.UTF_8));
+        urlBuilder.append("&")
+                .append(URLEncoder.encode("MobileOS", StandardCharsets.UTF_8))
+                .append("=")
+                .append(URLEncoder.encode("ETC", StandardCharsets.UTF_8));
+        urlBuilder.append("&")
+                .append(URLEncoder.encode("MobileApp", StandardCharsets.UTF_8))
+                .append("=")
+                .append(URLEncoder.encode("AppTest", StandardCharsets.UTF_8));
+        urlBuilder.append("&")
+                .append(URLEncoder.encode("contentId", StandardCharsets.UTF_8))
+                .append("=")
+                .append(URLEncoder.encode(detailIntroParam.getContentId(), StandardCharsets.UTF_8));
+        urlBuilder.append("&")
+                .append(URLEncoder.encode("contentTypeId", StandardCharsets.UTF_8))
+                .append("=")
+                .append(URLEncoder.encode(detailIntroParam.getContentTypeId(), StandardCharsets.UTF_8));
+        urlBuilder.append("&")
+                .append(URLEncoder.encode("_type", StandardCharsets.UTF_8))
+                .append("=")
+                .append(URLEncoder.encode("json", StandardCharsets.UTF_8));
+        URL url = new URL(urlBuilder.toString());
+
+        System.out.println(url.toString());
+
+        DetailIntroResponse detailIntroResponse = mapper.readValue(url, DetailIntroResponse.class);
+
+        return detailIntroResponse.getResponse().getBody().getItems().getItem();
+    }
+
+
+    // 대기정보
     @PostMapping("/airInfo")
     public AirItem observatoryInfo(@RequestBody ObservatoryParam requestParam) throws IOException {
         // 좌표 변환해주는 api 사용하기 전에 키를 받아야함
@@ -173,7 +222,7 @@ public class RestAPIController {
         urlBuilder.append("&")
                 .append(URLEncoder.encode("ServiceKey", StandardCharsets.UTF_8))
                 .append("=")
-                .append(festivalKey);
+                .append(apiServiceKey);
         url = new URL(urlBuilder.toString());
 
         ObservatoryDTO observatoryDTO = null;
@@ -204,7 +253,7 @@ public class RestAPIController {
         urlBuilder.append("&")
                 .append(URLEncoder.encode("ServiceKey", StandardCharsets.UTF_8))
                 .append("=")
-                .append(festivalKey);
+                .append(apiServiceKey);
         urlBuilder.append("&")
                 .append(URLEncoder.encode("ver", StandardCharsets.UTF_8))
                 .append("=")
@@ -257,7 +306,7 @@ public class RestAPIController {
         urlBuilder.append("?")
                 .append(URLEncoder.encode("ServiceKey", StandardCharsets.UTF_8))
                 .append("=")
-                .append(festivalKey);
+                .append(apiServiceKey);
         urlBuilder.append("&")
                 .append(URLEncoder.encode("regId", StandardCharsets.UTF_8))
                 .append("=")
@@ -296,7 +345,7 @@ public class RestAPIController {
         urlBuilder.append("?")
                 .append(URLEncoder.encode("ServiceKey", StandardCharsets.UTF_8))
                 .append("=")
-                .append(festivalKey);
+                .append(apiServiceKey);
         urlBuilder.append("&")
                 .append(URLEncoder.encode("regId", StandardCharsets.UTF_8))
                 .append("=")
@@ -347,7 +396,7 @@ public class RestAPIController {
         urlBuilder.append("?")
                 .append(URLEncoder.encode("serviceKey", StandardCharsets.UTF_8))
                 .append("=")
-                .append(festivalKey);
+                .append(apiServiceKey);
         urlBuilder.append("&")
                 .append(URLEncoder.encode("base_date", StandardCharsets.UTF_8))
                 .append("=")
