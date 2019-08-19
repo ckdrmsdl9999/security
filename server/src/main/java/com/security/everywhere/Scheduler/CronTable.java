@@ -14,8 +14,8 @@ public class CronTable {
     private final FestivalRepository festivalRepository;
     private final TourImagesRepository tourImagesRepository;
 
-    @Value("${festival_key}")
-    private String festivalKey;
+    @Value("${api_service_key}")
+    private String apiServiceKey;
 
     public CronTable(FestivalRepository festivalRepository, TourImagesRepository tourImagesRepository) {
         this.festivalRepository = festivalRepository;
@@ -41,7 +41,7 @@ public class CronTable {
 //    public void Job() throws IOException {
 //        System.out.println("시작");
 //        //축제 정보 가져와서 디비에 저장 *현재 실행 시키면 안됨*
-//        GetFestivalInfo getFestivalInfo = new GetFestivalInfo(festivalRepository, tourImagesRepository, festivalKey);
+//        GetFestivalInfo getFestivalInfo = new GetFestivalInfo(festivalRepository, tourImagesRepository, apiServiceKey);
 //        getFestivalInfo.run();
 //        System.out.println("끝");
 //    }

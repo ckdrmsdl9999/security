@@ -24,15 +24,15 @@ public class GetFestivalInfo {
 
     private final FestivalRepository festivalRepository;
     private final TourImagesRepository tourImagesRepository;
-    private String festivalKey;
+    private String apiServiceKey;
     private StringBuilder urlBuilder;
     private URL url;
     private ObjectMapper mapper;
 
-    public GetFestivalInfo(FestivalRepository festivalRepository, TourImagesRepository tourImagesRepository, String festivalKey) {
+    public GetFestivalInfo(FestivalRepository festivalRepository, TourImagesRepository tourImagesRepository, String apiServiceKey) {
         this.festivalRepository = festivalRepository;
         this.tourImagesRepository = tourImagesRepository;
-        this.festivalKey = festivalKey;
+        this.apiServiceKey = apiServiceKey;
         this.mapper = new ObjectMapper();
 
         // 모르는 property에 대해 무시하고 넘어간다. DTO의 하위 호환성 보장에 필요하다
@@ -47,7 +47,7 @@ public class GetFestivalInfo {
         urlBuilder.append("?")
                 .append(URLEncoder.encode("ServiceKey", StandardCharsets.UTF_8))
                 .append("=")
-                .append(festivalKey); /*공공데이터포털에서 발급받은 인증키*/
+                .append(apiServiceKey); /*공공데이터포털에서 발급받은 인증키*/
         urlBuilder.append("&")
                 .append(URLEncoder.encode("numOfRows", StandardCharsets.UTF_8))
                 .append("=")
@@ -140,7 +140,7 @@ public class GetFestivalInfo {
         urlBuilder.append("?")
                 .append(URLEncoder.encode("ServiceKey", StandardCharsets.UTF_8))
                 .append("=")
-                .append(festivalKey); /*공공데이터포털에서 발급받은 인증키*/
+                .append(apiServiceKey); /*공공데이터포털에서 발급받은 인증키*/
         urlBuilder.append("&")
                 .append(URLEncoder.encode("numOfRows", StandardCharsets.UTF_8))
                 .append("=")
@@ -209,7 +209,7 @@ public class GetFestivalInfo {
         urlBuilder.append("?")
                 .append(URLEncoder.encode("ServiceKey", StandardCharsets.UTF_8))
                 .append("=")
-                .append(festivalKey); /*공공데이터포털에서 발급받은 인증키*/
+                .append(apiServiceKey); /*공공데이터포털에서 발급받은 인증키*/
         urlBuilder.append("&")
                 .append(URLEncoder.encode("numOfRows", StandardCharsets.UTF_8))
                 .append("=")
