@@ -519,6 +519,9 @@ public class RestAPIController {
         double y = Double.parseDouble(weatherForecastParam.getMapY());
         Map<String, Object> xy = getGridxy(y, x);   // 동네예보 전용 좌표로
 
+        calendar = new GregorianCalendar(Locale.KOREA);
+
+        System.out.println(today);
         standardDate = currentTimeFormat.parse(today+"0210");
         standardMillis = standardDate.getTime();
 
@@ -526,7 +529,7 @@ public class RestAPIController {
         String base_time = "0210";
         // 새벽 2시 10분 이전이면 하루 전 데이터 가져옴
         if (standardMillis > currentMillis) {
-//            calendar.add(Calendar.DATE, -1);
+            calendar.add(Calendar.DATE, -1);
             base_time = "0800";
         }
         base_date = format.format(calendar.getTime());
