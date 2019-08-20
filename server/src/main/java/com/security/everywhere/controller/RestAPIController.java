@@ -40,6 +40,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
@@ -111,6 +112,14 @@ public class RestAPIController {
         return festivals;
 
     }
+
+//    @PostMapping("/goContent")
+//    public String goContent(@RequestBody Festival festival, Model model){
+//        System.out.println(festival.getTitle());
+//        model.addAttribute("festival", festival);
+//        return "content";
+//    }
+
 
 
     @PostMapping("/festivalContent")

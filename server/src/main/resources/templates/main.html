@@ -506,6 +506,9 @@
         location.href =  location.href.split('?')[0] + "?search=" + str;
     });
 
+    var festival_data = new Array();
+    var festival_data_cnt = 0;
+
     function print_festivalList(category, pagenum, date1, date2, address, title){
         var param = {"pageNo": pagenum,"numOfRows": "10","title" : title,
             "eventStartDate": date1, "eventEndDate": date2, "address" : address, "category" : category};
@@ -519,15 +522,23 @@
             $appendData = $('<div class="row"></div>');
             for(var i=0;i<data.length;i++) {
 
+                festival_data[festival_data_cnt] = "";
+                festival_data[festival_data_cnt] += data[i].title + ',*';
+                festival_data[festival_data_cnt] += data[i].firstImage + ',*';
+                festival_data[festival_data_cnt] += data[i].addr1+ ',*';
+                festival_data[festival_data_cnt] += data[i].eventStartDate+ ',*';
+                festival_data[festival_data_cnt] += data[i].eventEndDate+ ',*';
+                festival_data[festival_data_cnt] += data[i].overview;
+
                 $festival_item = $('<li class="col-6">\n' +
-                    '               <a href="#">\n' +
+                    '               <a href="javascript:void(0)" onclick="festival_click('+ festival_data_cnt++ +')">\n' +
                     '                   <img src="" alt="Barca" class="img-responsive" height="130px" />\n' +
                     '                   <p></p>\n' +
                     '               </a>\n' +
                     '           </li>');
 
                 $festival_item.find('p').text(data[i].title);
-                $festival_item.find('a').attr('href',"content/" + data[i].contentId);
+                //$festival_item.find('a').attr('href',"content/" + data[i].contentId);
                 $festival_item.children().children('img').attr('src',data[i].firstImage2);
                 $appendData.append($festival_item);
             }
@@ -538,6 +549,23 @@
         });
     }
 
+    function festival_click(num) {
+
+        alert(festival_data[num]);
+
+        $.ajax({
+            url: "/content",
+            type: "POST",
+            contentType:"application/json",
+            data: festival_data[num],
+            dataType: "text",
+            success: function (data) {
+                alert("success!");
+            }, error: function (request, error) {
+                alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+            }
+        });
+    }
 
 
     /*]]>*/
