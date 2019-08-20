@@ -357,8 +357,6 @@ public class RestAPIController {
                 .append(URLEncoder.encode("json", StandardCharsets.UTF_8));
         URL url = new URL(urlBuilder.toString());
 
-        System.out.println(url.toString());
-
         ComInfoResponse responseResult = mapper.readValue(url, ComInfoResponse.class);
 
         return responseResult.getResponse().getBody().getItems().getItem();
