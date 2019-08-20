@@ -499,10 +499,14 @@
 
     $(document).on('click','#button-addon1',function (){
         var str = document.getElementById("searchword1").value;
+        str = XSS_Check(str);
         location.href =  location.href.split('?')[0] + "?search=" + str;
+
+
     });
     $(document).on('click','#button-addon',function (){
         var str = document.getElementById("searchword").value;
+        str = XSS_Check(str);
         location.href =  location.href.split('?')[0] + "?search=" + str;
     });
 
@@ -536,6 +540,17 @@
             //.hide().fadeIn("fast");
         }).fail(function() {
         });
+    }
+
+    //replaceAll을 사용하기 위한 선언
+    String.prototype.replaceAll = function(org, dest) {
+        return this.split(org).join(dest);
+    }
+
+    // "\" 을 검색어에서 제거
+    function XSS_Check(strTemp) {
+        strTemp = strTemp.replaceAll(String.fromCharCode(92),'');
+        return strTemp;
     }
 
     /*]]>*/
