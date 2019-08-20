@@ -1,4 +1,4 @@
-package com.security.everywhere.response.tourCommonInformation;
+package com.security.everywhere.response.tourCommonInfo;
 
 public class ComInfoItem {
     private String contentid;       // 콘텐츠ID

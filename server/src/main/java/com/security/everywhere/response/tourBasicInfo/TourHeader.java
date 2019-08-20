@@ -1,6 +1,6 @@
-package com.security.everywhere.response.tourCommonInformation;
+package com.security.everywhere.response.tourBasicInfo;
 
-public class ComInfoHeader {
+public class TourHeader {
     private String resultCode;
     private String resultMsg;
 
@@ -18,5 +18,13 @@ public class ComInfoHeader {
 
     public void setResultMsg(String resultMsg) {
         this.resultMsg = resultMsg;
+    }
+
+    @Override
+    public String toString() {
+        return "FestivalResponseHeader{" +
+                "resultCode='" + resultCode + '\'' +
+                ", resultMsg='" + resultMsg + '\'' +
+                '}';
     }
 }

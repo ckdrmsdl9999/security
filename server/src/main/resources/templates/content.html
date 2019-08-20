@@ -227,40 +227,40 @@
                 <div class="col-3">
                     <p class="font-weight-bold">대기오염지수 : </p>
                 </div>
-                <div class="col-3">
-                    <p>나쁨 (80)</p>
+                <div class="col-3" id="atmosphere">
+                  <!--  <p>나쁨 (80)</p>-->
                 </div>
             </div>
             <table class="table table-bordered text-center">
-                <thead>
-                <tr>
-                    <th scope="col">월</th>
-                    <th scope="col">화</th>
-                    <th scope="col">수</th>
-                    <th scope="col">목</th>
-                    <th scope="col">금</th>
-                    <th scope="col">토</th>
-                    <th scope="col">일</th>
-                </tr>
+                <thead id="dayday">
+                <!--      <tr>
+                          <th scope="col">월</th>
+                          <th scope="col">화</th>
+                          <th scope="col">수</th>
+                          <th scope="col">목</th>
+                          <th scope="col">금</th>
+                          <th scope="col">토</th>
+                          <th scope="col">일</th>
+                      </tr>-->
                 </thead>
-                <tbody>
+                <tbody id="suncloud">
                 <tr>
-                    <td><i class="fas fa-cloud-sun-rain"></i></td>
-                    <td><i class="fas fa-cloud-rain"></i></td>
-                    <td><i class="fas fa-cloud-rain"></i></td>
-                    <td><i class="fas fa-cloud-rain"></i></td>
-                    <td><i class="fas fa-cloud-rain"></i></td>
-                    <td><i class="fas fa-cloud-rain"></i></td>
-                    <td><i class="fas fa-cloud-rain"></i></td>
+                    <!--                    <td><i class="fas fa-cloud-sun-rain"></i></td>
+                                        <td><i class="fas fa-cloud-rain"></i></td>
+                                        <td><i class="fas fa-cloud-rain"></i></td>
+                                        <td><i class="fas fa-cloud-rain"></i></td>
+                                        <td><i class="fas fa-cloud-rain"></i></td>
+                                        <td><i class="fas fa-cloud-rain"></i></td>
+                                        <td><i class="fas fa-cloud-rain"></i></td>-->
                 </tr>
-                <tr>
-                    <td>21°C 22°C</td>
-                    <td>21°C 22°C</td>
-                    <td>21°C 22°C</td>
-                    <td>21°C 22°C</td>
-                    <td>21°C 22°C</td>
-                    <td>21°C 22°C</td>
-                    <td>21°C 22°C</td>
+                <tr id="temperature">
+                    <!--                    <td>21°C 22°C</td>
+                                        <td>21°C 22°C</td>
+                                        <td>21°C 22°C</td>
+                                        <td>21°C 22°C</td>
+                                        <td>21°C 22°C</td>
+                                        <td>21°C 22°C</td>
+                                        <td>21°C 22°C</td>-->
                 </tr>
                 </tbody>
             </table>
@@ -485,42 +485,82 @@
         alert(startmonth);
     }
 
-    // $( document ).ready(function() {
-    //     var param = {"pageNo": "1", "numOfRows": "11", "eventStartDate": "20190816", "title": str};
-    //     $.ajax({
-    //         url: "/api/festivalSearch",
-    //         type: "POST",
-    //         dataType: "json",
-    //         contentType: "application/json",
-    //         data: JSON.stringify(param),
-    //     }).done(function (data) {
-    //         globalpage=data.length/10-1;//////////////////////////////////////
-    //         alert(data.length+"-데이터갯수"+globalpage+"-글로벌갯수");
-    //         //    $appendData2 = $('<div class="row"></div>');
-    //         for (var i = 0; i < data.length; i++) {
-    //             $festival_item3 = $('<div class="horizontal-scroll">\n' +
-    //                 '               <div class="card">\n' +
-    //                 '                   <img src="http://placehold.it/200x140"/>\n' +
-    //                 '                   <div class="card-body">\n' +
-    //                 '               <p class="card-text">이름</p>\n' +
-    //                 '               <p class="card-text"><small class="text-muted">약 1km</small></p>\n' +
-    //                 '               </div>\n' +
-    //                 '           </div>');
-    //             $festival_item3.find('p').text(data[i].title);
-    //             $festival_item3.find('a').attr('href',"content/" + data[i].contentId);
-    //             $festival_item3.children().children('img').attr('src', data[i].firstImage2);
-    //             //    alert("done!" + data.length + data[i].title);
-    //             //            $appendData2.append($festival_item3);
-    //
-    //         }
-    //         alert("검색일단완료");
-    //         $('.horizontal-scroll').append($festival_item3);//띄어줌
-    //     }).fail(function () {
-    //     });
-    // });
-
     var param = document.location.href.split("content/");
     var thumbnail;
+    var addr="서울특별시";
+    var mapx="126.9787932340";
+    var mapy="37.5659098804";
+    var val=param[1];
+  //  alert(val+"param값");
+    $( document ).ready(function() {
+        var param = {"addr": addr, "mapX": mapx, "mapY": mapy,"contentid" : val};
+
+        $.ajax({
+            url: "/api/weatherInfo",
+            type: "POST",
+            dataType: "json",
+            contentType: "application/json",
+            data: JSON.stringify(param),
+        }).done(function (data) {
+            for (var i = 0; i < data.length; i++) {
+                $festival_item5 = $('<th scope="col">월</th>\n');
+                $festival_item5.text(data[i].dayOfTheWeek);
+                $("#dayday").append($festival_item5);
+               // $festival_item3 = $('<td><i class="fas fa-cloud-sun-rain"></i></td>\n');
+                $festival_item3 = $('<td><i></i></td>\n');
+               // $festival_item3.find('i').attr('class',"fas fa-cloud-rain").text(data[i].state);
+                $festival_item3.find('i').text(data[i].state);
+                $("#suncloud").append($festival_item3);
+
+                $festival_item4 = $('<td>21°C 23°C</td>\n');
+                $festival_item4.text(data[i].minTemp+"\n    "+data[i].maxTemp);
+                $("#temperature").append($festival_item4);
+            }
+            //alert("띄우기일단완료");
+            checker=0;
+        }).fail(function () {
+        });
+    });
+    var aa="좋음"
+    var bb="보통"
+    var cc="나쁨"
+    var dd="매우나쁨"
+
+    $( document ).ready(function() {
+        var param = { "mapX": mapx, "mapY": mapy,"contentid" : val};
+        var hi="hi";
+        $.ajax({
+            url: "/api/airInfo",
+            type: "POST",
+            dataType: "json",
+            contentType: "application/json",
+            data: JSON.stringify(param),
+        }).done(function (data) {
+      //      alert("시작");
+         //   alert(data.khaiGrade);
+            for (var i = 0; i < 1; i++) {
+                $festival_item7 = $('<p></p>\n');
+                if(data.khaiGrade==1)
+                $festival_item7.text(aa);
+                if(data.khaiGrade==2)
+                    $festival_item7.text(bb);
+
+                if(data.khaiGrade==3)
+                    $festival_item7.text(cc);
+                if(data.khaiGrade==4)
+                    $festival_item7.text(dd);
+
+               // $festival_item3.find('p').text(data[i].state);
+                $("#atmosphere").append($festival_item7);
+
+            }
+            //alert("띄우기일단완료");
+            checker=0;
+        }).fail(function () {
+        });
+    });
+
+
 
     // $( document ).ready(function() {
     //     $.ajax({

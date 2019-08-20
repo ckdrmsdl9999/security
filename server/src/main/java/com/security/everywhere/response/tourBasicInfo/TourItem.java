@@ -1,4 +1,4 @@
-package com.security.everywhere.response.tourBasicInformation;
+package com.security.everywhere.response.tourBasicInfo;
 
 public class TourItem {
     private String addr1 = "";          // 주소

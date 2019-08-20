@@ -1,9 +1,14 @@
 package com.security.everywhere.request;
 
+
+/*
+* 3개의 값 모두 필수
+* */
 public class WeatherForecastParam {
     private String addr;    // 축제 or 관광지 주소
     private String mapX;    // x 좌표
     private String mapY;    // y 좌표
+    private String contentid; //관광지 id 추가
 
     public String getAddr() {
         return addr;
@@ -27,5 +32,13 @@ public class WeatherForecastParam {
 
     public void setMapY(String mapY) {
         this.mapY = mapY;
+    }
+
+    public String getContentid() {
+        return contentid;
+    }
+
+    public void setContentid(String contentid) {
+        this.contentid = contentid;
     }
 }
