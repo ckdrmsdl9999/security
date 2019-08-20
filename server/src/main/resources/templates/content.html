@@ -565,11 +565,11 @@
            // alert(data.length+"개의 관광지가 근처에있어");
             for (var i = 0; i < data.length; i++) {
               //  alert("데이터의거리값:"+data[i].dist+"그림src"+data[i].firstimage);
-                $festival_item5 = $('<div class="card" height="200" >\n'+
-                    '<img src="http://placehold.it/200x140" width="200" height="140"/>\n'+
+                $festival_item5 = $('<div class="card" width="300" height="160" >\n'+
+                    '<img src="http://placehold.it/200x140" width="300" height="170"/>\n'+
                         '<div class="card-body">\n'+
                             '<p class="card-text">이름</p>\n'+
-                            '<i class="card-text"><small class="text-muted">약 1km임</small>\n"</i>'+
+                            '<i class="card-text"><small class="text-muted">약 1km임</small></i>\n'+
                         '</div>'+
                     '</div>');
                 $festival_item5.children('img').attr('src',data[i].firstimage2);
