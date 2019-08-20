@@ -374,7 +374,7 @@ public class RestAPIController {
 
     // 대기정보
     @PostMapping("/airInfo")
-    public AirItem observatoryInfo(@RequestBody ObservatoryParam requestParam) throws IOException {
+    public List<AirItem> observatoryInfo(@RequestBody ObservatoryParam requestParam) throws IOException {
         Festival festivals3 = new Festival();//content값
         festivals3=festivalRepository.findByContentId(requestParam.getContentid());
         requestParam.setMapx(festivals3.getMapX());
@@ -479,8 +479,10 @@ public class RestAPIController {
             e.printStackTrace();
         }
     System.out.println(airDTO.getBody().getItems().get(0).getKhaiGrade()+"농도이다");
-
-        return airDTO.getBody().getItems().get(0);
+    /*    for(int i=0; i<10;i++) {
+            System.out.println("시간"+airDTO.getBody().getItems().get(i).getDataTime()+"  "+airDTO.getBody().getItems().get(i).getKhaiGrade() + "농도이다");
+        }*/
+        return airDTO.getBody().getItems();
     }
 
 
@@ -495,7 +497,7 @@ public class RestAPIController {
         Date standardDate = currentTimeFormat.parse(today+"0600");    // api가 아침 6시를 기준으로 데이터가 갱신되므로
         long standardMillis = standardDate.getTime();       // 기준 시간을 초로
 
-       // System.out.println("넘어온contentid이거다"+weatherForecastParam.getContentid());
+//       // System.out.println("넘어온contentid이거다"+weatherForecastParam.getContentid());
         Festival festivals2 = new Festival();
         festivals2=festivalRepository.findByContentId(weatherForecastParam.getContentid());
         weatherForecastParam.setAddr(festivals2.getAddr1());
@@ -707,35 +709,31 @@ public class RestAPIController {
 
 
     // 요일 설정
-    private String setDayOfWeek(int dayOfWeekCode) {//dayofweekCode-1~13까지
+    private String setDayOfWeek(int dayOfWeekCode) {
         String dayOfWeek = null;
-        if(dayOfWeekCode>=9)///8--일    9---일  10--월 처리
-            ++dayOfWeekCode;
-        dayOfWeekCode= dayOfWeekCode % 8;
-
-        if (dayOfWeekCode == 0)
-            dayOfWeekCode = 1;
+        dayOfWeekCode--;
+        dayOfWeekCode = dayOfWeekCode % 7;
 
         switch (dayOfWeekCode) {
-            case 1:
+            case 0:
                 dayOfWeek = "일";
                 break;
-            case 2:
+            case 1:
                 dayOfWeek = "월";
                 break;
-            case 3:
+            case 2:
                 dayOfWeek = "화";
                 break;
-            case 4:
+            case 3:
                 dayOfWeek = "수";
                 break;
-            case 5:
+            case 4:
                 dayOfWeek = "목";
                 break;
-            case 6:
+            case 5:
                 dayOfWeek = "금";
                 break;
-            case 7:
+            case 6:
                 dayOfWeek = "토";
                 break;
         }

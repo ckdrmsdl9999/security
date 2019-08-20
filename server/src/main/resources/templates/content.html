@@ -518,7 +518,8 @@
     var bb="보통"
     var cc="나쁨"
     var dd="매우나쁨"
-
+    var ee="정보X"
+    var checker=0;
     $( document ).ready(function() {
         var param = { "mapX": mapx, "mapY": mapy,"contentid" : val};
         var hi="hi";
@@ -529,25 +530,22 @@
             contentType: "application/json",
             data: JSON.stringify(param),
         }).done(function (data) {
-      //      alert("시작");
-         //   alert(data.khaiGrade);
-            for (var i = 0; i < 1; i++) {
+            //      alert("시작");
+            //   alert(data.khaiGrade);
+            for (var i = 0; i < 10; i++) {
+                if(data[i].khaiGrade==""&&i<9||checker==1)
+                {  continue;}
                 $festival_item7 = $('<p></p>\n');
-                if(data.khaiGrade==1)
-                $festival_item7.text(aa);
-                if(data.khaiGrade==2)
-                    $festival_item7.text(bb);
-
-                if(data.khaiGrade==3)
-                    $festival_item7.text(cc);
-                if(data.khaiGrade==4)
-                    $festival_item7.text(dd);
-
-               // $festival_item3.find('p').text(data[i].state);
-                $("#atmosphere").append($festival_item7);
-
+                $festival_item7 = $('<p></p>\n');
+                if(data[i].khaiGrade==1) {$festival_item7.text(aa);checker=1;}
+                if(data[i].khaiGrade==2){$festival_item7.text(bb);
+             //   alert("값발견");
+                checker=1;}
+                if(data[i].khaiGrade==3){$festival_item7.text(cc);checker=1;}
+                if(data[i].khaiGrade==4){$festival_item7.text(dd);checker=1;}
+                if(data[i].khaiGrade==""){$festival_item7.text(ee);checker=1;}//마지막에있으면 ㅇㅇ 만약 5개중 3번째에있으면
             }
-            //alert("띄우기일단완료");
+            $("#atmosphere").append($festival_item7);
             checker=0;
         }).fail(function () {
         });
