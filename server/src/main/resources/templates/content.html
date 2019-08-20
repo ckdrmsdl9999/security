@@ -608,7 +608,7 @@
             }).done(function (data) {
                 if (data.length == 0) {
                     $carousel_item = $('<div class="carousel-item active">\n' +
-                        '                <img src="img/alt.png" class="d-block img-fluid " style="width: 600px; height:400px" alt="...">\n' +
+                        '                <img src="/img/alt.png" class="d-block img-fluid " style="width: 600px; height:400px" alt="...">\n' +
                         '            </div>');
                     if(thumbnail != '')
                         $carousel_item.find('img').attr('src', thumbnail);
@@ -616,7 +616,7 @@
                 } else {
                     for (var i = 0; i < data.length; i++) {
                         $carousel_item = $('<div class="carousel-item">\n' +
-                            '                <img src="" class="d-block img-fluid" style="width: 600px; height:400px" alt="...">\n' +
+                            '                <img src="/img/alt.png" class="d-block img-fluid" style="width: 600px; height:400px" alt="...">\n' +
                             '            </div>');
                         if (i == 0)
                             $carousel_item.addClass('active');
