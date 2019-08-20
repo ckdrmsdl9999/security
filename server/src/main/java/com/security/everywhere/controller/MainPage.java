@@ -30,25 +30,12 @@ public class MainPage {
         return "main";
     }
 
-//    @GetMapping("/content/{contentId}")
-//    public String Contentpage(@PathVariable String contentId, Model model) {
-//        System.out.println("content");
-//        return "content";  // html name
-//    }
-
-//    @GetMapping("/content")
-//    public String content(){
-//        System.out.println("content");
-//        return "content";
-//    }
-
-    @PostMapping("/content")
-    public String goContent(@RequestBody String festival, Model model){
-        System.out.println(festival);
-        model.addAttribute("festival", festival);
-
-        return "content";
+    @GetMapping("/content/{contentId}")
+    public String Contentpage(@PathVariable String contentId, Model model) {
+        //System.out.println("content");
+        return "content";  // html name
     }
+
 
 
 //    @PostMapping("/")
