@@ -275,8 +275,15 @@
                         <p><i class="fas fa-plus"></i> more</p></a>
                 </div>
             </div>
-            <div class="horizontal-scroll">
-                <div class="card">
+            <div class="horizontal-scroll" id="tourtour">
+             <!--   <div class="card">
+                    <img src="http://placehold.it/200x140" />
+                    <div class="card-body">
+                        <p class="card-text">이름</p>
+                        <p class="card-text"><small class="text-muted">약 1km</small></p>
+                    </div>
+                </div>-->
+             <!--   <div class="card">
                     <img src="http://placehold.it/200x140" />
                     <div class="card-body">
                         <p class="card-text">이름</p>
@@ -296,14 +303,7 @@
                         <p class="card-text">이름</p>
                         <p class="card-text"><small class="text-muted">약 1km</small></p>
                     </div>
-                </div>
-                <div class="card">
-                    <img src="http://placehold.it/200x140" />
-                    <div class="card-body">
-                        <p class="card-text">이름</p>
-                        <p class="card-text"><small class="text-muted">약 1km</small></p>
-                    </div>
-                </div>
+                </div>-->
             </div>
         </div>
 
@@ -484,6 +484,8 @@
     var mapx="126.9787932340";
     var mapy="37.5659098804";
     var val=param[1];
+    var contentX;//해당content축제의 x값을 html에저장
+    var contentY;//해당content축제의 y값을 html에저장
   //  alert(val+"param값");
     $( document ).ready(function() {
         var param = {"addr": addr, "mapX": mapx, "mapY": mapy,"contentid" : val};
@@ -551,6 +553,36 @@
         });
     });
 
+    $( document ).ready(function() {
+        var param = {"contentid" : val ,"numOfRows":"10","pageNo":"1","arragne":"E","radius":"2000"};
+        $.ajax({
+            url: "/api/nearbyTour",
+            type: "POST",
+            dataType: "json",
+            contentType: "application/json",
+            data: JSON.stringify(param),
+        }).done(function (data) {
+           // alert(data.length+"개의 관광지가 근처에있어");
+            for (var i = 0; i < data.length; i++) {
+              //  alert("데이터의거리값:"+data[i].dist+"그림src"+data[i].firstimage);
+                $festival_item5 = $('<div class="card" height="200" >\n'+
+                    '<img src="http://placehold.it/200x140" width="200" height="140"/>\n'+
+                        '<div class="card-body">\n'+
+                            '<p class="card-text">이름</p>\n'+
+                            '<i class="card-text"><small class="text-muted">약 1km임</small>\n"</i>'+
+                        '</div>'+
+                    '</div>');
+                $festival_item5.children('img').attr('src',data[i].firstimage2);
+                $festival_item5.find('p').text(data[i].title);
+                $festival_item5.find('small').text(data[i].dist+'미터');
+
+
+                $("#tourtour").append($festival_item5);
+            }
+
+        }).fail(function () {
+        });
+    });
 
 
     $( document ).ready(function() {

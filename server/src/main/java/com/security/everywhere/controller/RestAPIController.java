@@ -199,6 +199,12 @@ public class RestAPIController {
     //x, y축을 가지고 주변 관광지 정보 가져오기
     @PostMapping("/nearbyTour")
     public List<TourItem> nearbyTour(@RequestBody NearbyTourParam nearbyTourParam) throws IOException {
+        var contentIdNear=nearbyTourParam.getContentid();
+        Festival festival;
+        festival = festivalRepository.findByContentId(contentIdNear);
+        nearbyTourParam.setMapX(festival.getMapX());
+        nearbyTourParam.setMapY(festival.getMapY());
+        System.out.println("관광지를 찾기위한 x,y값"+nearbyTourParam.getMapX()+" "+nearbyTourParam.getMapY());
         StringBuilder urlBuilder = new StringBuilder("http://api.visitkorea.or.kr/openapi/service/rest/KorService/locationBasedList"); /*URL*/
         urlBuilder.append("?")
                 .append(URLEncoder.encode("serviceKey", StandardCharsets.UTF_8))
@@ -251,7 +257,7 @@ public class RestAPIController {
         URL url = new URL(urlBuilder.toString());
 
         TourResponse tourResponse = mapper.readValue(url, TourResponse.class);
-
+        tourResponse.getResponse().getBody().getItems().getItem().get(0);
         return tourResponse.getResponse().getBody().getItems().getItem();
     }
 
