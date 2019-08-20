@@ -374,7 +374,7 @@ public class RestAPIController {
 
     // 대기정보
     @PostMapping("/airInfo")
-    public AirItem observatoryInfo(@RequestBody ObservatoryParam requestParam) throws IOException {
+    public List<AirItem> observatoryInfo(@RequestBody ObservatoryParam requestParam) throws IOException {
         Festival festivals3 = new Festival();//content값
         festivals3=festivalRepository.findByContentId(requestParam.getContentid());
         requestParam.setMapx(festivals3.getMapX());
@@ -479,8 +479,10 @@ public class RestAPIController {
             e.printStackTrace();
         }
     System.out.println(airDTO.getBody().getItems().get(0).getKhaiGrade()+"농도이다");
-
-        return airDTO.getBody().getItems().get(0);
+    /*    for(int i=0; i<10;i++) {
+            System.out.println("시간"+airDTO.getBody().getItems().get(i).getDataTime()+"  "+airDTO.getBody().getItems().get(i).getKhaiGrade() + "농도이다");
+        }*/
+        return airDTO.getBody().getItems();
     }
 
 
