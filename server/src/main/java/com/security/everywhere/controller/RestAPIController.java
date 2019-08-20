@@ -46,6 +46,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
@@ -117,6 +118,14 @@ public class RestAPIController {
 
         return festivals;
     }
+
+//    @PostMapping("/goContent")
+//    public String goContent(@RequestBody Festival festival, Model model){
+//        System.out.println(festival.getTitle());
+//        model.addAttribute("festival", festival);
+//        return "content";
+//    }
+
 
 
     @PostMapping("/festivalContent")
@@ -366,6 +375,12 @@ public class RestAPIController {
     // 대기정보
     @PostMapping("/airInfo")
     public AirItem observatoryInfo(@RequestBody ObservatoryParam requestParam) throws IOException {
+        Festival festivals3 = new Festival();//content값
+        festivals3=festivalRepository.findByContentId(requestParam.getContentid());
+        requestParam.setMapx(festivals3.getMapX());
+        requestParam.setMapy(festivals3.getMapY());
+      //  System.out.println("airinfo의 getmapx값체크요-"+festivals3.getMapX()+" "+festivals3.getMapY());
+
         // 좌표 변환해주는 api 사용하기 전에 키를 받아야함
         StringBuilder urlBuilder = new StringBuilder("https://sgisapi.kostat.go.kr/OpenAPI3/auth/authentication.json");
         urlBuilder.append("?")
@@ -377,7 +392,6 @@ public class RestAPIController {
                 .append("=")
                 .append(URLEncoder.encode(consumerSecret, StandardCharsets.UTF_8));
         URL url = new URL(urlBuilder.toString());
-
         LocationConvAuthDTO locationConvAuthDTO = mapper.readValue(url, LocationConvAuthDTO.class);
 
         // WGS84 경/위도를 TM좌표 중부원점(GRS80)으로 변환
@@ -423,7 +437,7 @@ public class RestAPIController {
         url = new URL(urlBuilder.toString());
 
         ObservatoryDTO observatoryDTO = null;
-
+       // System.out.println("pos값확인:"+locationConvDTO.getResult().getPosX()+"  "+locationConvDTO.getResult().getPosY());
         try {
             observatoryDTO = restTemplate.getForObject(url.toURI(), ObservatoryDTO.class);
         } catch (URISyntaxException e) {
@@ -456,7 +470,7 @@ public class RestAPIController {
                 .append("=")
                 .append(URLEncoder.encode("1.3", StandardCharsets.UTF_8));
         url = new URL(urlBuilder.toString());
-
+       // System.out.println("stationname확인-"+observatoryDTO.getBody().getItems().get(0).getStationName());
         AirDTO airDTO = null;
 
         try {
@@ -464,6 +478,7 @@ public class RestAPIController {
         } catch (URISyntaxException e) {
             e.printStackTrace();
         }
+    System.out.println(airDTO.getBody().getItems().get(0).getKhaiGrade()+"농도이다");
 
         return airDTO.getBody().getItems().get(0);
     }
@@ -479,6 +494,15 @@ public class RestAPIController {
         long currentMillis = calendar.getTimeInMillis();    // 현재 시간을 초로
         Date standardDate = currentTimeFormat.parse(today+"0600");    // api가 아침 6시를 기준으로 데이터가 갱신되므로
         long standardMillis = standardDate.getTime();       // 기준 시간을 초로
+
+       // System.out.println("넘어온contentid이거다"+weatherForecastParam.getContentid());
+        Festival festivals2 = new Festival();
+        festivals2=festivalRepository.findByContentId(weatherForecastParam.getContentid());
+        weatherForecastParam.setAddr(festivals2.getAddr1());
+        weatherForecastParam.setMapX(festivals2.getMapX());
+        weatherForecastParam.setMapY(festivals2.getMapY());
+     //   System.out.println("값체크"+weatherForecastParam.getAddr()+" "+weatherForecastParam.getMapX()+" "+weatherForecastParam.getMapY());
+
 
         // 새벽 6시 이전이면 하루 전 데이터 가져옴
         String currentTime;
@@ -683,10 +707,11 @@ public class RestAPIController {
 
 
     // 요일 설정
-    private String setDayOfWeek(int dayOfWeekCode) {
+    private String setDayOfWeek(int dayOfWeekCode) {//dayofweekCode-1~13까지
         String dayOfWeek = null;
-
-        dayOfWeekCode = dayOfWeekCode % 8;
+        if(dayOfWeekCode>=9)///8--일    9---일  10--월 처리
+            ++dayOfWeekCode;
+        dayOfWeekCode= dayOfWeekCode % 8;
 
         if (dayOfWeekCode == 0)
             dayOfWeekCode = 1;

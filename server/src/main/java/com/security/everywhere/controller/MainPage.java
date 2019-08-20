@@ -1,5 +1,7 @@
 package com.security.everywhere.controller;
 
+import com.security.everywhere.model.Festival;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -7,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 @Controller
 @RequestMapping("/")
 public class MainPage {
+
     @GetMapping("/main")
     public String getTesting(
             @RequestParam(value="startmonth",defaultValue = "0") String startmonth,
@@ -27,11 +30,26 @@ public class MainPage {
         return "main";
     }
 
-    @GetMapping("/content/{contentId}")
-    public String ContentPage(@PathVariable String contentId, Model model) {
+//    @GetMapping("/content/{contentId}")
+//    public String Contentpage(@PathVariable String contentId, Model model) {
+//        System.out.println("content");
+//        return "content";  // html name
+//    }
 
-        return "content";  // html name
+//    @GetMapping("/content")
+//    public String content(){
+//        System.out.println("content");
+//        return "content";
+//    }
+
+    @PostMapping("/content")
+    public String goContent(@RequestBody String festival, Model model){
+        System.out.println(festival);
+        model.addAttribute("festival", festival);
+
+        return "content";
     }
+
 
 //    @PostMapping("/")
 //    public String postTesting(TestParam testParam, Model model) {
