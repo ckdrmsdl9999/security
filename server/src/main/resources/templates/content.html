@@ -476,14 +476,7 @@
 
 </div>
 </body>
-<script type="text/javascript" th:inline="javascript">
-    /*<![CDATA[*/
-
-
-    $( document ).ready(function() {
-        var startmonth = /*[[ ${festival} ]]*/;
-        alert(startmonth);
-    }
+<script type="text/javascript">
 
     var param = document.location.href.split("content/");
     var thumbnail;
@@ -562,53 +555,53 @@
 
 
 
-    // $( document ).ready(function() {
-    //     $.ajax({
-    //         url: "/api/festivalContent",
-    //         type: "POST",
-    //         dataType: "json",
-    //         contentType: "application/json",
-    //         data: param[1],
-    //     }).done(function (data) {
-    //         $('.card-title').text(data.title);
-    //         thumbnail = data.firstImage;
-    //         $('#address p:nth-child(2)').text(data.addr1);
-    //         $('#term p:nth-child(2)').text(StringtoDate(data.eventStartDate) + ' ~ ' + StringtoDate(data.eventEndDate));
-    //         $('#tel p:nth-child(2)').text(data.overview);
-    //
-    //         $.ajax({
-    //             url: "/api/festivalImages",
-    //             type: "POST",
-    //             dataType: "json",
-    //             contentType: "application/json",
-    //             data: param[1],
-    //         }).done(function (data) {
-    //             if (data.length == 0) {
-    //                 $carousel_item = $('<div class="carousel-item active">\n' +
-    //                     '                <img src="" class="d-block img-fluid " style="width: 600px; height:400px" alt="...">\n' +
-    //                     '            </div>');
-    //                 $carousel_item.find('img').attr('src', thumbnail);
-    //                 $('.carousel-inner').append($carousel_item);
-    //             } else {
-    //                 for (var i = 0; i < data.length; i++) {
-    //                     $carousel_item = $('<div class="carousel-item">\n' +
-    //                         '                <img src="" class="d-block img-fluid" style="width: 600px; height:400px" alt="...">\n' +
-    //                         '            </div>');
-    //                     if (i == 0)
-    //                         $carousel_item.addClass('active');
-    //                     $carousel_item.find('img').attr("src", data[i].originimgurl);
-    //                     $('.carousel-inner').append($carousel_item);
-    //                 }
-    //             }
-    //         }).fail(function () {
-    //             alert('fail');
-    //         });
-    //     }).fail(function () {
-    //         alert('fail');
-    //
-    //     });
-    // });
-    //
+    $( document ).ready(function() {
+        $.ajax({
+            url: "/api/festivalContent",
+            type: "POST",
+            dataType: "json",
+            contentType: "application/json",
+            data: param[1],
+        }).done(function (data) {
+            $('.card-title').text(data.title);
+            thumbnail = data.firstImage;
+            $('#address p:nth-child(2)').text(data.addr1);
+            $('#term p:nth-child(2)').text(StringtoDate(data.eventStartDate) + ' ~ ' + StringtoDate(data.eventEndDate));
+            $('#tel p:nth-child(2)').text(data.overview);
+
+            $.ajax({
+                url: "/api/festivalImages",
+                type: "POST",
+                dataType: "json",
+                contentType: "application/json",
+                data: param[1],
+            }).done(function (data) {
+                if (data.length == 0) {
+                    $carousel_item = $('<div class="carousel-item active">\n' +
+                        '                <img src="" class="d-block img-fluid " style="width: 600px; height:400px" alt="...">\n' +
+                        '            </div>');
+                    $carousel_item.find('img').attr('src', thumbnail);
+                    $('.carousel-inner').append($carousel_item);
+                } else {
+                    for (var i = 0; i < data.length; i++) {
+                        $carousel_item = $('<div class="carousel-item">\n' +
+                            '                <img src="" class="d-block img-fluid" style="width: 600px; height:400px" alt="...">\n' +
+                            '            </div>');
+                        if (i == 0)
+                            $carousel_item.addClass('active');
+                        $carousel_item.find('img').attr("src", data[i].originimgurl);
+                        $('.carousel-inner').append($carousel_item);
+                    }
+                }
+            }).fail(function () {
+                alert('fail');
+            });
+        }).fail(function () {
+            alert('fail');
+
+        });
+    });
+
 
 
 
