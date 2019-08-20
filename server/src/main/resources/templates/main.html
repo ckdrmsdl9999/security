@@ -525,14 +525,15 @@
 
                 $festival_item = $('<li class="col-6">\n' +
                     '               <a href="#">\n' +
-                    '                   <img src="" alt="Barca" class="img-responsive" height="130px" />\n' +
+                    '                   <img src="img/alt.png" alt="no_image" class="img-responsive" height="130px" />' +
                     '                   <p></p>\n' +
                     '               </a>\n' +
                     '           </li>');
 
                 $festival_item.find('p').text(data[i].title);
                 $festival_item.find('a').attr('href',"content/" + data[i].contentId);
-                $festival_item.children().children('img').attr('src',data[i].firstImage2);
+                if(data[i].firstImage2.trim() != '')
+                    $festival_item.children().children('img').attr('src',data[i].firstImage2);
                 $appendData.append($festival_item);
             }
             //alert("printFestialInfo완료")
