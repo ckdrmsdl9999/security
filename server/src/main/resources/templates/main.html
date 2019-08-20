@@ -68,21 +68,21 @@
 </head>
 <body>
 <div class="bmd-layout-container bmd-drawer-f-l bmd-drawer-overlay mx-auto">
-    <header class="bmd-layout-header" style="height: 12%">
+    <header class="bmd-layout-header mb-3" style="height: 7%">
         <div class="navbar navbar-light bg-faded" style="height: 94%">
             <button class="navbar-toggler" type="button" data-toggle="drawer" data-target="#dw-s2">
                 <span class="sr-only">Toggle drawer</span>
                 <i class="material-icons">menu</i>
             </button>
             <ul class="nav navbar-nav mx-auto">
-                <li class="nav-item mx-auto"><h4>FESTIVAL</h4></li>
+                <li class="nav-item mx-auto"><h4>Festival</h4></li>
             </ul>
         </div>
     </header>
 
     <!-- 본문 검색창 -->
 
-    <div class="p-1 bg-light rounded shadow-sm mb-4 w-50 mx-auto" id="searchbar1">
+    <div class="p-1 bg-light rounded shadow-sm mb-3 w-50 mx-auto" id="searchbar1">
         <div class="input-group pl-3 ">
             <input type="search" id="searchword1" placeholder="What're you searching for?" aria-describedby="button-addon1" class="form-control border-0 bg-light">
             <div class="input-group-append">
@@ -488,7 +488,7 @@
         if($(this).scrollTop() != 0) {
             $('#searchbar1').hide();
             $('.nav-item').hide();
-            $('#searchbar2').show("bounce",500);
+            $('#searchbar2').show("bounce",300);
         }
         else {
             $('#searchbar1').show();
