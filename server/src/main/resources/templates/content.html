@@ -481,7 +481,7 @@
 
 
     $( document ).ready(function() {
-        var startmonth = /*[[ ${festival} ]]*/;
+        var startmonth = [[${festival}]];
         alert(startmonth);
     }
 
@@ -500,7 +500,7 @@
             type: "POST",
             dataType: "json",
             contentType: "application/json",
-            data: JSON.stringify(param),
+            data: JSON.stringify(param)
         }).done(function (data) {
             for (var i = 0; i < data.length; i++) {
                 $festival_item5 = $('<th scope="col">월</th>\n');
