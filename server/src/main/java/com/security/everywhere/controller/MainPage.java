@@ -46,6 +46,10 @@ public class MainPage {
         //System.out.println("content");
         return "tourcontent";  // html name
     }
+
+    @GetMapping("/loginPage")
+    public String loginPage() { return "loginPage"; }
+
 //    @PostMapping("/")
 //    public String postTesting(TestParam testParam, Model model) {
 ////        model.addAttribute("name", testParam.getClass().getName());
