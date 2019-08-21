@@ -469,19 +469,13 @@
                             <div class="form-group">
                                 <div class="input-group">
                                     <span class="input-group-addon"><i class="fa fa-user"></i></span>
-                                    <input type="text" class="form-control" name="signUpNickName" placeholder="Username" required="required">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <div class="input-group">
-                                    <span class="input-group-addon"><i class="fa fa-user"></i></span>
-                                    <input type="email" class="form-control" name="signUpEmail" placeholder="Email" required="required">
+                                    <input type="text" class="form-control" id="signUpNickName" placeholder="Username" required="required">
                                 </div>
                             </div>
                             <div class="form-group">
                                 <div class="input-group">
                                     <span class="input-group-addon"><i class="fa fa-lock"></i></span>
-                                    <input type="password" class="form-control" name="signUpPassword" placeholder="Password" required="required">
+                                    <input type="password" class="form-control" id="signUpPassword" placeholder="Password" required="required">
                                 </div>
                             </div>
 <!--                            <div class="form-group">-->
@@ -497,7 +491,7 @@
                                 <p id="signUpFail"></p>
                             </div>
                             <div class="form-group">
-                                <button type="submit" class="btn btn-primary btn-block btn-lg" id="signUp">Sign Up</button>
+                                <button type="button" class="btn btn-primary btn-block btn-lg" id="signUp">Sign Up</button>
                             </div>
                         </form>
                     </div>
@@ -825,10 +819,8 @@
 
     $(document).on('click', '#signUp', function() {
         var nickName = document.getElementById("signUpNickName").value;
-        var email = document.getElementById("signUpEmail").value;
         var pw = document.getElementById("signUpPassword").value;
-        alert(nickName + email + pw);
-        var param = {"nickName": nickName, "email":email, "pw": pw};
+        var param = {"nickName": nickName, "pw": pw};
         $.ajax({
             url: "/member/create",
             type: "POST",
@@ -838,7 +830,6 @@
         }).done(function(data) {
             //var result = /*[[ ${session.id} ]]*/;
             //location.href = "/main";
-            alert(data);
             $("#signUpFail").val("조건에 맞게 입력해주세요.");
 
 

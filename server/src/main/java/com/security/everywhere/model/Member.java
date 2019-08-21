@@ -10,8 +10,6 @@ import java.util.Objects;
 
 @Entity
 public class Member {
-    @Id
-    private Long id;
 
     @Column(nullable = false, unique = true, length = 50)
     private String nickName;
@@ -19,6 +17,7 @@ public class Member {
     @Column(nullable = false, length = 200)
     private String pw;
 
+    @Id
     @Column(nullable = false, unique = true, length = 50)
     private String email;
 
@@ -31,16 +30,6 @@ public class Member {
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name="nickName")
     private List<MemberRole> roles;
-
-
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     public String getNickName() {
         return nickName;
@@ -106,7 +95,6 @@ public class Member {
     @Override
     public String toString() {
         return "Member{" +
-                "id=" + id +
                 ", nickName='" + nickName + '\'' +
                 ", pw='" + pw + '\'' +
                 ", email='" + email + '\'' +
