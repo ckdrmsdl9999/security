@@ -99,11 +99,16 @@ public class ComInfoItem {
 
     public void setAddr1(String addr1) { this.addr1 = addr1; }
 
-    public String getMapX() { return mapx; }
+    public String getMapx() { return mapx; }
 
-    public void setMapX(String mapx) { this.mapx = mapx; }
+    public void setMapx(String mapx) { this.mapx = mapx; }
 
-    public String getMapY() { return mapy; }
+    public String getMapy() { return mapy; }
 
-    public void setMapY(String addr1) { this.mapy = mapy;}
+    public void setMapy(String mapy) { this.mapy = mapy;}
+
+    @Override
+    public String toString(){
+        return title+" "+addr1+" 좌표-"+mapx+" " +mapy+"return값(toString of cominfoitem)";
+    }
 }

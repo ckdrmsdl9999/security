@@ -154,7 +154,7 @@ public class RestAPIController {
     // 관광지 이미지 추가로 가져오기
     @PostMapping("/tourImages")
     public List<ImagesItem> tourImages(@RequestBody String contentid) throws IOException {
-        System.out.println("images의contentid값"+contentid);
+  //      System.out.println("images의contentid값"+contentid);
 
         StringBuilder urlBuilder = new StringBuilder("http://api.visitkorea.or.kr/openapi/service/rest/KorService/detailImage"); /*URL*/
         urlBuilder.append("?")
@@ -201,7 +201,7 @@ public class RestAPIController {
     }
 
 
-    //x, y축을 가지고 주변 관광지 정보 가져오기
+    //x, y축을 가지고 주변 관광지 정보 가져오기-축제
     @PostMapping("/nearbyTour")
     public List<TourItem> nearbyTour(@RequestBody NearbyTourParam nearbyTourParam) throws IOException {
         var contentIdNear=nearbyTourParam.getContentid();
@@ -209,7 +209,8 @@ public class RestAPIController {
         festival = festivalRepository.findByContentId(contentIdNear);
         nearbyTourParam.setMapX(festival.getMapX());
         nearbyTourParam.setMapY(festival.getMapY());
-        System.out.println("관광지를 찾기위한 x,y값"+nearbyTourParam.getMapX()+" "+nearbyTourParam.getMapY());
+      //  System.out.println(nearbyTourParam.getArrange()+"포착완료");
+       // System.out.println("관광지를 찾기위한 x,y값"+nearbyTourParam.getMapX()+" "+nearbyTourParam.getMapY());
         StringBuilder urlBuilder = new StringBuilder("http://api.visitkorea.or.kr/openapi/service/rest/KorService/locationBasedList"); /*URL*/
         urlBuilder.append("?")
                 .append(URLEncoder.encode("serviceKey", StandardCharsets.UTF_8))
@@ -266,6 +267,137 @@ public class RestAPIController {
         return tourResponse.getResponse().getBody().getItems().getItem();
     }
 
+    //x, y축을 가지고 주변 관광지 정보 가져오기-관광지
+    @PostMapping("/nearbyTour2")
+    public List<TourItem> nearbyTour2(@RequestBody NearbyTourParam nearbyTourParam) throws IOException {
+        var contentIdNear=nearbyTourParam.getContentid();
+        System.out.println(contentIdNear+"입니ek");
+        StringBuilder urlBuilder = new StringBuilder("http://api.visitkorea.or.kr/openapi/service/rest/KorService/detailCommon"); /*URL*/
+        urlBuilder.append("?")
+                .append(URLEncoder.encode("ServiceKey", StandardCharsets.UTF_8))
+                .append("=")
+                .append(apiServiceKey); /*공공데이터포털에서 발급받은 인증키*/
+        urlBuilder.append("&")
+                .append(URLEncoder.encode("numOfRows", StandardCharsets.UTF_8))
+                .append("=")
+                .append(URLEncoder.encode("10", StandardCharsets.UTF_8)); /*한 페이지 결과 수*/
+        urlBuilder.append("&")
+                .append(URLEncoder.encode("pageNo", StandardCharsets.UTF_8))
+                .append("=")
+                .append(URLEncoder.encode("1", StandardCharsets.UTF_8)); /*현재 페이지 번호*/
+        urlBuilder.append("&")
+                .append(URLEncoder.encode("MobileOS", StandardCharsets.UTF_8))
+                .append("=")
+                .append(URLEncoder.encode("ETC", StandardCharsets.UTF_8)); /*IOS (아이폰), AND (안드로이드), WIN (원도우폰),ETC*/
+        urlBuilder.append("&")
+                .append(URLEncoder.encode("MobileApp", StandardCharsets.UTF_8))
+                .append("=")
+                .append(URLEncoder.encode("AppTest", StandardCharsets.UTF_8)); /*서비스명=어플명*/
+        urlBuilder.append("&")
+                .append(URLEncoder.encode("contentId", StandardCharsets.UTF_8))
+                .append("=")
+                .append(URLEncoder.encode(contentIdNear, StandardCharsets.UTF_8));    // 콘텐츠 ID
+        urlBuilder.append("&")
+                .append(URLEncoder.encode("contentTypeId", StandardCharsets.UTF_8))
+                .append("=")
+                .append(URLEncoder.encode("12", StandardCharsets.UTF_8));    // 관광타입(관광지, 숙박 등) ID
+        urlBuilder.append("&")//tourItem.getContentTypeId()->12로변경
+                .append(URLEncoder.encode("defaultYN", StandardCharsets.UTF_8))
+                .append("=")
+                .append(URLEncoder.encode("Y", StandardCharsets.UTF_8));    // 기본정보 조회여부
+        urlBuilder.append("&")
+                .append(URLEncoder.encode("firstImageYN", StandardCharsets.UTF_8))
+                .append("=")
+                .append(URLEncoder.encode("Y", StandardCharsets.UTF_8));    // 원본, 썸네일 대표이미지 조회여부
+        urlBuilder.append("&")
+                .append(URLEncoder.encode("areacodeYN", StandardCharsets.UTF_8))
+                .append("=")
+                .append(URLEncoder.encode("Y", StandardCharsets.UTF_8));    // 지역코드, 시군구코드 조회여부
+        urlBuilder.append("&")
+                .append(URLEncoder.encode("catcodeYN", StandardCharsets.UTF_8))
+                .append("=")
+                .append(URLEncoder.encode("Y", StandardCharsets.UTF_8));    // 대,중,소분류코드 조회여부
+        urlBuilder.append("&")
+                .append(URLEncoder.encode("addrinfoYN", StandardCharsets.UTF_8))
+                .append("=")
+                .append(URLEncoder.encode("Y", StandardCharsets.UTF_8));    // 주소, 상세주소 조회여부
+        urlBuilder.append("&")
+                .append(URLEncoder.encode("mapinfoYN", StandardCharsets.UTF_8))
+                .append("=")
+                .append(URLEncoder.encode("Y", StandardCharsets.UTF_8));    // 좌표 X,Y 조회여부
+        urlBuilder.append("&")
+                .append(URLEncoder.encode("overviewYN", StandardCharsets.UTF_8))
+                .append("=")
+                .append(URLEncoder.encode("Y", StandardCharsets.UTF_8));    // 콘텐츠 개요 조회여부
+        urlBuilder.append("&")
+                .append(URLEncoder.encode("_type", StandardCharsets.UTF_8))
+                .append("=")
+                .append(URLEncoder.encode("json", StandardCharsets.UTF_8));
+        URL url = new URL(urlBuilder.toString());
+
+        ComInfoResponse responseResult2 = mapper.readValue(url, ComInfoResponse.class);
+
+        nearbyTourParam.setAddr1(responseResult2.getResponse().getBody().getItems().getItem().getAddr1());
+        nearbyTourParam.setMapX(responseResult2.getResponse().getBody().getItems().getItem().getMapx());
+        nearbyTourParam.setMapY(responseResult2.getResponse().getBody().getItems().getItem().getMapy());
+
+        System.out.println("관광지를 찾기위한 x,y값"+nearbyTourParam.getMapX()+" "+nearbyTourParam.getMapY()+nearbyTourParam.getAddr1()+
+                nearbyTourParam.getNumOfRows()+" "+nearbyTourParam.getArrange()+" "+nearbyTourParam.getRadius());
+        urlBuilder = new StringBuilder("http://api.visitkorea.or.kr/openapi/service/rest/KorService/locationBasedList"); /*URL*/
+        urlBuilder.append("?")
+                .append(URLEncoder.encode("serviceKey", StandardCharsets.UTF_8))
+                .append("=")
+                .append(apiServiceKey); /*공공데이터포털에서 발급받은 인증키*/
+        urlBuilder.append("&")
+                .append(URLEncoder.encode("numOfRows", StandardCharsets.UTF_8))
+                .append("=")
+                .append(URLEncoder.encode(nearbyTourParam.getNumOfRows(), StandardCharsets.UTF_8)); /*한 페이지 결과 수*/
+        urlBuilder.append("&")
+                .append(URLEncoder.encode("pageNo", StandardCharsets.UTF_8))
+                .append("=")
+                .append(URLEncoder.encode(nearbyTourParam.getPageNo(), StandardCharsets.UTF_8)); /*현재 페이지 번호*/
+        urlBuilder.append("&")
+                .append(URLEncoder.encode("MobileOS", StandardCharsets.UTF_8))
+                .append("=")
+                .append(URLEncoder.encode("ETC", StandardCharsets.UTF_8)); /*IOS (아이폰), AND (안드로이드), WIN (원도우폰),ETC*/
+        urlBuilder.append("&")
+                .append(URLEncoder.encode("MobileApp", StandardCharsets.UTF_8))
+                .append("=")
+                .append(URLEncoder.encode("AppTest", StandardCharsets.UTF_8)); /*서비스명=어플명*/
+        urlBuilder.append("&")
+                .append(URLEncoder.encode("arrange", StandardCharsets.UTF_8))
+                .append("=")
+                .append(URLEncoder.encode(nearbyTourParam.getArrange(), StandardCharsets.UTF_8)); /*(A=제목순, B=조회순, C=수정순, D=생성일순) 대표이미지가 반드시 있는 정렬 (O=제목순, P=조회순, Q=수정일순, R=생성일순)*/
+        urlBuilder.append("&")
+                .append(URLEncoder.encode("contentTypeId", StandardCharsets.UTF_8))
+                .append("=")
+                .append(URLEncoder.encode("12", StandardCharsets.UTF_8));       // 관광타입(관광지, 숙박 등) ID 관광지:12, 축제:15
+        urlBuilder.append("&")
+                .append(URLEncoder.encode("mapX", StandardCharsets.UTF_8))
+                .append("=")
+                .append(URLEncoder.encode(nearbyTourParam.getMapX(), StandardCharsets.UTF_8));  // GPS X좌표(WGS84 경도 좌표)
+        urlBuilder.append("&")
+                .append(URLEncoder.encode("mapY", StandardCharsets.UTF_8))
+                .append("=")
+                .append(URLEncoder.encode(nearbyTourParam.getMapY(), StandardCharsets.UTF_8));  // GPS Y좌표(WGS84 위도 좌표)
+        urlBuilder.append("&")
+                .append(URLEncoder.encode("radius", StandardCharsets.UTF_8))
+                .append("=")
+                .append(URLEncoder.encode(nearbyTourParam.getRadius(), StandardCharsets.UTF_8));    // 거리 반경(단위m), Max값 20000m=20Km
+        urlBuilder.append("&")
+                .append(URLEncoder.encode("listYN", StandardCharsets.UTF_8))
+                .append("=")
+                .append(URLEncoder.encode("Y", StandardCharsets.UTF_8)); /*목록 구분(Y=목록, N=개수)*/
+        urlBuilder.append("&")
+                .append(URLEncoder.encode("_type", StandardCharsets.UTF_8))
+                .append("=")
+                .append(URLEncoder.encode("json", StandardCharsets.UTF_8));
+        url = new URL(urlBuilder.toString());
+
+        TourResponse tourResponse = mapper.readValue(url, TourResponse.class);
+//        System.out.println(tourResponse.getResponse().getBody().getItems().getItem().get(0)+"야야야야");
+        return tourResponse.getResponse().getBody().getItems().getItem();
+    }
 
     // 관광지의 상세정보
     @PostMapping("/detailIntro/tour")
@@ -314,7 +446,7 @@ public class RestAPIController {
     // 개요, 홈페이지 정보 (관광지 공통정보 조회 api)
     @PostMapping("/detailCommon/tour")
     public ComInfoItem tourDetailCommon (@RequestBody String tourItem) throws IOException {
-      System.out.println("detour값"+tourItem);
+   //   System.out.println("detour값"+tourItem);
         StringBuilder urlBuilder = new StringBuilder("http://api.visitkorea.or.kr/openapi/service/rest/KorService/detailCommon"); /*URL*/
         urlBuilder.append("?")
                 .append(URLEncoder.encode("ServiceKey", StandardCharsets.UTF_8))
@@ -379,85 +511,87 @@ public class RestAPIController {
         URL url = new URL(urlBuilder.toString());
 
         ComInfoResponse responseResult = mapper.readValue(url, ComInfoResponse.class);
-
+     //   System.out.println("detailInfo값중 map나왔나확인"+responseResult.getResponse().getBody().getItems().getItem().getMapx()+"이야");
         return responseResult.getResponse().getBody().getItems().getItem();
     }
 
-    @PostMapping("/airInfo2")
+    @PostMapping("/airInfo2")//대기정보-관광지
     public List<AirItem> observatoryInfo2(@RequestBody ObservatoryParam requestParam) throws IOException {
+  //  System.out.println("airinfo2의 contentid 파라미터값체크"+requestParam.getContentid());
+    var aaa=requestParam.getContentid();
+   //     System.out.println("airinfo2의 aaa 파라미터값체크"+aaa);
 
-        StringBuilder urlBuilder2 = new StringBuilder("http://api.visitkorea.or.kr/openapi/service/rest/KorService/detailCommon"); /*URL*/
-        urlBuilder2.append("?")
+        StringBuilder urlBuilder = new StringBuilder("http://api.visitkorea.or.kr/openapi/service/rest/KorService/detailCommon"); /*URL*/
+        urlBuilder.append("?")
                 .append(URLEncoder.encode("ServiceKey", StandardCharsets.UTF_8))
                 .append("=")
                 .append(apiServiceKey); /*공공데이터포털에서 발급받은 인증키*/
-        urlBuilder2.append("&")
+        urlBuilder.append("&")
                 .append(URLEncoder.encode("numOfRows", StandardCharsets.UTF_8))
                 .append("=")
                 .append(URLEncoder.encode("10", StandardCharsets.UTF_8)); /*한 페이지 결과 수*/
-        urlBuilder2.append("&")
+        urlBuilder.append("&")
                 .append(URLEncoder.encode("pageNo", StandardCharsets.UTF_8))
                 .append("=")
                 .append(URLEncoder.encode("1", StandardCharsets.UTF_8)); /*현재 페이지 번호*/
-        urlBuilder2.append("&")
+        urlBuilder.append("&")
                 .append(URLEncoder.encode("MobileOS", StandardCharsets.UTF_8))
                 .append("=")
                 .append(URLEncoder.encode("ETC", StandardCharsets.UTF_8)); /*IOS (아이폰), AND (안드로이드), WIN (원도우폰),ETC*/
-        urlBuilder2.append("&")
+        urlBuilder.append("&")
                 .append(URLEncoder.encode("MobileApp", StandardCharsets.UTF_8))
                 .append("=")
                 .append(URLEncoder.encode("AppTest", StandardCharsets.UTF_8)); /*서비스명=어플명*/
-        urlBuilder2.append("&")
+        urlBuilder.append("&")
                 .append(URLEncoder.encode("contentId", StandardCharsets.UTF_8))
                 .append("=")
-                .append(URLEncoder.encode(requestParam.getContentid(), StandardCharsets.UTF_8));    // 콘텐츠 ID
-        urlBuilder2.append("&")
+                .append(URLEncoder.encode(aaa, StandardCharsets.UTF_8));    // 콘텐츠 ID
+        urlBuilder.append("&")
                 .append(URLEncoder.encode("contentTypeId", StandardCharsets.UTF_8))
                 .append("=")
-                .append(URLEncoder.encode("12", StandardCharsets.UTF_8));    // 관광타입(관광지, 숙박 등) ID tourItem.getContentTypeId()바꿈
-        urlBuilder2.append("&")
+                .append(URLEncoder.encode("12", StandardCharsets.UTF_8));    // 관광타입(관광지, 숙박 등) ID
+        urlBuilder.append("&")//tourItem.getContentTypeId()->12로변경
                 .append(URLEncoder.encode("defaultYN", StandardCharsets.UTF_8))
                 .append("=")
                 .append(URLEncoder.encode("Y", StandardCharsets.UTF_8));    // 기본정보 조회여부
-        urlBuilder2.append("&")
+        urlBuilder.append("&")
                 .append(URLEncoder.encode("firstImageYN", StandardCharsets.UTF_8))
                 .append("=")
                 .append(URLEncoder.encode("Y", StandardCharsets.UTF_8));    // 원본, 썸네일 대표이미지 조회여부
-        urlBuilder2.append("&")
+        urlBuilder.append("&")
                 .append(URLEncoder.encode("areacodeYN", StandardCharsets.UTF_8))
                 .append("=")
-                .append(URLEncoder.encode("N", StandardCharsets.UTF_8));    // 지역코드, 시군구코드 조회여부
-        urlBuilder2.append("&")
+                .append(URLEncoder.encode("Y", StandardCharsets.UTF_8));    // 지역코드, 시군구코드 조회여부
+        urlBuilder.append("&")
                 .append(URLEncoder.encode("catcodeYN", StandardCharsets.UTF_8))
                 .append("=")
-                .append(URLEncoder.encode("N", StandardCharsets.UTF_8));    // 대,중,소분류코드 조회여부
-        urlBuilder2.append("&")
+                .append(URLEncoder.encode("Y", StandardCharsets.UTF_8));    // 대,중,소분류코드 조회여부
+        urlBuilder.append("&")
                 .append(URLEncoder.encode("addrinfoYN", StandardCharsets.UTF_8))
                 .append("=")
                 .append(URLEncoder.encode("Y", StandardCharsets.UTF_8));    // 주소, 상세주소 조회여부
-        urlBuilder2.append("&")
+        urlBuilder.append("&")
                 .append(URLEncoder.encode("mapinfoYN", StandardCharsets.UTF_8))
                 .append("=")
                 .append(URLEncoder.encode("Y", StandardCharsets.UTF_8));    // 좌표 X,Y 조회여부
-        urlBuilder2.append("&")
+        urlBuilder.append("&")
                 .append(URLEncoder.encode("overviewYN", StandardCharsets.UTF_8))
                 .append("=")
                 .append(URLEncoder.encode("Y", StandardCharsets.UTF_8));    // 콘텐츠 개요 조회여부
-        urlBuilder2.append("&")
+        urlBuilder.append("&")
                 .append(URLEncoder.encode("_type", StandardCharsets.UTF_8))
                 .append("=")
                 .append(URLEncoder.encode("json", StandardCharsets.UTF_8));
-        URL url2 = new URL(urlBuilder2.toString());
+        URL url = new URL(urlBuilder.toString());
 
-        ComInfoResponse responseResult2 = mapper.readValue(url2, ComInfoResponse.class);
-
-
-        requestParam.setMapx( responseResult2.getResponse().getBody().getItems().getItem().getMapX());
-        requestParam.setMapy( responseResult2.getResponse().getBody().getItems().getItem().getMapY());
-        //  System.out.println("airinfo의 getmapx값체크요-"+festivals3.getMapX()+" "+festivals3.getMapY());
+        ComInfoResponse responseResult2 = mapper.readValue(url, ComInfoResponse.class);
+    //    System.out.println("airinfo첫번째api값체크"+responseResult2.getResponse().getBody().getItems().getItem());
+    //    System.out.println("airinfo2의 getmapx값체크요-"+responseResult2.getResponse().getBody().getItems().getItem().getMapx()+" "+responseResult2.getResponse().getBody().getItems().getItem().getMapy());
+     //   requestParam.setMapx( responseResult2.getResponse().getBody().getItems().getItem().getMapX());
+     //   requestParam.setMapy( responseResult2.getResponse().getBody().getItems().getItem().getMapY());
 
         // 좌표 변환해주는 api 사용하기 전에 키를 받아야함
-        StringBuilder urlBuilder = new StringBuilder("https://sgisapi.kostat.go.kr/OpenAPI3/auth/authentication.json");
+        urlBuilder = new StringBuilder("https://sgisapi.kostat.go.kr/OpenAPI3/auth/authentication.json");
         urlBuilder.append("?")
                 .append(URLEncoder.encode("consumer_key", StandardCharsets.UTF_8))
                 .append("=")
@@ -466,7 +600,7 @@ public class RestAPIController {
                 .append(URLEncoder.encode("consumer_secret", StandardCharsets.UTF_8))
                 .append("=")
                 .append(URLEncoder.encode(consumerSecret, StandardCharsets.UTF_8));
-        URL url = new URL(urlBuilder.toString());
+        url = new URL(urlBuilder.toString());
         LocationConvAuthDTO locationConvAuthDTO = mapper.readValue(url, LocationConvAuthDTO.class);
 
         // WGS84 경/위도를 TM좌표 중부원점(GRS80)으로 변환
@@ -486,15 +620,15 @@ public class RestAPIController {
         urlBuilder.append("&")
                 .append(URLEncoder.encode("posX", StandardCharsets.UTF_8))
                 .append("=")
-                .append(URLEncoder.encode(requestParam.getMapx(), StandardCharsets.UTF_8));
+                .append(URLEncoder.encode(responseResult2.getResponse().getBody().getItems().getItem().getMapx(), StandardCharsets.UTF_8));
         urlBuilder.append("&")
                 .append(URLEncoder.encode("posY", StandardCharsets.UTF_8))
                 .append("=")
-                .append(URLEncoder.encode(requestParam.getMapy(), StandardCharsets.UTF_8));
+                .append(URLEncoder.encode(responseResult2.getResponse().getBody().getItems().getItem().getMapy(), StandardCharsets.UTF_8));
         url = new URL(urlBuilder.toString());
 
         LocationConvDTO locationConvDTO = mapper.readValue(url, LocationConvDTO.class);
-
+      //  System.out.println("airinpo2의pos값확인:"+locationConvDTO.getResult().getPosX()+"  "+locationConvDTO.getResult().getPosY());
         // 좌표기준 근접 측정소 정보 가져오기
         urlBuilder = new StringBuilder("http://openapi.airkorea.or.kr/openapi/services/rest/MsrstnInfoInqireSvc/getNearbyMsrstnList");
         urlBuilder.append("?")
@@ -512,7 +646,7 @@ public class RestAPIController {
         url = new URL(urlBuilder.toString());
 
         ObservatoryDTO observatoryDTO = null;
-        // System.out.println("pos값확인:"+locationConvDTO.getResult().getPosX()+"  "+locationConvDTO.getResult().getPosY());
+
         try {
             observatoryDTO = restTemplate.getForObject(url.toURI(), ObservatoryDTO.class);
         } catch (URISyntaxException e) {
@@ -545,7 +679,7 @@ public class RestAPIController {
                 .append("=")
                 .append(URLEncoder.encode("1.3", StandardCharsets.UTF_8));
         url = new URL(urlBuilder.toString());
-        // System.out.println("stationname확인-"+observatoryDTO.getBody().getItems().get(0).getStationName());
+      //   System.out.println("stationname확인-"+observatoryDTO.getBody().getItems().get(0).getStationName());
         AirDTO airDTO = null;
 
         try {
@@ -666,7 +800,7 @@ public class RestAPIController {
         } catch (URISyntaxException e) {
             e.printStackTrace();
         }
-    System.out.println(airDTO.getBody().getItems().get(0).getKhaiGrade()+"농도이다");
+  //  System.out.println(airDTO.getBody().getItems().get(0).getKhaiGrade()+"농도이다");
     /*    for(int i=0; i<10;i++) {
             System.out.println("시간"+airDTO.getBody().getItems().get(i).getDataTime()+"  "+airDTO.getBody().getItems().get(i).getKhaiGrade() + "농도이다");
         }*/
@@ -674,7 +808,7 @@ public class RestAPIController {
     }
 
 
-    @PostMapping("/weatherInfo")
+    @PostMapping("/weatherInfo")//기상정보-축제
     public List<Weather> weatherInfo(@RequestBody WeatherForecastParam weatherForecastParam) throws ParseException, IOException {
         Calendar calendar = new GregorianCalendar(Locale.KOREA);
         SimpleDateFormat format = new SimpleDateFormat("yyyyMMdd", Locale.KOREA);
@@ -783,6 +917,297 @@ public class RestAPIController {
 
         double x = Double.parseDouble(weatherForecastParam.getMapX());
         double y = Double.parseDouble(weatherForecastParam.getMapY());
+        Map<String, Object> xy = getGridxy(y, x);   // 동네예보 전용 좌표로
+
+        calendar = new GregorianCalendar(Locale.KOREA);
+
+        standardDate = currentTimeFormat.parse(today+"0210");
+        standardMillis = standardDate.getTime();
+
+        String base_date;
+        String base_time = "0210";
+        // 새벽 2시 10분 이전이면 하루 전 데이터 가져옴
+        if (standardMillis > currentMillis) {
+            calendar.add(Calendar.DATE, -1);
+            base_time = "0800";
+        }
+        base_date = format.format(calendar.getTime());
+
+        String nx = String.valueOf(xy.get("x"));
+        String ny = String.valueOf(xy.get("y"));
+        nx = nx.substring(0, nx.length()-2);    // 문자열에서 .0 제거
+        ny = ny.substring(0, ny.length()-2);
+
+        // 3일치 기후 정보 가져오기
+        urlBuilder = new StringBuilder("http://newsky2.kma.go.kr/service/SecndSrtpdFrcstInfoService2/ForecastSpaceData");
+        urlBuilder.append("?")
+                .append(URLEncoder.encode("serviceKey", StandardCharsets.UTF_8))
+                .append("=")
+                .append(apiServiceKey);
+        urlBuilder.append("&")
+                .append(URLEncoder.encode("base_date", StandardCharsets.UTF_8))
+                .append("=")
+                .append(URLEncoder.encode(base_date, StandardCharsets.UTF_8));
+        urlBuilder.append("&")
+                .append(URLEncoder.encode("base_time", StandardCharsets.UTF_8))
+                .append("=")
+                .append(URLEncoder.encode(base_time, StandardCharsets.UTF_8));
+        urlBuilder.append("&")
+                .append(URLEncoder.encode("nx", StandardCharsets.UTF_8))
+                .append("=")
+                .append(URLEncoder.encode(nx, StandardCharsets.UTF_8));
+        urlBuilder.append("&")
+                .append(URLEncoder.encode("ny", StandardCharsets.UTF_8))
+                .append("=")
+                .append(URLEncoder.encode(ny, StandardCharsets.UTF_8));
+        urlBuilder.append("&")
+                .append(URLEncoder.encode("numOfRows", StandardCharsets.UTF_8))
+                .append("=")
+                .append(URLEncoder.encode("255", StandardCharsets.UTF_8));
+        urlBuilder.append("&")
+                .append(URLEncoder.encode("pageNo", StandardCharsets.UTF_8))
+                .append("=")
+                .append(URLEncoder.encode("1", StandardCharsets.UTF_8));
+        urlBuilder.append("&")
+                .append(URLEncoder.encode("_type", StandardCharsets.UTF_8))
+                .append("=")
+                .append(URLEncoder.encode("json", StandardCharsets.UTF_8));
+        url = new URL(urlBuilder.toString());
+
+        ShortTermWeatherResponse shortTermWeatherResponse = mapper.readValue(url, ShortTermWeatherResponse.class);
+
+        List<ShortTermWeatherItem> shortTermWeatherItems = shortTermWeatherResponse.getResponse().getBody().getItems().getItem();
+
+        List<Weather> weatherList = new ArrayList<>();
+
+        // 다음날 날짜 가져옴
+        calendar = new GregorianCalendar(Locale.KOREA);
+        calendar.add(Calendar.DATE, 1);
+        String tomorrow = format.format(calendar.getTime());
+
+        // 위에서 다음날로 해놨기 때문에 하루 뒤로 하고 요일 정보 가져옴
+        calendar.add(Calendar.DATE, -1);
+        int dayOfWeekCode = calendar.get(Calendar.DAY_OF_WEEK);
+
+        // 형식이 달라서 1, 2일만 따로 설정
+        setDay12Info(shortTermWeatherItems, weatherList, today, dayOfWeekCode);
+        setDay12Info(shortTermWeatherItems, weatherList, tomorrow, dayOfWeekCode+1);
+
+        Weather weatherInfo;
+
+        weatherInfo = new Weather();
+        weatherInfo.setMinTemp( weatherTempResponse.getResponse().getBody().getItems().getItem().getTaMin3() );
+        weatherInfo.setMaxTemp( weatherTempResponse.getResponse().getBody().getItems().getItem().getTaMax3() );
+        weatherInfo.setState( middleTermWeatherResponse.getResponse().getBody().getItems().getItem().getWf3Pm() );
+        weatherInfo.setDayOfTheWeek( setDayOfWeek(dayOfWeekCode+2) );
+        weatherList.add(weatherInfo);
+        weatherInfo = new Weather();
+        weatherInfo.setMinTemp( weatherTempResponse.getResponse().getBody().getItems().getItem().getTaMin4() );
+        weatherInfo.setMaxTemp( weatherTempResponse.getResponse().getBody().getItems().getItem().getTaMax4() );
+        weatherInfo.setState( middleTermWeatherResponse.getResponse().getBody().getItems().getItem().getWf4Pm() );
+        weatherInfo.setDayOfTheWeek( setDayOfWeek(dayOfWeekCode+3) );
+        weatherList.add(weatherInfo);
+        weatherInfo = new Weather();
+        weatherInfo.setMinTemp( weatherTempResponse.getResponse().getBody().getItems().getItem().getTaMin5() );
+        weatherInfo.setMaxTemp( weatherTempResponse.getResponse().getBody().getItems().getItem().getTaMax5() );
+        weatherInfo.setState( middleTermWeatherResponse.getResponse().getBody().getItems().getItem().getWf5Pm() );
+        weatherInfo.setDayOfTheWeek( setDayOfWeek(dayOfWeekCode+4) );
+        weatherList.add(weatherInfo);
+        weatherInfo = new Weather();
+        weatherInfo.setMinTemp( weatherTempResponse.getResponse().getBody().getItems().getItem().getTaMin6() );
+        weatherInfo.setMaxTemp( weatherTempResponse.getResponse().getBody().getItems().getItem().getTaMax6() );
+        weatherInfo.setState( middleTermWeatherResponse.getResponse().getBody().getItems().getItem().getWf6Pm() );
+        weatherInfo.setDayOfTheWeek( setDayOfWeek(dayOfWeekCode+5) );
+        weatherList.add(weatherInfo);
+        weatherInfo = new Weather();
+        weatherInfo.setMinTemp( weatherTempResponse.getResponse().getBody().getItems().getItem().getTaMin7() );
+        weatherInfo.setMaxTemp( weatherTempResponse.getResponse().getBody().getItems().getItem().getTaMax7() );
+        weatherInfo.setState( middleTermWeatherResponse.getResponse().getBody().getItems().getItem().getWf7Pm() );
+        weatherInfo.setDayOfTheWeek( setDayOfWeek(dayOfWeekCode+6) );
+        weatherList.add(weatherInfo);
+
+        return weatherList;
+    }
+
+    @PostMapping("/weatherInfo2")//기상정보-관광지
+    public List<Weather> weatherInfo2(@RequestBody WeatherForecastParam weatherForecastParam) throws ParseException, IOException {
+        Calendar calendar = new GregorianCalendar(Locale.KOREA);
+        SimpleDateFormat format = new SimpleDateFormat("yyyyMMdd", Locale.KOREA);
+        SimpleDateFormat currentTimeFormat = new SimpleDateFormat("yyyyMMddHHmm", Locale.KOREA);
+
+        String today = format.format(calendar.getTime());     // 현재 날짜
+        long currentMillis = calendar.getTimeInMillis();    // 현재 시간을 초로
+        Date standardDate = currentTimeFormat.parse(today+"0600");    // api가 아침 6시를 기준으로 데이터가 갱신되므로
+        long standardMillis = standardDate.getTime();       // 기준 시간을 초로
+
+//       // System.out.println("넘어온contentid이거다"+weatherForecastParam.getContentid());
+   //     System.out.println("airinfo2의 contentid 파라미터값체크"+weatherForecastParam.getContentid());
+        var aaa=weatherForecastParam.getContentid();
+   //     System.out.println("airinfo2의 aaa 파라미터값체크"+aaa);
+
+        StringBuilder urlBuilder = new StringBuilder("http://api.visitkorea.or.kr/openapi/service/rest/KorService/detailCommon"); /*URL*/
+        urlBuilder.append("?")
+                .append(URLEncoder.encode("ServiceKey", StandardCharsets.UTF_8))
+                .append("=")
+                .append(apiServiceKey); /*공공데이터포털에서 발급받은 인증키*/
+        urlBuilder.append("&")
+                .append(URLEncoder.encode("numOfRows", StandardCharsets.UTF_8))
+                .append("=")
+                .append(URLEncoder.encode("10", StandardCharsets.UTF_8)); /*한 페이지 결과 수*/
+        urlBuilder.append("&")
+                .append(URLEncoder.encode("pageNo", StandardCharsets.UTF_8))
+                .append("=")
+                .append(URLEncoder.encode("1", StandardCharsets.UTF_8)); /*현재 페이지 번호*/
+        urlBuilder.append("&")
+                .append(URLEncoder.encode("MobileOS", StandardCharsets.UTF_8))
+                .append("=")
+                .append(URLEncoder.encode("ETC", StandardCharsets.UTF_8)); /*IOS (아이폰), AND (안드로이드), WIN (원도우폰),ETC*/
+        urlBuilder.append("&")
+                .append(URLEncoder.encode("MobileApp", StandardCharsets.UTF_8))
+                .append("=")
+                .append(URLEncoder.encode("AppTest", StandardCharsets.UTF_8)); /*서비스명=어플명*/
+        urlBuilder.append("&")
+                .append(URLEncoder.encode("contentId", StandardCharsets.UTF_8))
+                .append("=")
+                .append(URLEncoder.encode(aaa, StandardCharsets.UTF_8));    // 콘텐츠 ID
+        urlBuilder.append("&")
+                .append(URLEncoder.encode("contentTypeId", StandardCharsets.UTF_8))
+                .append("=")
+                .append(URLEncoder.encode("12", StandardCharsets.UTF_8));    // 관광타입(관광지, 숙박 등) ID
+        urlBuilder.append("&")//tourItem.getContentTypeId()->12로변경
+                .append(URLEncoder.encode("defaultYN", StandardCharsets.UTF_8))
+                .append("=")
+                .append(URLEncoder.encode("Y", StandardCharsets.UTF_8));    // 기본정보 조회여부
+        urlBuilder.append("&")
+                .append(URLEncoder.encode("firstImageYN", StandardCharsets.UTF_8))
+                .append("=")
+                .append(URLEncoder.encode("Y", StandardCharsets.UTF_8));    // 원본, 썸네일 대표이미지 조회여부
+        urlBuilder.append("&")
+                .append(URLEncoder.encode("areacodeYN", StandardCharsets.UTF_8))
+                .append("=")
+                .append(URLEncoder.encode("Y", StandardCharsets.UTF_8));    // 지역코드, 시군구코드 조회여부
+        urlBuilder.append("&")
+                .append(URLEncoder.encode("catcodeYN", StandardCharsets.UTF_8))
+                .append("=")
+                .append(URLEncoder.encode("Y", StandardCharsets.UTF_8));    // 대,중,소분류코드 조회여부
+        urlBuilder.append("&")
+                .append(URLEncoder.encode("addrinfoYN", StandardCharsets.UTF_8))
+                .append("=")
+                .append(URLEncoder.encode("Y", StandardCharsets.UTF_8));    // 주소, 상세주소 조회여부
+        urlBuilder.append("&")
+                .append(URLEncoder.encode("mapinfoYN", StandardCharsets.UTF_8))
+                .append("=")
+                .append(URLEncoder.encode("Y", StandardCharsets.UTF_8));    // 좌표 X,Y 조회여부
+        urlBuilder.append("&")
+                .append(URLEncoder.encode("overviewYN", StandardCharsets.UTF_8))
+                .append("=")
+                .append(URLEncoder.encode("Y", StandardCharsets.UTF_8));    // 콘텐츠 개요 조회여부
+        urlBuilder.append("&")
+                .append(URLEncoder.encode("_type", StandardCharsets.UTF_8))
+                .append("=")
+                .append(URLEncoder.encode("json", StandardCharsets.UTF_8));
+        URL url = new URL(urlBuilder.toString());
+
+        ComInfoResponse responseResult2 = mapper.readValue(url, ComInfoResponse.class);
+     //   System.out.println("airinfo첫번째api값체크"+responseResult2.getResponse().getBody().getItems().getItem());
+      //  System.out.println("airinfo2의 getmapx값체크요-"+responseResult2.getResponse().getBody().getItems().getItem().getMapx()+" "+responseResult2.getResponse().getBody().getItems().getItem().getMapy());
+
+
+        weatherForecastParam.setAddr(responseResult2.getResponse().getBody().getItems().getItem().getAddr1());
+        weatherForecastParam.setMapX(responseResult2.getResponse().getBody().getItems().getItem().getMapx());
+        weatherForecastParam.setMapY(responseResult2.getResponse().getBody().getItems().getItem().getMapx());
+//      System.out.println("기상정보값관련값체크"+responseResult2.getResponse().getBody().getItems().getItem().getAddr1());
+
+
+        // 새벽 6시 이전이면 하루 전 데이터 가져옴
+        String currentTime;
+        if (standardMillis > currentMillis) {
+            calendar.add(Calendar.DATE, -1);
+        }
+        currentTime = format.format(calendar.getTime()) + "0600";
+
+        String addr = responseResult2.getResponse().getBody().getItems().getItem().getAddr1();
+        String regId = null;
+        Map<String, String> weatherAreaCode = weatherForecastAreaCode.getAreaList();
+
+        for (var key : weatherAreaCode.entrySet()) {
+            if (addr.contains(key.getKey())) {
+                regId = weatherAreaCode.get(key.getKey());
+                break;
+            }
+        }
+
+        // 중기예보정보 3~10일의 데이터가 들어있음
+        urlBuilder = new StringBuilder("http://newsky2.kma.go.kr/service/MiddleFrcstInfoService/getMiddleLandWeather");
+        urlBuilder.append("?")
+                .append(URLEncoder.encode("ServiceKey", StandardCharsets.UTF_8))
+                .append("=")
+                .append(apiServiceKey);
+        urlBuilder.append("&")
+                .append(URLEncoder.encode("regId", StandardCharsets.UTF_8))
+                .append("=")
+                .append(URLEncoder.encode(regId, StandardCharsets.UTF_8));
+        urlBuilder.append("&")
+                .append(URLEncoder.encode("tmFc", StandardCharsets.UTF_8))
+                .append("=")
+                .append(URLEncoder.encode(currentTime, StandardCharsets.UTF_8));
+        urlBuilder.append("&")
+                .append(URLEncoder.encode("numOfRows", StandardCharsets.UTF_8))
+                .append("=")
+                .append(URLEncoder.encode("10", StandardCharsets.UTF_8));
+        urlBuilder.append("&")
+                .append(URLEncoder.encode("pageNo", StandardCharsets.UTF_8))
+                .append("=")
+                .append(URLEncoder.encode("1", StandardCharsets.UTF_8));
+        urlBuilder.append("&")
+                .append(URLEncoder.encode("_type", StandardCharsets.UTF_8))
+                .append("=")
+                .append(URLEncoder.encode("json", StandardCharsets.UTF_8));
+         url = new URL(urlBuilder.toString());
+
+        MiddleTermWeatherResponse middleTermWeatherResponse = mapper.readValue(url, MiddleTermWeatherResponse.class);
+
+        Map<String, String> tempAreaCode = tempForecastAreaCode.getAreaList();
+
+        for (var key : tempAreaCode.entrySet()) {
+            if (addr.contains(key.getKey())) {
+                regId = tempAreaCode.get(key.getKey());
+                break;
+            }
+        }
+
+        // 3~7일 기온의 정보가 있음
+        urlBuilder = new StringBuilder("http://newsky2.kma.go.kr/service/MiddleFrcstInfoService/getMiddleTemperature");
+        urlBuilder.append("?")
+                .append(URLEncoder.encode("ServiceKey", StandardCharsets.UTF_8))
+                .append("=")
+                .append(apiServiceKey);
+        urlBuilder.append("&")
+                .append(URLEncoder.encode("regId", StandardCharsets.UTF_8))
+                .append("=")
+                .append(URLEncoder.encode(regId, StandardCharsets.UTF_8));
+        urlBuilder.append("&")
+                .append(URLEncoder.encode("tmFc", StandardCharsets.UTF_8))
+                .append("=")
+                .append(URLEncoder.encode(currentTime, StandardCharsets.UTF_8));
+        urlBuilder.append("&")
+                .append(URLEncoder.encode("numOfRows", StandardCharsets.UTF_8))
+                .append("=")
+                .append(URLEncoder.encode("10", StandardCharsets.UTF_8));
+        urlBuilder.append("&")
+                .append(URLEncoder.encode("pageNo", StandardCharsets.UTF_8))
+                .append("=")
+                .append(URLEncoder.encode("1", StandardCharsets.UTF_8));
+        urlBuilder.append("&")
+                .append(URLEncoder.encode("_type", StandardCharsets.UTF_8))
+                .append("=")
+                .append(URLEncoder.encode("json", StandardCharsets.UTF_8));
+        url = new URL(urlBuilder.toString());
+
+        WeatherTempResponse weatherTempResponse = mapper.readValue(url, WeatherTempResponse.class);
+
+        double x = Double.parseDouble(responseResult2.getResponse().getBody().getItems().getItem().getMapx());
+        double y = Double.parseDouble(responseResult2.getResponse().getBody().getItems().getItem().getMapy());
         Map<String, Object> xy = getGridxy(y, x);   // 동네예보 전용 좌표로
 
         calendar = new GregorianCalendar(Locale.KOREA);

@@ -12,6 +12,7 @@ public class NearbyTourParam {
     private String mapY;                // GPS Y좌표(WGS84 위도 좌표)
     private String radius = "2000";              // 거리 반경(단위m), Max값 20000m=20Km
     private String contentid; //관광지 id 추가
+    private String addr1;//주소추가
 
     public String getNumOfRows() {
         return numOfRows;
@@ -68,4 +69,14 @@ public class NearbyTourParam {
     public void setContentid(String contentid) {
         this.contentid = contentid;
     }
+
+    public String getAddr1() {
+        return addr1;
+    }
+
+    public void setAddr1(String addr1) {
+        this.addr1 = addr1;
+    }
+
+
 }

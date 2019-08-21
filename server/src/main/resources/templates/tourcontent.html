@@ -233,28 +233,28 @@
             </div>
             <table class="table table-bordered text-center">
                 <thead id="dayday">
-                <tr>
-                    <!--      <th scope="col">월</th>
+           <!--     <tr>
+                          <th scope="col">월</th>
                           <th scope="col">화</th>
                           <th scope="col">수</th>
                           <th scope="col">목</th>
                           <th scope="col">금</th>
                           <th scope="col">토</th>
-                          <th scope="col">일</th>-->
-                </tr>
+                          <th scope="col">일</th>
+                </tr>-->
                 </thead>
                 <tbody id="suncloud">
-                <tr>
-                    <!--               <td><i class="fas fa-cloud-sun-rain"></i></td>
+             <!--   <tr>
+                                   <td><i class="fas fa-cloud-sun-rain"></i></td>
                                    <td><i class="fas fa-cloud-rain"></i></td>
                                    <td><i class="fas fa-cloud-rain"></i></td>
                                    <td><i class="fas fa-cloud-rain"></i></td>
                                    <td><i class="fas fa-cloud-rain"></i></td>
                                    <td><i class="fas fa-cloud-rain"></i></td>
-                                   <td><i class="fas fa-cloud-rain"></i></td>-->
-                </tr>
+                                   <td><i class="fas fa-cloud-rain"></i></td>
+                </tr>-->
                 <tr id="temperature">
-                    <!--             <td>21°C 22°C</td>
+                <!--                 <td>21°C 22°C</td>
                                  <td>21°C 22°C</td>
                                  <td>21°C 22°C</td>
                                  <td>21°C 22°C</td>
@@ -276,7 +276,7 @@
                 </div>
             </div>
             <div class="horizontal-scroll" id="tourtour">
-                <div class="card">
+    <!--            <div class="card">
                     <img src="http://placehold.it/200x140" />
                     <div class="card-body">
                         <p class="card-text">이름</p>
@@ -303,7 +303,7 @@
                         <p class="card-text">이름</p>
                         <p class="card-text"><small class="text-muted">약 1km</small></p>
                     </div>
-                </div>
+                </div>-->
             </div>
         </div>
 
@@ -487,11 +487,11 @@
     var contentX;//해당content축제의 x값을 html에저장
     var contentY;//해당content축제의 y값을 html에저장
     //  alert(val+"param값");
-   /* $( document ).ready(function() {//기후정보
+    $( document ).ready(function() {//기후정보
         var param = {"addr": addr, "mapX": mapx, "mapY": mapy,"contentid" : val};
 
         $.ajax({
-            url: "/api/weatherInfo",
+            url: "/api/weatherInfo2",
             type: "POST",
             dataType: "json",
             contentType: "application/json",
@@ -551,28 +551,31 @@
             checker=0;
         }).fail(function () {
         });
-    });*/
+    });
 
-    /* $( document ).ready(function() {//근처관광지
+     $( document ).ready(function() {//근처관광지
          var param = {"contentid" : val ,"numOfRows":"10","pageNo":"1","arragne":"E","radius":"3000"};
          $.ajax({
-             url: "/api/nearbyTour",
+             url: "/api/nearbyTour2",
              type: "POST",
              dataType: "json",
              contentType: "application/json",
              data: JSON.stringify(param),
          }).done(function (data) {
-            // alert(data.length+"개의 관광지가 근처에있어");
+          //   alert(data.length+"개의 관광지가 근처에있어");
              for (var i = 0; i < data.length; i++) {
                //  alert("데이터의거리값:"+data[i].dist+"그림src"+data[i].firstimage);
                  $festival_item5 = $('<div class="card" width="300" height="160" >\n'+
                      '<img src="http://placehold.it/200x140" width="300" height="170"/>\n'+
+                     '<a href="#">\n'+
                          '<div class="card-body">\n'+
                              '<p class="card-text">이름</p>\n'+
                              '<i class="card-text"><small class="text-muted">약 1km임</small></i>\n'+
                          '</div>'+
+                     '</a>'+
                      '</div>');
                  $festival_item5.children('img').attr('src',data[i].firstimage2);
+                 $festival_item5.find('a').attr('href',"/content/tourcontent/" + data[i].contentid);
                  $festival_item5.find('p').text(data[i].title);
                  $festival_item5.find('small').text(data[i].dist+'미터');
 
@@ -582,7 +585,7 @@
 
          }).fail(function () {
          });
-     });*/
+     });
     //////////////////////////////////////////
     //alert(param[1]);
     $( document ).ready(function() {//관광지세부정보
