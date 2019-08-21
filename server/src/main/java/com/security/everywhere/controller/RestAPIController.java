@@ -153,7 +153,7 @@ public class RestAPIController {
 
     // 관광지 이미지 추가로 가져오기
     @PostMapping("/tourImages")
-    public ImagesItem tourImages(@RequestBody String contentid) throws IOException {
+    public List<ImagesItem> tourImages(@RequestBody String contentid) throws IOException {
         System.out.println("/tourImages의contentid값"+contentid);
 
         StringBuilder urlBuilder = new StringBuilder("http://api.visitkorea.or.kr/openapi/service/rest/KorService/detailImage"); /*URL*/
@@ -195,24 +195,12 @@ public class RestAPIController {
                 .append(URLEncoder.encode("json", StandardCharsets.UTF_8));    // 콘텐츠 개요 조회여부
         URL url = new URL(urlBuilder.toString());
         System.out.println(url+"명륜진사갈비");
-        ImagesResponse imagesResponse=null;
-        ImagesResponse imagesResponse1=new ImagesResponse();
 
-        //imagesResponse1.getResponse().getBody().getItems().getItem().get(0).setOriginimgurl("jpg");
 
-//        imagesResponse1.getResponse().getBody().getItems().getItem().get(1).setOriginimgurl("0");
-        try {
-            imagesResponse = mapper.readValue(url, ImagesResponse.class);
+        ImagesResponse imagesResponse;
+        imagesResponse = mapper.readValue(url, ImagesResponse.class);
 
-        }catch(Exception e)
-        {
-     //       System.out.println("예외가 발생하였습니다ㅋ"+imagesResponse1.getResponse().getBody().getItems().getItem().get(0));
-            //imagesResponse=
-
-            return imagesResponse1.getResponse().getBody().getItems().getItem().get(0);//사진없어서 예외나는경우
-        }
-        System.out.println("/tourimages의 값:"+imagesResponse.getResponse().getBody().getItems().getItem().toString());
-        return imagesResponse.getResponse().getBody().getItems().getItem().get(0);//사진있는경우
+        return imagesResponse.getResponse().getBody().getItems().getItem();
     }
 
 
@@ -278,7 +266,7 @@ public class RestAPIController {
         URL url = new URL(urlBuilder.toString());
 
         TourResponse tourResponse = mapper.readValue(url, TourResponse.class);
-        //tourResponse.getResponse().getBody().getItems().getItem().get(0);
+
         return tourResponse.getResponse().getBody().getItems().getItem();
     }
 
