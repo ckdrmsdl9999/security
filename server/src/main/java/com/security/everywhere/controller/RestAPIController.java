@@ -17,6 +17,7 @@ import com.security.everywhere.configuration.GlobalPropertySource;
 import com.security.everywhere.data.TempForecastAreaCode;
 import com.security.everywhere.data.WeatherForecastAreaCode;
 import com.security.everywhere.model.Festival;
+import com.security.everywhere.model.Review;
 import com.security.everywhere.model.TourImages;
 import com.security.everywhere.model.Weather;
 import com.security.everywhere.repository.TourImagesRepository;
@@ -121,17 +122,16 @@ public List<Festival> festivalInfo(@RequestBody FestivalParam requestParam) {
         return festivals;
         }
 
-//    @PostMapping("/goContent")
-//    public String goContent(@RequestBody Festival festival, Model model){
-//        System.out.println(festival.getTitle());
-//        model.addAttribute("festival", festival);
-//        return "content";
-//    }
+        @PostMapping("/reviewList")
+        public List<Review> review_list() {
 
+                List<Review> reviewList = new ArrayList<Review>();
 
+                return reviewList;
+        }
 
-@PostMapping("/festivalContent")
-public Festival festivalContent(@RequestBody String contentid) {
+        @PostMapping("/festivalContent")
+        public Festival festivalContent(@RequestBody String contentid) {
         Festival festival;
         festival = festivalRepository.findByContentId(contentid);
 

@@ -321,10 +321,10 @@
                                 Comment panel
                             </div>
                             <div class="panel-body">
-                                <textarea class="form-control" placeholder="write a comment..." ></textarea>
-                                <br>
-                                <button type="button" class="btn btn-info float-right">Post</button>
-                                <div class="clearfix"></div>
+                                    <textarea class="form-control" placeholder="write a comment..." ></textarea>
+                                    <br>
+                                    <button class="btn btn-info float-right">Post</button>
+                                    <div class="clearfix"></div>
                                 <hr>
                             </div>
                         </div>
@@ -419,9 +419,14 @@
                                     <span class="text-muted float-right">
                                      <small class="text-muted">2019.08.11</small>
                                     </span>
-                                    <p class="star_review">
-                                        <i class="fas fa-star"></i> 4.8
-                                    </p>
+                                    <div class="row">
+                                        <p class="star_review col-10">
+                                            <i class="fas fa-star"></i> 4.8
+                                        </p>
+                                         <p class="star_review col-2">
+                                             <i class="far fa-thumbs-up"></i> 11
+                                         </p>
+                                    </div>
                                     <p>
                                         Lorem ipsum dolor sit amet, consectetur adipiscing elit.
                                         Lorem ipsum dolor sit amet
@@ -517,7 +522,7 @@
             }
             //alert("띄우기일단완료");
             checker=0;
-        }).fail(function () {
+        }).fail(function () {alert("실패22")
         });
     });
     var aa="좋음"
@@ -553,7 +558,7 @@
             }
             $("#atmosphere").append($festival_item7);
             checker=0;
-        }).fail(function () {
+        }).fail(function () {alert("fail뜸")
         });
     });
 
@@ -590,12 +595,19 @@
                 // alert("잘들어갔는지확인용"+tourcontentid[i]);
             }
 
-        }).fail(function () {
+        }).fail(function () {alert("실패ㅐ");
         });
     });
 
 
+    // 리뷰 포스트 버튼
+    $(document).on('click','.area_button',function () {
+
+    });
+
+
     $( document ).ready(function() {
+
         $.ajax({
             url: "/api/festivalContent",
             type: "POST",
@@ -635,11 +647,55 @@
                     }
                 }
             }).fail(function () {
-                alert('fail');
+                alert('fail1');
             });
         }).fail(function () {
-            alert('fail');
+            alert('fail2');
+        });
 
+        $.ajax({
+            url: "/api/reviewList",
+            type: "POST",
+            dataType: "text",
+            contentType: "application/json",
+            data: param[1],
+        }).done(function (data) {
+
+            for(var i=0;i<data.length;i++) {
+                $review_form = $('<li class="media mb-1">\n' +
+                    '                <a href="#" class="float-left mr-4">\n' +
+                    '                      <img  src="https://bootdey.com/img/Content/user_1.jpg" alt="" class="rounded-circle">\n' +
+                    '                 </a>\n' +
+                    '                      <div class="media-body">\n' +
+                    '                 <strong class="text-success">MartinoMont</strong>\n' +
+                    '                       <span class="text-muted float-right">\n' +
+                    '                                     <small class="text-muted">2019.08.11</small>\n' +
+                    '                                    </span>\n' +
+                    '                                    <div class="row">\n' +
+                    '                                        <p class="star_review col-10">\n' +
+                    '                                            <i class="fas fa-star"></i>\n' +
+                    '                                        </p>\n' +
+                    '                                         <p class="star_review col-2">\n' +
+                    '                                             <i class="far fa-thumbs-up"></i>\n' +
+                    '                                         </p>\n' +
+                    '                                    </div>\n' +
+                    '                                    <p>\n' +
+                    '                                        Lorem ipsum dolor sit amet, consectetur adipiscing elit.\n' +
+                    '                                        Lorem ipsum dolor sit amet\n' +
+                    '                                    </p>\n' +
+                    '                                </div>\n' +
+                    '                            </li>');
+
+                $review_form.find('#UserId').text(data[i].userId);
+                $review_form.find('.star_review').append(data[i].star);
+                $review_form.find('.like_reivew').append(data[i].like);
+                $review_form.find('.textcontent').append(data[i].textcontent);
+
+                $('.list-unstyled').append($review_form);
+            }
+
+        }).fail(function () {
+            alert('fail3');
         });
     });
 
