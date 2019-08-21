@@ -20,6 +20,7 @@ import com.security.everywhere.model.Festival;
 import com.security.everywhere.model.Review;
 import com.security.everywhere.model.TourImages;
 import com.security.everywhere.model.Weather;
+import com.security.everywhere.repository.ReviewRepository;
 import com.security.everywhere.repository.TourImagesRepository;
 import com.security.everywhere.repository.FestivalRepository;
 import com.security.everywhere.request.*;
@@ -61,28 +62,34 @@ import java.util.*;
 @RequestMapping("/api")
 public class RestAPIController {
 
-private final FestivalRepository festivalRepository;
-private final TourImagesRepository tourImagesRepository;
-private final TempForecastAreaCode tempForecastAreaCode;
-private final WeatherForecastAreaCode weatherForecastAreaCode;
-private static Logger logger = LoggerFactory.getLogger(GlobalPropertySource.class);
 
-private final ObjectMapper mapper;
-private final RestTemplate restTemplate;
+    private final FestivalRepository festivalRepository;
+    private final TourImagesRepository tourImagesRepository;
+    private final TempForecastAreaCode tempForecastAreaCode;
+    private final WeatherForecastAreaCode weatherForecastAreaCode;
+    private final ReviewRepository reviewRepository;
+    private static Logger logger = LoggerFactory.getLogger(GlobalPropertySource.class);
 
-private final String apiServiceKey;
-private final String consumerKey;
-private final String consumerSecret;
+        private final ObjectMapper mapper;
+        private final RestTemplate restTemplate;
 
-public RestAPIController(FestivalRepository festivalRepository
-        , TempForecastAreaCode tempForecastAreaCode
-        , WeatherForecastAreaCode weatherForecastAreaCode
-        , TourImagesRepository tourImagesRepository
-        , GlobalPropertySource globalPropertySource) {
+        private final String apiServiceKey;
+        private final String consumerKey;
+        private final String consumerSecret;
+
+
+    public RestAPIController(FestivalRepository festivalRepository
+            , TempForecastAreaCode tempForecastAreaCode
+            , WeatherForecastAreaCode weatherForecastAreaCode
+            , TourImagesRepository tourImagesRepository
+            , GlobalPropertySource globalPropertySource
+            , ReviewRepository reviewRepository) {
+
         this.festivalRepository = festivalRepository;
         this.tempForecastAreaCode = tempForecastAreaCode;
         this.weatherForecastAreaCode = weatherForecastAreaCode;
         this.tourImagesRepository = tourImagesRepository;
+        this.reviewRepository = reviewRepository;
         this.mapper = new ObjectMapper();
         this.restTemplate = new RestTemplate();
         this.apiServiceKey = globalPropertySource.getApiServiceKey();
@@ -97,37 +104,43 @@ public RestAPIController(FestivalRepository festivalRepository
         }
 
 
-@PostMapping("/festivalInfo")
-public List<Festival> festivalInfo(@RequestBody FestivalParam requestParam) {
-        int pageNo = Integer.parseInt(requestParam.getPageNo());
-        int numOfRows = Integer.parseInt(requestParam.getNumOfRows());
-        String eventStartDate = requestParam.getEventStartDate();
+        @PostMapping("/festivalInfo")
+        public List<Festival> festivalInfo(@RequestBody FestivalParam requestParam) {
+                int pageNo = Integer.parseInt(requestParam.getPageNo());
+                int numOfRows = Integer.parseInt(requestParam.getNumOfRows());
+                String eventStartDate = requestParam.getEventStartDate();
 
-        Pageable pageElements = PageRequest.of(pageNo, numOfRows, Sort.by("eventStartDate"));
+                Pageable pageElements = PageRequest.of(pageNo, numOfRows, Sort.by("eventStartDate"));
 
-        List<Festival> festivals = new ArrayList<>();
+                List<Festival> festivals = new ArrayList<>();
 
-        if("con".equals(requestParam.getCategory())) {
-        festivals = festivalRepository.findAllByEventStartDateGreaterThanEqualAndEventEndDateLessThanEqualAndAddr1Containing
-        (eventStartDate, requestParam.getEventEndDate(), pageElements,requestParam.getAddress());
-        }
-        else if("search".equals(requestParam.getCategory())){
-        festivals = festivalRepository.findByTitleContaining(requestParam.getTitle());//jpa쿼리
-        }
-        else if("main".equals(requestParam.getCategory())) {
-        festivals = festivalRepository.findAllByEventStartDateGreaterThanEqual(eventStartDate, pageElements);
-        }
+                if("con".equals(requestParam.getCategory())) {
+                        festivals = festivalRepository.findAllByEventStartDateGreaterThanEqualAndEventEndDateLessThanEqualAndAddr1Containing
+                        (eventStartDate, requestParam.getEventEndDate(), pageElements,requestParam.getAddress());
+                }
+                else if("search".equals(requestParam.getCategory())){
+                        festivals = festivalRepository.findByTitleContaining(requestParam.getTitle());//jpa쿼리
+                }
+                else if("main".equals(requestParam.getCategory())) {
+                        festivals = festivalRepository.findAllByEventStartDateGreaterThanEqual(eventStartDate, pageElements);
+                }
 
         return festivals;
-        }
+    }
 
-        @PostMapping("/reviewList")
-        public List<Review> review_list() {
 
-                List<Review> reviewList = new ArrayList<Review>();
 
-                return reviewList;
-        }
+
+    @PostMapping("/reviewList")
+    public List<Review> review_list(@RequestBody String contentid) {
+        return reviewRepository.findAllByContentId(contentid);
+    }
+
+
+    @PostMapping("/writeReview")
+    public void writeReview(@RequestBody Review review) {
+        reviewRepository.save(review);
+    }
 
         @PostMapping("/festivalContent")
         public Festival festivalContent(@RequestBody String contentid) {
@@ -143,66 +156,66 @@ public List<Festival> festivalInfo(@RequestBody FestivalParam requestParam) {
 
 
 // 축제 이미지 추가로 가져오기
-@PostMapping("/festivalImages")
-public List<TourImages> festivalImages(@RequestBody String contentid) {
-        return tourImagesRepository.findByContentid(contentid);
-        }
+        @PostMapping("/festivalImages")
+        public List<TourImages> festivalImages(@RequestBody String contentid) {
+                return tourImagesRepository.findByContentid(contentid);
+                }
 
 
 // 관광지 이미지 추가로 가져오기
-@PostMapping("/tourImages")
-public List <ImagesItem> tourImages(@RequestBody String contentid) throws IOException {
-        System.out.println("/tourImages의contentid값"+contentid);
+        @PostMapping("/tourImages")
+                public List <ImagesItem> tourImages(@RequestBody String contentid) throws IOException {
+                System.out.println("/tourImages의contentid값"+contentid);
 
-        StringBuilder urlBuilder = new StringBuilder("http://api.visitkorea.or.kr/openapi/service/rest/KorService/detailImage"); /*URL*/
-        urlBuilder.append("?")
-        .append(URLEncoder.encode("ServiceKey", StandardCharsets.UTF_8))
-        .append("=")
-        .append(apiServiceKey); /*공공데이터포털에서 발급받은 인증키*/
-        urlBuilder.append("&")
-        .append(URLEncoder.encode("numOfRows", StandardCharsets.UTF_8))
-        .append("=")
-        .append(URLEncoder.encode("10", StandardCharsets.UTF_8)); /*한 페이지 결과 수*/
-        urlBuilder.append("&")
-        .append(URLEncoder.encode("pageNo", StandardCharsets.UTF_8))
-        .append("=")
-        .append(URLEncoder.encode("1", StandardCharsets.UTF_8)); /*현재 페이지 번호*/
-        urlBuilder.append("&")
-        .append(URLEncoder.encode("MobileOS", StandardCharsets.UTF_8))
-        .append("=")
-        .append(URLEncoder.encode("ETC", StandardCharsets.UTF_8)); /*IOS (아이폰), AND (안드로이드), WIN (원도우폰),ETC*/
-        urlBuilder.append("&")
-        .append(URLEncoder.encode("MobileApp", StandardCharsets.UTF_8))
-        .append("=")
-        .append(URLEncoder.encode("AppTest", StandardCharsets.UTF_8)); /*서비스명=어플명*/
-        urlBuilder.append("&")
-        .append(URLEncoder.encode("contentId", StandardCharsets.UTF_8))
-        .append("=")
-        .append(URLEncoder.encode(contentid, StandardCharsets.UTF_8));    // 콘텐츠 ID
-        urlBuilder.append("&")
-        .append(URLEncoder.encode("imageYN", StandardCharsets.UTF_8))
-        .append("=")
-        .append(URLEncoder.encode("Y", StandardCharsets.UTF_8));    // Y=콘텐츠 이미지 조회, N='음식점'타입의 음식메뉴 이미지
-        urlBuilder.append("&")
-        .append(URLEncoder.encode("subImageYN", StandardCharsets.UTF_8))
-        .append("=")
-        .append(URLEncoder.encode("Y", StandardCharsets.UTF_8));    // Y=원본,썸네일 이미지 조회 N=Null
-        urlBuilder.append("&")
-        .append(URLEncoder.encode("_type", StandardCharsets.UTF_8))
-        .append("=")
-        .append(URLEncoder.encode("json", StandardCharsets.UTF_8));    // 콘텐츠 개요 조회여부
-        URL url = new URL(urlBuilder.toString());
+                StringBuilder urlBuilder = new StringBuilder("http://api.visitkorea.or.kr/openapi/service/rest/KorService/detailImage"); /*URL*/
+                urlBuilder.append("?")
+                .append(URLEncoder.encode("ServiceKey", StandardCharsets.UTF_8))
+                .append("=")
+                .append(apiServiceKey); /*공공데이터포털에서 발급받은 인증키*/
+                urlBuilder.append("&")
+                .append(URLEncoder.encode("numOfRows", StandardCharsets.UTF_8))
+                .append("=")
+                .append(URLEncoder.encode("10", StandardCharsets.UTF_8)); /*한 페이지 결과 수*/
+                urlBuilder.append("&")
+                .append(URLEncoder.encode("pageNo", StandardCharsets.UTF_8))
+                .append("=")
+                .append(URLEncoder.encode("1", StandardCharsets.UTF_8)); /*현재 페이지 번호*/
+                urlBuilder.append("&")
+                .append(URLEncoder.encode("MobileOS", StandardCharsets.UTF_8))
+                .append("=")
+                .append(URLEncoder.encode("ETC", StandardCharsets.UTF_8)); /*IOS (아이폰), AND (안드로이드), WIN (원도우폰),ETC*/
+                urlBuilder.append("&")
+                .append(URLEncoder.encode("MobileApp", StandardCharsets.UTF_8))
+                .append("=")
+                .append(URLEncoder.encode("AppTest", StandardCharsets.UTF_8)); /*서비스명=어플명*/
+                urlBuilder.append("&")
+                .append(URLEncoder.encode("contentId", StandardCharsets.UTF_8))
+                .append("=")
+                .append(URLEncoder.encode(contentid, StandardCharsets.UTF_8));    // 콘텐츠 ID
+                urlBuilder.append("&")
+                .append(URLEncoder.encode("imageYN", StandardCharsets.UTF_8))
+                .append("=")
+                .append(URLEncoder.encode("Y", StandardCharsets.UTF_8));    // Y=콘텐츠 이미지 조회, N='음식점'타입의 음식메뉴 이미지
+                urlBuilder.append("&")
+                .append(URLEncoder.encode("subImageYN", StandardCharsets.UTF_8))
+                .append("=")
+                .append(URLEncoder.encode("Y", StandardCharsets.UTF_8));    // Y=원본,썸네일 이미지 조회 N=Null
+                urlBuilder.append("&")
+                .append(URLEncoder.encode("_type", StandardCharsets.UTF_8))
+                .append("=")
+                .append(URLEncoder.encode("json", StandardCharsets.UTF_8));    // 콘텐츠 개요 조회여부
+                URL url = new URL(urlBuilder.toString());
 
-        ImagesResponse imagesResponse = mapper.readValue(url, ImagesResponse.class);
+                ImagesResponse imagesResponse = mapper.readValue(url, ImagesResponse.class);
 
 
-        return imagesResponse.getResponse().getBody().getItems().getItem();//사진있는경우
+                return imagesResponse.getResponse().getBody().getItems().getItem();//사진있는경우
         }
 
 
 //x, y축을 가지고 주변 관광지 정보 가져오기-축제
-@PostMapping("/nearbyTour")
-public List<TourItem> nearbyTour(@RequestBody NearbyTourParam nearbyTourParam) throws IOException {
+        @PostMapping("/nearbyTour")
+        public List<TourItem> nearbyTour(@RequestBody NearbyTourParam nearbyTourParam) throws IOException {
         var contentIdNear=nearbyTourParam.getContentid();
         Festival festival;
         festival = festivalRepository.findByContentId(contentIdNear);
@@ -266,9 +279,9 @@ public List<TourItem> nearbyTour(@RequestBody NearbyTourParam nearbyTourParam) t
         return tourResponse.getResponse().getBody().getItems().getItem();
         }
 
-//x, y축을 가지고 주변 관광지 정보 가져오기-관광지
-@PostMapping("/nearbyTour2")
-public List<TourItem> nearbyTour2(@RequestBody NearbyTourParam nearbyTourParam) throws IOException {
+    //x, y축을 가지고 주변 관광지 정보 가져오기-관광지
+    @PostMapping("/nearbyTour2")
+    public List<TourItem> nearbyTour2(@RequestBody NearbyTourParam nearbyTourParam) throws IOException {
         var contentIdNear=nearbyTourParam.getContentid();
         System.out.println("/nearbyTour2의"+contentIdNear+"입니다");
 
@@ -334,8 +347,8 @@ public List<TourItem> nearbyTour2(@RequestBody NearbyTourParam nearbyTourParam) 
         }
 
 // 관광지의 상세정보
-@PostMapping("/detailIntro/tour")
-public DetailIntroitem tourDetailIntro(@RequestBody TourDetailIntroParam detailIntroParam) throws IOException {
+    @PostMapping("/detailIntro/tour")
+    public DetailIntroitem tourDetailIntro(@RequestBody TourDetailIntroParam detailIntroParam) throws IOException {
         StringBuilder urlBuilder = new StringBuilder("http://api.visitkorea.or.kr/openapi/service/rest/KorService/detailIntro");
         urlBuilder.append("?")
         .append(URLEncoder.encode("ServiceKey", StandardCharsets.UTF_8))
@@ -377,9 +390,9 @@ public DetailIntroitem tourDetailIntro(@RequestBody TourDetailIntroParam detailI
         }
 
 
-// 개요, 홈페이지 정보 (관광지 공통정보 조회 api)
-@PostMapping("/detailCommon/tour")
-public ComInfoItem tourDetailCommon (@RequestBody String tourItem) throws IOException {
+    // 개요, 홈페이지 정보 (관광지 공통정보 조회 api)
+    @PostMapping("/detailCommon/tour")
+    public ComInfoItem tourDetailCommon (@RequestBody String tourItem) throws IOException {
         System.out.println("detailtour의 contentid값"+tourItem);
         StringBuilder urlBuilder = new StringBuilder("http://api.visitkorea.or.kr/openapi/service/rest/KorService/detailCommon"); /*URL*/
         urlBuilder.append("?")
@@ -444,13 +457,13 @@ public ComInfoItem tourDetailCommon (@RequestBody String tourItem) throws IOExce
         .append(URLEncoder.encode("json", StandardCharsets.UTF_8));
         URL url = new URL(urlBuilder.toString());
 
-        ComInfoResponse responseResult = mapper.readValue(url, ComInfoResponse.class);
-        System.out.println("/detailcmmontour에서 image값확인"+responseResult.getResponse().getBody().getItems().getItem().getFirstimage()+"이야"+responseResult.getResponse().getBody().getItems().getItem().getFirstimage2());
-        return responseResult.getResponse().getBody().getItems().getItem();
+            ComInfoResponse responseResult = mapper.readValue(url, ComInfoResponse.class);
+            System.out.println("/detailcmmontour에서 image값확인"+responseResult.getResponse().getBody().getItems().getItem().getFirstimage()+"이야"+responseResult.getResponse().getBody().getItems().getItem().getFirstimage2());
+            return responseResult.getResponse().getBody().getItems().getItem();
         }
 
-@PostMapping("/airInfo2")//대기정보-관광지
-public List<AirItem> observatoryInfo2(@RequestBody ObservatoryParam requestParam) throws IOException {
+    @PostMapping("/airInfo2")//대기정보-관광지
+    public List<AirItem> observatoryInfo2(@RequestBody ObservatoryParam requestParam) throws IOException {
         //  System.out.println("airinfo2의 contentid 파라미터값체크"+requestParam.getContentid());
         var aaa=requestParam.getContentid();
         //     System.out.println("airinfo2의 aaa 파라미터값체크"+aaa);
@@ -625,12 +638,12 @@ public List<AirItem> observatoryInfo2(@RequestBody ObservatoryParam requestParam
     /*    for(int i=0; i<10;i++) {
             System.out.println("시간"+airDTO.getBody().getItems().get(i).getDataTime()+"  "+airDTO.getBody().getItems().get(i).getKhaiGrade() + "농도이다");
         }*/
-        return airDTO.getBody().getItems();
+            return airDTO.getBody().getItems();
         }
 
-// 대기정보-축제
-@PostMapping("/airInfo")
-public List<AirItem> observatoryInfo(@RequestBody ObservatoryParam requestParam) throws IOException {
+    // 대기정보-축제
+    @PostMapping("/airInfo")
+    public List<AirItem> observatoryInfo(@RequestBody ObservatoryParam requestParam) throws IOException {
         Festival festivals3 = new Festival();//content값
         festivals3=festivalRepository.findByContentId(requestParam.getContentid());
         requestParam.setMapx(festivals3.getMapX());
@@ -742,8 +755,8 @@ public List<AirItem> observatoryInfo(@RequestBody ObservatoryParam requestParam)
         }
 
 
-@PostMapping("/weatherInfo")//기상정보-축제
-public List<Weather> weatherInfo(@RequestBody WeatherForecastParam weatherForecastParam) throws ParseException, IOException {
+    @PostMapping("/weatherInfo")//기상정보-축제
+    public List<Weather> weatherInfo(@RequestBody WeatherForecastParam weatherForecastParam) throws ParseException, IOException {
         Calendar calendar = new GregorianCalendar(Locale.KOREA);
         SimpleDateFormat format = new SimpleDateFormat("yyyyMMdd", Locale.KOREA);
         SimpleDateFormat currentTimeFormat = new SimpleDateFormat("yyyyMMddHHmm", Locale.KOREA);
@@ -960,7 +973,7 @@ public List<Weather> weatherInfo(@RequestBody WeatherForecastParam weatherForeca
         weatherInfo.setDayOfTheWeek( setDayOfWeek(dayOfWeekCode+6) );
         weatherList.add(weatherInfo);
 
-        return weatherList;
+            return weatherList;
         }
 
         @PostMapping("/weatherInfo2")//기상정보-관광지
@@ -1256,8 +1269,8 @@ public List<Weather> weatherInfo(@RequestBody WeatherForecastParam weatherForeca
         }
 
 
-// 요일 설정
-private String setDayOfWeek(int dayOfWeekCode) {
+    // 요일 설정
+    private String setDayOfWeek(int dayOfWeekCode) {
         String dayOfWeek = null;
         dayOfWeekCode--;
         dayOfWeekCode = dayOfWeekCode % 7;
@@ -1290,8 +1303,8 @@ private String setDayOfWeek(int dayOfWeekCode) {
         }
 
 
-// 1,2일의 날씨 정보는 3일 이후의 데이터와 형식이 달라서 따로 설정
-private void setDay12Info(List<ShortTermWeatherItem> shortTermWeatherItems, List<Weather> weatherList, String day, int dayOfWeekCode) {
+    // 1,2일의 날씨 정보는 3일 이후의 데이터와 형식이 달라서 따로 설정
+    private void setDay12Info(List<ShortTermWeatherItem> shortTermWeatherItems, List<Weather> weatherList, String day, int dayOfWeekCode) {
         Weather weatherInfo = new Weather();
 
         int skyStateCode;
@@ -1324,8 +1337,8 @@ private void setDay12Info(List<ShortTermWeatherItem> shortTermWeatherItems, List
         }
 
 
-// 동네예보 좌표 구하는 메소드
-private Map<String, Object> getGridxy(double orgLat, double orgLon) {
+    // 동네예보 좌표 구하는 메소드
+    private Map<String, Object> getGridxy(double orgLat, double orgLon) {
 
         double RE = 6371.00877; // 지구 반경(km)
         double GRID = 5.0; // 격자 간격(km)
