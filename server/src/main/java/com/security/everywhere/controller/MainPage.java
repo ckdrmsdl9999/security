@@ -36,8 +36,8 @@ public class MainPage {
         return "content";  // html name
     }
 
-    @GetMapping("/content/tourcontent/{contentId}")
-    public String TourContentpage(@PathVariable String contentId, Model model) {
+    @GetMapping("/content/tourcontent/{contentId}/{x}/{y}")
+    public String TourContentpage(@PathVariable String contentId,String x,String y , Model model) {
         //System.out.println("content");
         return "tourcontent";  // html name
     }
