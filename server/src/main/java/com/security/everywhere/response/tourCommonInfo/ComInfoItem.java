@@ -14,6 +14,9 @@ public class ComInfoItem {
     private String mapx;
     private String mapy;
     private String addr1;
+    private String firstimage;
+    private String firstimage2;
+
 
     public String getContentid() {
         return contentid;
@@ -106,6 +109,14 @@ public class ComInfoItem {
     public String getMapy() { return mapy; }
 
     public void setMapy(String mapy) { this.mapy = mapy;}
+
+    public String getFirstimage() { return firstimage; }
+
+    public void setFirstimage(String mapy) { this.firstimage = firstimage;}
+
+    public String getFirstimage2() { return firstimage2; }
+
+    public void setFirstimage2(String mapy) { this.firstimage2 = firstimage2;}
 
     @Override
     public String toString(){
