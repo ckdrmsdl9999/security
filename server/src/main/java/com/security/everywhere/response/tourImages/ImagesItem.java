@@ -1,12 +1,13 @@
 package com.security.everywhere.response.tourImages;
 
 public class ImagesItem {
-    private String contentid = "";       // 콘텐츠ID
-    private String imgname = "";         // 이미지명
-    private String originimgurl = "";    // 원본 이미지, 약 500*333 size
-    private String serialnum = "";       // 이미지 일련번호
-    private String smallimageurl = "";   // 썸네일 이미지, 약 160*100 size
+    private String contentid = "default";       // 콘텐츠ID
+    private String imgname = "default";         // 이미지명
+    private String originimgurl = "default";    // 원본 이미지, 약 500*333 size
+    private String serialnum = "default";       // 이미지 일련번호
+    private String smallimageurl = "default";   // 썸네일 이미지, 약 160*100 size
 
+    public ImagesItem(){}
     public String getContentid() {
         return contentid;
     }
@@ -45,5 +46,11 @@ public class ImagesItem {
 
     public void setSmallimageurl(String smallimageurl) {
         this.smallimageurl = smallimageurl;
+    }
+
+    @Override
+    public String toString()
+    {
+        return originimgurl+"-originimgurl"+smallimageurl+"small image url";
     }
 }

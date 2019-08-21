@@ -554,7 +554,7 @@
     });
 
      $( document ).ready(function() {//근처관광지
-         var param = {"contentid" : val ,"numOfRows":"10","pageNo":"1","arragne":"E","radius":"3000"};
+         var param = {"contentid" : val ,"numOfRows":"10","pageNo":"1","arragne":"E","radius":"5000"};
          $.ajax({
              url: "/api/nearbyTour2",
              type: "POST",
@@ -600,7 +600,7 @@
             $('.card-title').text(data.title);
             thumbnail = data.firstimage;
             $('#address p:nth-child(2)').text(data.addr1);
-            $('#term p:nth-child(2)').text(StringtoDate(data.createdtime) + ' ~ ' + StringtoDate(data.createdtime));
+           // $('#term p:nth-child(2)').text(StringtoDate(data.createdtime) + ' ~ ' + StringtoDate(data.createdtime));
             $('#tel p:nth-child(2)').text(data.overview);
            //   alert(data.addr1+" "+data.createdtime+" "+data.overview)
             $.ajax({
@@ -610,6 +610,7 @@
                 contentType: "application/json",
                 data: param[1],
             }).done(function (data) {
+                alert("data의수"+data.length);
                 if (data.length == 0) {
                     $carousel_item = $('<div class="carousel-item active">\n' +
                         '                <img src="" class="d-block img-fluid " style="width: 600px; height:400px" alt="...">\n' +
@@ -623,7 +624,7 @@
                             '            </div>');
                         if (i == 0)
                             $carousel_item.addClass('active');
-                        $carousel_item.find('img').attr("src", data[0].originimgurl);
+                        $carousel_item.find('img').attr("src", data.originimgurl);
                         $('.carousel-inner').append($carousel_item);
                     }
                 }
@@ -635,52 +636,7 @@
         });
     });
     ///////////////////////////////////////////
-    /* $( document ).ready(function() {//관광지세부정보
-         $.ajax({
-             url: "/api/festivalContent",
-             type: "POST",
-             dataType: "json",
-             contentType: "application/json",
-             data: param[1],
-         }).done(function (data) {
-             $('.card-title').text(data.title);
-             thumbnail = data.firstImage;
-             $('#address p:nth-child(2)').text(data.addr1);
-             $('#term p:nth-child(2)').text(StringtoDate(data.eventStartDate) + ' ~ ' + StringtoDate(data.eventEndDate));
-             $('#tel p:nth-child(2)').text(data.overview);
 
-             $.ajax({
-                 url: "/api/festivalImages",
-                 type: "POST",
-                 dataType: "json",
-                 contentType: "application/json",
-                 data: param[1],
-             }).done(function (data) {
-                 if (data.length == 0) {
-                     $carousel_item = $('<div class="carousel-item active">\n' +
-                         '                <img src="" class="d-block img-fluid " style="width: 600px; height:400px" alt="...">\n' +
-                         '            </div>');
-                     $carousel_item.find('img').attr('src', thumbnail);
-                     $('.carousel-inner').append($carousel_item);
-                 } else {
-                     for (var i = 0; i < data.length; i++) {
-                         $carousel_item = $('<div class="carousel-item">\n' +
-                             '                <img src="" class="d-block img-fluid" style="width: 600px; height:400px" alt="...">\n' +
-                             '            </div>');
-                         if (i == 0)
-                             $carousel_item.addClass('active');
-                         $carousel_item.find('img').attr("src", data[i].originimgurl);
-                         $('.carousel-inner').append($carousel_item);
-                     }
-                 }
-             }).fail(function () {
-                 alert('fail');
-             });
-         }).fail(function () {
-             alert('fail');
-
-         });
-     });*/
 
 
     function StringtoDate(str) {

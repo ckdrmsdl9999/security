@@ -153,8 +153,8 @@ public class RestAPIController {
 
     // 관광지 이미지 추가로 가져오기
     @PostMapping("/tourImages")
-    public List<ImagesItem> tourImages(@RequestBody String contentid) throws IOException {
-  //      System.out.println("images의contentid값"+contentid);
+    public ImagesItem tourImages(@RequestBody String contentid) throws IOException {
+        System.out.println("/tourImages의contentid값"+contentid);
 
         StringBuilder urlBuilder = new StringBuilder("http://api.visitkorea.or.kr/openapi/service/rest/KorService/detailImage"); /*URL*/
         urlBuilder.append("?")
@@ -194,10 +194,25 @@ public class RestAPIController {
                 .append("=")
                 .append(URLEncoder.encode("json", StandardCharsets.UTF_8));    // 콘텐츠 개요 조회여부
         URL url = new URL(urlBuilder.toString());
+        System.out.println(url+"명륜진사갈비");
+        ImagesResponse imagesResponse=null;
+        ImagesResponse imagesResponse1=new ImagesResponse();
 
-        ImagesResponse imagesResponse = mapper.readValue(url, ImagesResponse.class);
+        //imagesResponse1.getResponse().getBody().getItems().getItem().get(0).setOriginimgurl("jpg");
 
-        return imagesResponse.getResponse().getBody().getItems().getItem();
+//        imagesResponse1.getResponse().getBody().getItems().getItem().get(1).setOriginimgurl("0");
+        try {
+            imagesResponse = mapper.readValue(url, ImagesResponse.class);
+
+        }catch(Exception e)
+        {
+     //       System.out.println("예외가 발생하였습니다ㅋ"+imagesResponse1.getResponse().getBody().getItems().getItem().get(0));
+            //imagesResponse=
+
+            return imagesResponse1.getResponse().getBody().getItems().getItem().get(0);//사진없어서 예외나는경우
+        }
+        System.out.println("/tourimages의 값:"+imagesResponse.getResponse().getBody().getItems().getItem().toString());
+        return imagesResponse.getResponse().getBody().getItems().getItem().get(0);//사진있는경우
     }
 
 
@@ -210,7 +225,7 @@ public class RestAPIController {
         nearbyTourParam.setMapX(festival.getMapX());
         nearbyTourParam.setMapY(festival.getMapY());
       //  System.out.println(nearbyTourParam.getArrange()+"포착완료");
-       // System.out.println("관광지를 찾기위한 x,y값"+nearbyTourParam.getMapX()+" "+nearbyTourParam.getMapY());
+        System.out.println("/nearbytour에서 관광지를 찾기위한 contentid값과x,y값"+contentIdNear+" "+nearbyTourParam.getMapX()+" "+nearbyTourParam.getMapY());
         StringBuilder urlBuilder = new StringBuilder("http://api.visitkorea.or.kr/openapi/service/rest/KorService/locationBasedList"); /*URL*/
         urlBuilder.append("?")
                 .append(URLEncoder.encode("serviceKey", StandardCharsets.UTF_8))
@@ -271,7 +286,7 @@ public class RestAPIController {
     @PostMapping("/nearbyTour2")
     public List<TourItem> nearbyTour2(@RequestBody NearbyTourParam nearbyTourParam) throws IOException {
         var contentIdNear=nearbyTourParam.getContentid();
-        System.out.println(contentIdNear+"입니ek");
+        System.out.println("/nearbyTour2의"+contentIdNear+"입니다");
         StringBuilder urlBuilder = new StringBuilder("http://api.visitkorea.or.kr/openapi/service/rest/KorService/detailCommon"); /*URL*/
         urlBuilder.append("?")
                 .append(URLEncoder.encode("ServiceKey", StandardCharsets.UTF_8))
@@ -341,7 +356,7 @@ public class RestAPIController {
         nearbyTourParam.setMapX(responseResult2.getResponse().getBody().getItems().getItem().getMapx());
         nearbyTourParam.setMapY(responseResult2.getResponse().getBody().getItems().getItem().getMapy());
 
-        System.out.println("관광지를 찾기위한 x,y값"+nearbyTourParam.getMapX()+" "+nearbyTourParam.getMapY()+nearbyTourParam.getAddr1()+
+        System.out.println("/nearbytour2에서 관광지를 찾기위한 x,y값"+nearbyTourParam.getMapX()+" "+nearbyTourParam.getMapY()+nearbyTourParam.getAddr1()+
                 nearbyTourParam.getNumOfRows()+" "+nearbyTourParam.getArrange()+" "+nearbyTourParam.getRadius());
         urlBuilder = new StringBuilder("http://api.visitkorea.or.kr/openapi/service/rest/KorService/locationBasedList"); /*URL*/
         urlBuilder.append("?")
@@ -446,7 +461,7 @@ public class RestAPIController {
     // 개요, 홈페이지 정보 (관광지 공통정보 조회 api)
     @PostMapping("/detailCommon/tour")
     public ComInfoItem tourDetailCommon (@RequestBody String tourItem) throws IOException {
-   //   System.out.println("detour값"+tourItem);
+      System.out.println("detailtour의 contentid값"+tourItem);
         StringBuilder urlBuilder = new StringBuilder("http://api.visitkorea.or.kr/openapi/service/rest/KorService/detailCommon"); /*URL*/
         urlBuilder.append("?")
                 .append(URLEncoder.encode("ServiceKey", StandardCharsets.UTF_8))
@@ -511,7 +526,7 @@ public class RestAPIController {
         URL url = new URL(urlBuilder.toString());
 
         ComInfoResponse responseResult = mapper.readValue(url, ComInfoResponse.class);
-     //   System.out.println("detailInfo값중 map나왔나확인"+responseResult.getResponse().getBody().getItems().getItem().getMapx()+"이야");
+      System.out.println("/detailcmmontour에서 image값확인"+responseResult.getResponse().getBody().getItems().getItem().getFirstimage()+"이야"+responseResult.getResponse().getBody().getItems().getItem().getFirstimage2());
         return responseResult.getResponse().getBody().getItems().getItem();
     }
 
@@ -687,7 +702,7 @@ public class RestAPIController {
         } catch (URISyntaxException e) {
             e.printStackTrace();
         }
-        System.out.println(airDTO.getBody().getItems().get(0).getKhaiGrade()+"농도이다");
+       // System.out.println(airDTO.getBody().getItems().get(0).getKhaiGrade()+"농도이다");
     /*    for(int i=0; i<10;i++) {
             System.out.println("시간"+airDTO.getBody().getItems().get(i).getDataTime()+"  "+airDTO.getBody().getItems().get(i).getKhaiGrade() + "농도이다");
         }*/
