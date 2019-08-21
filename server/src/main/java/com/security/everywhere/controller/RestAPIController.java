@@ -21,6 +21,7 @@ import com.security.everywhere.model.Festival;
 import com.security.everywhere.model.Review;
 import com.security.everywhere.model.TourImages;
 import com.security.everywhere.model.Weather;
+import com.security.everywhere.repository.ReviewRepository;
 import com.security.everywhere.repository.TourImagesRepository;
 import com.security.everywhere.repository.FestivalRepository;
 import com.security.everywhere.request.*;
@@ -67,6 +68,7 @@ public class RestAPIController {
     private final TourImagesRepository tourImagesRepository;
     private final TempForecastAreaCode tempForecastAreaCode;
     private final WeatherForecastAreaCode weatherForecastAreaCode;
+    private final ReviewRepository reviewRepository;
     private static Logger logger = LoggerFactory.getLogger(GlobalPropertySource.class);
 
     private final ObjectMapper mapper;
@@ -80,11 +82,13 @@ public class RestAPIController {
             , TempForecastAreaCode tempForecastAreaCode
             , WeatherForecastAreaCode weatherForecastAreaCode
             , TourImagesRepository tourImagesRepository
-            , GlobalPropertySource globalPropertySource) {
+            , GlobalPropertySource globalPropertySource
+            , ReviewRepository reviewRepository) {
         this.festivalRepository = festivalRepository;
         this.tempForecastAreaCode = tempForecastAreaCode;
         this.weatherForecastAreaCode = weatherForecastAreaCode;
         this.tourImagesRepository = tourImagesRepository;
+        this.reviewRepository = reviewRepository;
         this.mapper = new ObjectMapper();
         this.restTemplate = new RestTemplate();
         this.apiServiceKey = globalPropertySource.getApiServiceKey();
@@ -127,11 +131,21 @@ public class RestAPIController {
 
 
     @PostMapping("/reviewList")
-    public List<Review> review_list() {
+    public List<Review> review_list(@RequestBody String contentid) {
 
         List<Review> reviewList = new ArrayList<Review>();
 
-        return reviewList;
+        reviewList = reviewRepository.findAllByContentId(contentid);
+
+        System.out.println(reviewList.size());
+
+        return reviewList ;
+    }
+
+
+    @PostMapping("/writeReview")
+    public void writeReview(@RequestBody Review review) {
+        reviewRepository.save(review);
     }
 
 

@@ -317,9 +317,29 @@
                 <div class="col-6 col-offset-2 col-12">
                     <div class="comment-wrapper">
                         <div class="panel panel-info">
+
                             <div class="label">
-                                Comment panel
+                                <div class="row">
+                                    <div class="col-2">리뷰적기</div>
+                                    <div class="col-3">
+                                        <i class="fas fa-star"></i>
+                                        <select id="inputState" style="width: 80px;">
+                                            <option selected>5.0</option>
+                                            <option>4.5</option>
+                                            <option>4.0</option>
+                                            <option>3.5</option>
+                                            <option>3.0</option>
+                                            <option>2.5</option>
+                                            <option>2.0</option>
+                                            <option>1.5</option>
+                                            <option>1.0</option>
+                                            <option>0.5</option>
+                                            <option>0.0</option>
+                                        </select>
+                                    </div>
+                                </div>
                             </div>
+
                             <div class="panel-body">
                                     <textarea class="form-control" placeholder="write a comment..." ></textarea>
                                     <br>
@@ -409,66 +429,29 @@
                         </div>
                     </div>
                     <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
-                        <ul class="list-unstyled">
-                            <li class="media mb-1">
-                                <a href="#" class="float-left mr-4">
-                                    <img  src="https://bootdey.com/img/Content/user_1.jpg" alt="" class="rounded-circle">
-                                </a>
-                                <div class="media-body">
-                                    <strong class="text-success">MartinoMont</strong>
-                                    <span class="text-muted float-right">
-                                     <small class="text-muted">2019.08.11</small>
-                                    </span>
-                                    <div class="row">
-                                        <p class="star_review col-10">
-                                            <i class="fas fa-star"></i> 4.8
-                                        </p>
-                                         <p class="star_review col-2">
-                                             <i class="far fa-thumbs-up"></i> 11
-                                         </p>
-                                    </div>
-                                    <p>
-                                        Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                                        Lorem ipsum dolor sit amet
-                                    </p>
-                                </div>
-                            </li>
-                            <li class="media mb-1">
-                                <a href="#" class="float-left mr-4">
-                                    <img src="https://bootdey.com/img/Content/user_2.jpg" alt="" class="rounded-circle">
-                                </a>
-                                <div class="media-body">
-                                <span class="text-muted float-right">
-                                    <small class="text-muted">2019.08.11</small>
-                                </span>
-
-                                    <strong class="text-success">LaurenceCorreil</strong>
-                                    <p class="star_review">
-                                        <i class="fas fa-star"></i> 4.8
-                                    </p>
-                                    <p>
-                                        Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                                        Lorem ipsum dolor <a href="#">#ipsumdolor </a>adipiscing elit.
-                                    </p>
-                                </div>
-                            </li>
-                            <li class="media mb-1">
-                                <a href="#" class="float-left mr-4">
-                                    <img src="https://bootdey.com/img/Content/user_3.jpg" alt=""class="rounded-circle">
-                                </a>
-                                <div class="media-body">
-                        <span class="text-muted float-right">
-                            <small class="text-muted">2019.08.11</small>
-                         </span>
-                                    <strong class="text-success">JohnNida</strong>
-                                    <p class="star_review">
-                                        <i class="fas fa-star"></i> 4.8
-                                    </p>
-                                    <p>
-                                        Lorem ipsum dolor sitamet sit amet, consectetur adipiscing elit.
-                                    </p>
-                                </div>
-                            </li>
+                        <ul class="list-unstyled" style="margin-bottom: 200px;">
+<!--                            <li class="media mb-1">-->
+<!--                                <a href="#" class="float-left mr-4">-->
+<!--                                    <img src="https://bootdey.com/img/Content/user_3.jpg" alt=""class="rounded-circle">-->
+<!--                                </a>-->
+<!--                                <div class="media-body">-->
+<!--                        <span class="text-muted float-right">-->
+<!--                            <small class="text-muted">2019.08.11</small>-->
+<!--                         </span>-->
+<!--                                    <strong class="text-success">JohnNida</strong>-->
+<!--                                    <div class="row">-->
+<!--                                        <p class="star_review col-10">-->
+<!--                                            <i class="fas fa-star"></i> 4.8-->
+<!--                                        </p>-->
+<!--                                        <p class="like_review col-2">-->
+<!--                                            <i class="far fa-thumbs-up"></i> 11-->
+<!--                                        </p>-->
+<!--                                    </div>-->
+<!--                                    <p>-->
+<!--                                        Lorem ipsum dolor sitamet sit amet, consectetur adipiscing elit.-->
+<!--                                    </p>-->
+<!--                                </div>-->
+<!--                            </li>-->
                         </ul>
                     </div>
                 </div>
@@ -482,6 +465,12 @@
 </div>
 </body>
 <script type="text/javascript">
+
+    var today = new Date();
+    var dd = String(today.getDate()).padStart(2, '0');
+    var mm = String(today.getMonth() + 1).padStart(2, '0');
+    var yyyy = today.getFullYear();
+    today = yyyy + '/' + mm + '/' + dd;
 
     var param = document.location.href.split("content/");
     var thumbnail;
@@ -598,13 +587,39 @@
 
 
     // 리뷰 포스트 버튼
-    $(document).on('click','.area_button',function () {
+    $(document).on('click','.btn.btn-info.float-right',function () {
+        //form-control
+
+        var star = $('#inputState option:selected').text();
+        var textcontent = $('.form-control').val();
+
+        var param = {"contentId" : val, "userId" : "userid", "textcontent": textcontent, "star": star, "date": today };
+
+        if (textcontent != null) {
+            $.ajax({
+                url: "/api/writeReview",
+                type: "POST",
+                dataType: "text",
+                contentType: "application/json",
+                data: JSON.stringify(param),
+            }).done(function (data) {
+                location.reload();
+            }).fail(function (data) {
+                alert('fail');
+            });
+        }
+        else if(textcontent.length >= 100){
+            alert("내용을 입력해주세요.(100자 이하)");
+        }
+        else{
+            alert("내용을 입력해주세요.(100자 이하)");
+        }
 
     });
 
 
     $( document ).ready(function() {
-
+        // 축제 콘텐트 보여줌
         $.ajax({
             url: "/api/festivalContent",
             type: "POST",
@@ -650,50 +665,58 @@
             alert('fail');
         });
 
+        //리뷰 불러옴
         $.ajax({
             url: "/api/reviewList",
             type: "POST",
-            dataType: "text",
+            dataType: "json",
             contentType: "application/json",
             data: param[1],
         }).done(function (data) {
 
-            for(var i=0;i<data.length;i++) {
-                $review_form = $('<li class="media mb-1">\n' +
-                    '                <a href="#" class="float-left mr-4">\n' +
-                    '                      <img  src="https://bootdey.com/img/Content/user_1.jpg" alt="" class="rounded-circle">\n' +
-                    '                 </a>\n' +
-                    '                      <div class="media-body">\n' +
-                    '                 <strong class="text-success">MartinoMont</strong>\n' +
-                    '                       <span class="text-muted float-right">\n' +
-                    '                                     <small class="text-muted">2019.08.11</small>\n' +
-                    '                                    </span>\n' +
+            for(var i=0; i<data.length ;i++) {
+                $review_form = $('                            <li class="media mb-1" style="width: 550px">\n' +
+                    '                                <a href="#" class="float-left mr-4">\n' +
+                    '                                    <img src="https://bootdey.com/img/Content/user_3.jpg" alt=""class="rounded-circle">\n' +
+                    '                                </a>\n' +
+                    '                                <div class="media-body">\n' +
+                    '                        <span class="text-muted float-right">\n' +
+                    '                            <small class="text-muted" id="review_date">2019.08.11</small>\n' +
+                    '                         </span>\n' +
+                    '                                    <strong class="text-success" id="UserId">JohnNida</strong>\n' +
                     '                                    <div class="row">\n' +
                     '                                        <p class="star_review col-10">\n' +
                     '                                            <i class="fas fa-star"></i>\n' +
                     '                                        </p>\n' +
-                    '                                         <p class="star_review col-2">\n' +
-                    '                                             <i class="far fa-thumbs-up"></i>\n' +
-                    '                                         </p>\n' +
+                    '                                        <p class="like_review col-2">\n' +
+                    '                                            <i class="far fa-thumbs-up"></i>\n' +
+                    '                                        </p>\n' +
                     '                                    </div>\n' +
-                    '                                    <p>\n' +
-                    '                                        Lorem ipsum dolor sit amet, consectetur adipiscing elit.\n' +
-                    '                                        Lorem ipsum dolor sit amet\n' +
+                    '                                    <p id="review_content">\n' +
+                    '                                        Lorem ipsum dolor sitamet sit ag elit.\n' +
                     '                                    </p>\n' +
                     '                                </div>\n' +
                     '                            </li>');
 
                 $review_form.find('#UserId').text(data[i].userId);
+                $review_form.find('#review_date').text(data[i].date);
                 $review_form.find('.star_review').append(data[i].star);
-                $review_form.find('.like_reivew').append(data[i].like);
-                $review_form.find('.textcontent').append(data[i].textcontent);
+                $review_form.find('.like_review').append(data[i].likecount);
+                $review_form.find('#review_content').text(data[i].textcontent);
+
 
                 $('.list-unstyled').append($review_form);
             }
 
+            $no_review = $('<li class="mt-4 text-center" style="height: 200px; margin-top: 6.5rem!important;\n"> 리뷰가 없습니다. </li>');
+
+            if(data.length == 0)
+                $('.list-unstyled').append($no_review);
+
         }).fail(function () {
             alert('fail');
         });
+
     });
 
 
