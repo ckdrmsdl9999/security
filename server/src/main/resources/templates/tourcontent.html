@@ -478,18 +478,21 @@
 </body>
 <script type="text/javascript">
     var tourcontentid = new Array();
-    var param = document.location.href.split("content/tourcontent/");
+
+    var param = document.location.href.split("/");
     var thumbnail;
     var addr="서울특별시";
-    var mapx="126.9787932340";
-    var mapy="37.5659098804";
-    var val=param[1];
+    var mapx=param[6];
+    var mapy=param[7];
+
+    var val=param[5];
     var contentX;//해당content축제의 x값을 html에저장
     var contentY;//해당content축제의 y값을 html에저장
     //  alert(val+"param값");
+   // $( document ).ready(function(){  alert(param[0]+"*"+param[1]+"*"+param[2]+"*"+mapx+"*"+mapy)} );
+
     $( document ).ready(function() {//기후정보
         var param = {"addr": addr, "mapX": mapx, "mapY": mapy,"contentid" : val};
-
         $.ajax({
             url: "/api/weatherInfo2",
             type: "POST",
@@ -497,6 +500,7 @@
             contentType: "application/json",
             data: JSON.stringify(param),
         }).done(function (data) {
+          //  alert(data.length);
             for (var i = 0; i < data.length; i++) {
                 $festival_item5 = $('<th scope="col">월</th>\n');
                 $festival_item5.text(data[i].dayOfTheWeek);
@@ -523,7 +527,7 @@
     var ee="정보X"
     var checker=0;
     $( document ).ready(function() {//근처기후
-        var param = { "information": "1", "contentid" : val};
+        var param = { "mapX":mapx,"mapY":mapy, "information": "1", "contentid" : val};
         var hi="hi";
         $.ajax({
             url: "/api/airInfo2",
@@ -554,7 +558,8 @@
     });
 
      $( document ).ready(function() {//근처관광지
-         var param = {"contentid" : val ,"numOfRows":"10","pageNo":"1","arragne":"E","radius":"5000"};
+         var param = {"contentid" : val ,"mapX":mapx,"mapY":mapy,"numOfRows":"10","pageNo":"1","arragne":"E","radius":"5000"};
+
          $.ajax({
              url: "/api/nearbyTour2",
              type: "POST",
@@ -575,7 +580,7 @@
                      '</a>'+
                      '</div>');
                  $festival_item5.children('img').attr('src',data[i].firstimage2);
-                 $festival_item5.find('a').attr('href',"/content/tourcontent/" + data[i].contentid);
+                 $festival_item5.find('a').attr('href',"/content/tourcontent/"+data[i].contentid+"/"+data[i].mapx+"/"+data[i].mapy);////
                  $festival_item5.find('p').text(data[i].title);
                  $festival_item5.find('small').text(data[i].dist+'미터');
 
@@ -594,7 +599,7 @@
             type: "POST",
             dataType: "json",
             contentType: "application/json",
-            data: param[1],
+            data: param[5],
         }).done(function (data) {
 
             $('.card-title').text(data.title);
@@ -608,9 +613,9 @@
                 type: "POST",
                 dataType: "json",
                 contentType: "application/json",
-                data: param[1],
+                data: param[5],
             }).done(function (data) {
-                alert("data의수"+data.length);
+      //          alert("data의수"+data.length);
                 if (data.length == 0) {
                     $carousel_item = $('<div class="carousel-item active">\n' +
                         '                <img src="" class="d-block img-fluid " style="width: 600px; height:400px" alt="...">\n' +
@@ -624,7 +629,7 @@
                             '            </div>');
                         if (i == 0)
                             $carousel_item.addClass('active');
-                        $carousel_item.find('img').attr("src", data.originimgurl);
+                        $carousel_item.find('img').attr("src", data[i].originimgurl);
                         $('.carousel-inner').append($carousel_item);
                     }
                 }
