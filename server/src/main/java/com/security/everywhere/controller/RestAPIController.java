@@ -273,75 +273,9 @@ public List<TourItem> nearbyTour2(@RequestBody NearbyTourParam nearbyTourParam) 
         var contentIdNear=nearbyTourParam.getContentid();
         System.out.println("/nearbyTour2의"+contentIdNear+"입니다");
 
-       /* StringBuilder urlBuilder = new StringBuilder("http://api.visitkorea.or.kr/openapi/service/rest/KorService/detailCommon"); *//*URL*//*
-        urlBuilder.append("?")
-        .append(URLEncoder.encode("ServiceKey", StandardCharsets.UTF_8))
-        .append("=")
-        .append(apiServiceKey); *//*공공데이터포털에서 발급받은 인증키*//*
-        urlBuilder.append("&")
-        .append(URLEncoder.encode("numOfRows", StandardCharsets.UTF_8))
-        .append("=")
-        .append(URLEncoder.encode("10", StandardCharsets.UTF_8)); *//*한 페이지 결과 수*//*
-        urlBuilder.append("&")
-        .append(URLEncoder.encode("pageNo", StandardCharsets.UTF_8))
-        .append("=")
-        .append(URLEncoder.encode("1", StandardCharsets.UTF_8)); *//*현재 페이지 번호*//*
-        urlBuilder.append("&")
-        .append(URLEncoder.encode("MobileOS", StandardCharsets.UTF_8))
-        .append("=")
-        .append(URLEncoder.encode("ETC", StandardCharsets.UTF_8)); *//*IOS (아이폰), AND (안드로이드), WIN (원도우폰),ETC*//*
-        urlBuilder.append("&")
-        .append(URLEncoder.encode("MobileApp", StandardCharsets.UTF_8))
-        .append("=")
-        .append(URLEncoder.encode("AppTest", StandardCharsets.UTF_8)); *//*서비스명=어플명*//*
-        urlBuilder.append("&")
-        .append(URLEncoder.encode("contentId", StandardCharsets.UTF_8))
-        .append("=")
-        .append(URLEncoder.encode(contentIdNear, StandardCharsets.UTF_8));    // 콘텐츠 ID
-        urlBuilder.append("&")
-        .append(URLEncoder.encode("contentTypeId", StandardCharsets.UTF_8))
-        .append("=")
-        .append(URLEncoder.encode("12", StandardCharsets.UTF_8));    // 관광타입(관광지, 숙박 등) ID
-        urlBuilder.append("&")//tourItem.getContentTypeId()->12로변경
-        .append(URLEncoder.encode("defaultYN", StandardCharsets.UTF_8))
-        .append("=")
-        .append(URLEncoder.encode("Y", StandardCharsets.UTF_8));    // 기본정보 조회여부
-        urlBuilder.append("&")
-        .append(URLEncoder.encode("firstImageYN", StandardCharsets.UTF_8))
-        .append("=")
-        .append(URLEncoder.encode("Y", StandardCharsets.UTF_8));    // 원본, 썸네일 대표이미지 조회여부
-        urlBuilder.append("&")
-        .append(URLEncoder.encode("areacodeYN", StandardCharsets.UTF_8))
-        .append("=")
-        .append(URLEncoder.encode("Y", StandardCharsets.UTF_8));    // 지역코드, 시군구코드 조회여부
-        urlBuilder.append("&")
-        .append(URLEncoder.encode("catcodeYN", StandardCharsets.UTF_8))
-        .append("=")
-        .append(URLEncoder.encode("Y", StandardCharsets.UTF_8));    // 대,중,소분류코드 조회여부
-        urlBuilder.append("&")
-        .append(URLEncoder.encode("addrinfoYN", StandardCharsets.UTF_8))
-        .append("=")
-        .append(URLEncoder.encode("Y", StandardCharsets.UTF_8));    // 주소, 상세주소 조회여부
-        urlBuilder.append("&")
-        .append(URLEncoder.encode("mapinfoYN", StandardCharsets.UTF_8))
-        .append("=")
-        .append(URLEncoder.encode("Y", StandardCharsets.UTF_8));    // 좌표 X,Y 조회여부
-        urlBuilder.append("&")
-        .append(URLEncoder.encode("overviewYN", StandardCharsets.UTF_8))
-        .append("=")
-        .append(URLEncoder.encode("Y", StandardCharsets.UTF_8));    // 콘텐츠 개요 조회여부
-        urlBuilder.append("&")
-        .append(URLEncoder.encode("_type", StandardCharsets.UTF_8))
-        .append("=")
-        .append(URLEncoder.encode("json", StandardCharsets.UTF_8));
-        URL url = new URL(urlBuilder.toString());*/
 
-       // ComInfoResponse responseResult2 = mapper.readValue(url, ComInfoResponse.class);
 
-        //  nearbyTourParam.setAddr1(responseResult2.getResponse().getBody().getItems().getItem().getAddr1());
-        // nearbyTourParam.setMapX(responseResult2.getResponse().getBody().getItems().getItem().getMapx());
-        // nearbyTourParam.setMapY(responseResult2.getResponse().getBody().getItems().getItem().getMapy());
-        System.out.println(nearbyTourParam.getMapX()+" "+nearbyTourParam.getMapY()+"이랑");
+        System.out.println(nearbyTourParam.getMapX()+" "+nearbyTourParam.getMapY()+"이랑임");
         System.out.println("/nearbytour2에서 관광지를 찾기위한 x,y값"+nearbyTourParam.getMapX()+" "+nearbyTourParam.getMapY()+nearbyTourParam.getAddr1()+
         nearbyTourParam.getNumOfRows()+" "+nearbyTourParam.getArrange()+" "+nearbyTourParam.getRadius());
         StringBuilder urlBuilder = new StringBuilder("http://api.visitkorea.or.kr/openapi/service/rest/KorService/locationBasedList"); /*URL*/
