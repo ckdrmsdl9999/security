@@ -4,6 +4,7 @@
 
 package com.security.everywhere.configuration;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.annotation.PropertySources;
@@ -14,4 +15,22 @@ import org.springframework.context.annotation.PropertySources;
                 , ignoreResourceNotFound = true)
 })
 public class GlobalPropertySource {
+
+    @Value("${api_service_key}")
+    private String apiServiceKey;
+    @Value("${consumer_key}")
+    private String consumerKey;
+    @Value("${consumer_secret}")
+    private String consumerSecret;
+
+    public String getApiServiceKey() {
+        return apiServiceKey;
+    }
+
+    public String getConsumerKey() {
+        return consumerKey;
+    }
+    public String getConsumerSecret() {
+        return consumerSecret;
+    }
 }

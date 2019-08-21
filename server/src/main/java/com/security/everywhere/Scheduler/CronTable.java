@@ -1,5 +1,6 @@
 package com.security.everywhere.Scheduler;
 
+import com.security.everywhere.configuration.GlobalPropertySource;
 import com.security.everywhere.repository.FestivalRepository;
 import com.security.everywhere.repository.TourImagesRepository;
 import org.springframework.beans.factory.annotation.Value;
@@ -14,12 +15,14 @@ public class CronTable {
     private final FestivalRepository festivalRepository;
     private final TourImagesRepository tourImagesRepository;
 
-    @Value("${api_service_key}")
-    private String apiServiceKey;
+    private final String apiServiceKey;
 
-    public CronTable(FestivalRepository festivalRepository, TourImagesRepository tourImagesRepository) {
+    public CronTable(FestivalRepository festivalRepository
+            , TourImagesRepository tourImagesRepository
+            , GlobalPropertySource globalPropertySource) {
         this.festivalRepository = festivalRepository;
         this.tourImagesRepository = tourImagesRepository;
+        this.apiServiceKey = globalPropertySource.getApiServiceKey();
     }
 
 

@@ -24,12 +24,14 @@ public class GetFestivalInfo {
 
     private final FestivalRepository festivalRepository;
     private final TourImagesRepository tourImagesRepository;
-    private String apiServiceKey;
+    private final String apiServiceKey;
     private StringBuilder urlBuilder;
     private URL url;
-    private ObjectMapper mapper;
+    private final ObjectMapper mapper;
 
-    public GetFestivalInfo(FestivalRepository festivalRepository, TourImagesRepository tourImagesRepository, String apiServiceKey) {
+    public GetFestivalInfo(FestivalRepository festivalRepository
+            , TourImagesRepository tourImagesRepository
+            , String apiServiceKey) {
         this.festivalRepository = festivalRepository;
         this.tourImagesRepository = tourImagesRepository;
         this.apiServiceKey = apiServiceKey;

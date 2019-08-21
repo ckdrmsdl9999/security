@@ -46,7 +46,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
@@ -72,20 +71,24 @@ public class RestAPIController {
     private final ObjectMapper mapper;
     private final RestTemplate restTemplate;
 
-    @Value("${api_service_key}")
-    private String apiServiceKey;
-    @Value("${consumer_key}")
-    private String consumerKey;
-    @Value("${consumer_secret}")
-    private String consumerSecret;
+    private final String apiServiceKey;
+    private final String consumerKey;
+    private final String consumerSecret;
 
-    public RestAPIController(FestivalRepository festivalRepository, TempForecastAreaCode tempForecastAreaCode, WeatherForecastAreaCode weatherForecastAreaCode, TourImagesRepository tourImagesRepository) {
+    public RestAPIController(FestivalRepository festivalRepository
+            , TempForecastAreaCode tempForecastAreaCode
+            , WeatherForecastAreaCode weatherForecastAreaCode
+            , TourImagesRepository tourImagesRepository
+            , GlobalPropertySource globalPropertySource) {
         this.festivalRepository = festivalRepository;
         this.tempForecastAreaCode = tempForecastAreaCode;
         this.weatherForecastAreaCode = weatherForecastAreaCode;
         this.tourImagesRepository = tourImagesRepository;
         this.mapper = new ObjectMapper();
         this.restTemplate = new RestTemplate();
+        this.apiServiceKey = globalPropertySource.getApiServiceKey();
+        this.consumerKey = globalPropertySource.getConsumerKey();
+        this.consumerSecret = globalPropertySource.getConsumerSecret();
 
         // 모르는 property에 대해 무시하고 넘어간다. DTO의 하위 호환성 보장에 필요하다
         mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
