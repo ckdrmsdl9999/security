@@ -39,7 +39,6 @@ public class Festival implements Serializable {
     @Lob
     private String overview;        // 콘텐츠 개요 조회
 
-
     public Festival() {}
 
 
