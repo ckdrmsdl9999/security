@@ -163,24 +163,24 @@
         </div>
     </header>
     <div class="card bg-dark text-white mx-auto">
-    <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
-        <div class="carousel-inner">
+        <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
+            <div class="carousel-inner">
+
+            </div>
+            <div class="card-img-overlay d-flex h-100 flex-column justify-content-end">
+                <h5 class="card-title"> </h5>
+                <p class="card-text"><i class="far fa-star"style="color:red"></i> 4.5</p>
+            </div>
+            <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="sr-only">Previous</span>
+            </a>
+            <a class="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="sr-only">Next</span>
+            </a>
 
         </div>
-        <div class="card-img-overlay d-flex h-100 flex-column justify-content-end">
-            <h5 class="card-title"> </h5>
-            <p class="card-text"><i class="far fa-star"style="color:red"></i> 4.5</p>
-        </div>
-        <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
-            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-            <span class="sr-only">Previous</span>
-        </a>
-        <a class="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next">
-            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-            <span class="sr-only">Next</span>
-        </a>
-
-    </div>
     </div>
 
     <div id="dw-s2" class="bmd-layout-drawer bg-faded">
@@ -228,39 +228,39 @@
                     <p class="font-weight-bold">대기오염지수 : </p>
                 </div>
                 <div class="col-3" id="atmosphere">
-                  <!--  <p>나쁨 (80)</p>-->
+                    <!--  <p>나쁨 (80)</p>-->
                 </div>
             </div>
             <table class="table table-bordered text-center">
                 <thead id="dayday">
-                <!--      <tr>
-                          <th scope="col">월</th>
+                <tr>
+                    <!--      <th scope="col">월</th>
                           <th scope="col">화</th>
                           <th scope="col">수</th>
                           <th scope="col">목</th>
                           <th scope="col">금</th>
                           <th scope="col">토</th>
-                          <th scope="col">일</th>
-                      </tr>-->
+                          <th scope="col">일</th>-->
+                </tr>
                 </thead>
                 <tbody id="suncloud">
                 <tr>
-                    <!--                    <td><i class="fas fa-cloud-sun-rain"></i></td>
-                                        <td><i class="fas fa-cloud-rain"></i></td>
-                                        <td><i class="fas fa-cloud-rain"></i></td>
-                                        <td><i class="fas fa-cloud-rain"></i></td>
-                                        <td><i class="fas fa-cloud-rain"></i></td>
-                                        <td><i class="fas fa-cloud-rain"></i></td>
-                                        <td><i class="fas fa-cloud-rain"></i></td>-->
+                    <!--               <td><i class="fas fa-cloud-sun-rain"></i></td>
+                                   <td><i class="fas fa-cloud-rain"></i></td>
+                                   <td><i class="fas fa-cloud-rain"></i></td>
+                                   <td><i class="fas fa-cloud-rain"></i></td>
+                                   <td><i class="fas fa-cloud-rain"></i></td>
+                                   <td><i class="fas fa-cloud-rain"></i></td>
+                                   <td><i class="fas fa-cloud-rain"></i></td>-->
                 </tr>
                 <tr id="temperature">
-                    <!--                    <td>21°C 22°C</td>
-                                        <td>21°C 22°C</td>
-                                        <td>21°C 22°C</td>
-                                        <td>21°C 22°C</td>
-                                        <td>21°C 22°C</td>
-                                        <td>21°C 22°C</td>
-                                        <td>21°C 22°C</td>-->
+                    <!--             <td>21°C 22°C</td>
+                                 <td>21°C 22°C</td>
+                                 <td>21°C 22°C</td>
+                                 <td>21°C 22°C</td>
+                                 <td>21°C 22°C</td>
+                                 <td>21°C 22°C</td>
+                                 <td>21°C 22°C</td>-->
                 </tr>
                 </tbody>
             </table>
@@ -276,14 +276,14 @@
                 </div>
             </div>
             <div class="horizontal-scroll" id="tourtour">
-             <!--   <div class="card">
+                <div class="card">
                     <img src="http://placehold.it/200x140" />
                     <div class="card-body">
                         <p class="card-text">이름</p>
                         <p class="card-text"><small class="text-muted">약 1km</small></p>
                     </div>
-                </div>-->
-             <!--   <div class="card">
+                </div>
+                <div class="card">
                     <img src="http://placehold.it/200x140" />
                     <div class="card-body">
                         <p class="card-text">이름</p>
@@ -303,7 +303,7 @@
                         <p class="card-text">이름</p>
                         <p class="card-text"><small class="text-muted">약 1km</small></p>
                     </div>
-                </div>-->
+                </div>
             </div>
         </div>
 
@@ -477,8 +477,8 @@
 </div>
 </body>
 <script type="text/javascript">
-
-    var param = document.location.href.split("content/");
+    var tourcontentid = new Array();
+    var param = document.location.href.split("content/tourcontent/");
     var thumbnail;
     var addr="서울특별시";
     var mapx="126.9787932340";
@@ -486,9 +486,8 @@
     var val=param[1];
     var contentX;//해당content축제의 x값을 html에저장
     var contentY;//해당content축제의 y값을 html에저장
-    var tourcontentid = new Array();
-  //  alert(val+"param값");
-    $( document ).ready(function() {
+    //  alert(val+"param값");
+   /* $( document ).ready(function() {//기후정보
         var param = {"addr": addr, "mapX": mapx, "mapY": mapy,"contentid" : val};
 
         $.ajax({
@@ -502,9 +501,9 @@
                 $festival_item5 = $('<th scope="col">월</th>\n');
                 $festival_item5.text(data[i].dayOfTheWeek);
                 $("#dayday").append($festival_item5);
-               // $festival_item3 = $('<td><i class="fas fa-cloud-sun-rain"></i></td>\n');
+                // $festival_item3 = $('<td><i class="fas fa-cloud-sun-rain"></i></td>\n');
                 $festival_item3 = $('<td><i></i></td>\n');
-               // $festival_item3.find('i').attr('class',"fas fa-cloud-rain").text(data[i].state);
+                // $festival_item3.find('i').attr('class',"fas fa-cloud-rain").text(data[i].state);
                 $festival_item3.find('i').text(data[i].state);
                 $("#suncloud").append($festival_item3);
 
@@ -523,11 +522,11 @@
     var dd="매우나쁨"
     var ee="정보X"
     var checker=0;
-    $( document ).ready(function() {
-        var param = { "mapX": mapx, "mapY": mapy,"contentid" : val};
+    $( document ).ready(function() {//근처기후
+        var param = { "information": "1", "contentid" : val};
         var hi="hi";
         $.ajax({
-            url: "/api/airInfo",
+            url: "/api/airInfo2",
             type: "POST",
             dataType: "json",
             contentType: "application/json",
@@ -542,8 +541,8 @@
                 $festival_item7 = $('<p></p>\n');
                 if(data[i].khaiGrade==1) {$festival_item7.text(aa);checker=1;}
                 if(data[i].khaiGrade==2){$festival_item7.text(bb);
-             //   alert("값발견");
-                checker=1;}
+                    //   alert("값발견");
+                    checker=1;}
                 if(data[i].khaiGrade==3){$festival_item7.text(cc);checker=1;}
                 if(data[i].khaiGrade==4){$festival_item7.text(dd);checker=1;}
                 if(data[i].khaiGrade==""){$festival_item7.text(ee);checker=1;}//마지막에있으면 ㅇㅇ 만약 5개중 3번째에있으면
@@ -552,61 +551,57 @@
             checker=0;
         }).fail(function () {
         });
-    });
+    });*/
 
-    $( document ).ready(function() {
-        var param = {"contentid" : val ,"numOfRows":"10","pageNo":"1","arragne":"E","radius":"1000"};
+    /* $( document ).ready(function() {//근처관광지
+         var param = {"contentid" : val ,"numOfRows":"10","pageNo":"1","arragne":"E","radius":"3000"};
+         $.ajax({
+             url: "/api/nearbyTour",
+             type: "POST",
+             dataType: "json",
+             contentType: "application/json",
+             data: JSON.stringify(param),
+         }).done(function (data) {
+            // alert(data.length+"개의 관광지가 근처에있어");
+             for (var i = 0; i < data.length; i++) {
+               //  alert("데이터의거리값:"+data[i].dist+"그림src"+data[i].firstimage);
+                 $festival_item5 = $('<div class="card" width="300" height="160" >\n'+
+                     '<img src="http://placehold.it/200x140" width="300" height="170"/>\n'+
+                         '<div class="card-body">\n'+
+                             '<p class="card-text">이름</p>\n'+
+                             '<i class="card-text"><small class="text-muted">약 1km임</small></i>\n'+
+                         '</div>'+
+                     '</div>');
+                 $festival_item5.children('img').attr('src',data[i].firstimage2);
+                 $festival_item5.find('p').text(data[i].title);
+                 $festival_item5.find('small').text(data[i].dist+'미터');
+
+
+                 $("#tourtour").append($festival_item5);
+             }
+
+         }).fail(function () {
+         });
+     });*/
+    //////////////////////////////////////////
+    //alert(param[1]);
+    $( document ).ready(function() {//관광지세부정보
         $.ajax({
-            url: "/api/nearbyTour",
-            type: "POST",
-            dataType: "json",
-            contentType: "application/json",
-            data: JSON.stringify(param),
-        }).done(function (data) {
-        //     alert(data.length+"개의 관광지가 근처에있어");
-            //$festival_item.find('a').attr('href',"tourcontent/" + data[i].contentId);
-            for (var i = 0; i < data.length; i++) {
-                //  alert("데이터의거리값:"+data[i].dist+"그림src"+data[i].firstimage);
-                $festival_item5 = $('<div class="card" width="300" height="160"  >\n'+
-                    '<img src="http://placehold.it/200x140"  width="300" height="170"/>\n'+
-                    '<a href="#">\n'+
-                    '<div class="card-body">\n'+
-                    '<p class="card-text">이름</p>\n'+
-                    '<i class="card-text"><small class="text-muted">약 1km임</small></i>\n'+
-                    '</div>'+
-                    '</a>'+
-                    '</div>');
-                $festival_item5.children('img').attr('src',data[i].firstimage2);
-                $festival_item5.find('a').attr('href',"tourcontent/" + data[i].contentid);
-                $festival_item5.find('p').text(data[i].title);
-                $festival_item5.find('small').text(data[i].dist+'미터');
-
-                $("#tourtour").append($festival_item5);
-                tourcontentid[i]=data[i].contentid;
-                // alert("잘들어갔는지확인용"+tourcontentid[i]);
-            }
-
-        }).fail(function () {
-        });
-    });
-
-
-    $( document ).ready(function() {
-        $.ajax({
-            url: "/api/festivalContent",
+            url: "/api/detailCommon/tour",
             type: "POST",
             dataType: "json",
             contentType: "application/json",
             data: param[1],
         }).done(function (data) {
-            $('.card-title').text(data.title);
-            thumbnail = data.firstImage;
-            $('#address p:nth-child(2)').text(data.addr1);
-            $('#term p:nth-child(2)').text(StringtoDate(data.eventStartDate) + ' ~ ' + StringtoDate(data.eventEndDate));
-            $('#tel p:nth-child(2)').text(data.overview);
 
+            $('.card-title').text(data.title);
+            thumbnail = data.firstimage;
+            $('#address p:nth-child(2)').text(data.addr1);
+            $('#term p:nth-child(2)').text(StringtoDate(data.createdtime) + ' ~ ' + StringtoDate(data.createdtime));
+            $('#tel p:nth-child(2)').text(data.overview);
+           //   alert(data.addr1+" "+data.createdtime+" "+data.overview)
             $.ajax({
-                url: "/api/festivalImages",
+                url: "/api/tourImages",
                 type: "POST",
                 dataType: "json",
                 contentType: "application/json",
@@ -614,19 +609,18 @@
             }).done(function (data) {
                 if (data.length == 0) {
                     $carousel_item = $('<div class="carousel-item active">\n' +
-                        '                <img src="/img/alt.png" class="d-block img-fluid " style="width: 600px; height:400px" alt="...">\n' +
+                        '                <img src="" class="d-block img-fluid " style="width: 600px; height:400px" alt="...">\n' +
                         '            </div>');
-                    if(thumbnail != '')
-                        $carousel_item.find('img').attr('src', thumbnail);
+                    $carousel_item.find('img').attr('src', thumbnail);
                     $('.carousel-inner').append($carousel_item);
                 } else {
-                    for (var i = 0; i < data.length; i++) {
+                    for (var i = 0; i < 1; i++) {
                         $carousel_item = $('<div class="carousel-item">\n' +
-                            '                <img src="/img/alt.png" class="d-block img-fluid" style="width: 600px; height:400px" alt="...">\n' +
+                            '                <img src="" class="d-block img-fluid" style="width: 600px; height:400px" alt="...">\n' +
                             '            </div>');
                         if (i == 0)
                             $carousel_item.addClass('active');
-                        $carousel_item.find('img').attr("src", data[i].originimgurl);
+                        $carousel_item.find('img').attr("src", data[0].originimgurl);
                         $('.carousel-inner').append($carousel_item);
                     }
                 }
@@ -635,11 +629,55 @@
             });
         }).fail(function () {
             alert('fail');
-
         });
     });
+    ///////////////////////////////////////////
+    /* $( document ).ready(function() {//관광지세부정보
+         $.ajax({
+             url: "/api/festivalContent",
+             type: "POST",
+             dataType: "json",
+             contentType: "application/json",
+             data: param[1],
+         }).done(function (data) {
+             $('.card-title').text(data.title);
+             thumbnail = data.firstImage;
+             $('#address p:nth-child(2)').text(data.addr1);
+             $('#term p:nth-child(2)').text(StringtoDate(data.eventStartDate) + ' ~ ' + StringtoDate(data.eventEndDate));
+             $('#tel p:nth-child(2)').text(data.overview);
 
+             $.ajax({
+                 url: "/api/festivalImages",
+                 type: "POST",
+                 dataType: "json",
+                 contentType: "application/json",
+                 data: param[1],
+             }).done(function (data) {
+                 if (data.length == 0) {
+                     $carousel_item = $('<div class="carousel-item active">\n' +
+                         '                <img src="" class="d-block img-fluid " style="width: 600px; height:400px" alt="...">\n' +
+                         '            </div>');
+                     $carousel_item.find('img').attr('src', thumbnail);
+                     $('.carousel-inner').append($carousel_item);
+                 } else {
+                     for (var i = 0; i < data.length; i++) {
+                         $carousel_item = $('<div class="carousel-item">\n' +
+                             '                <img src="" class="d-block img-fluid" style="width: 600px; height:400px" alt="...">\n' +
+                             '            </div>');
+                         if (i == 0)
+                             $carousel_item.addClass('active');
+                         $carousel_item.find('img').attr("src", data[i].originimgurl);
+                         $('.carousel-inner').append($carousel_item);
+                     }
+                 }
+             }).fail(function () {
+                 alert('fail');
+             });
+         }).fail(function () {
+             alert('fail');
 
+         });
+     });*/
 
 
     function StringtoDate(str) {

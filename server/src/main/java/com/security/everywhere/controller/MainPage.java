@@ -36,7 +36,11 @@ public class MainPage {
         return "content";  // html name
     }
 
-
+    @GetMapping("/content/tourcontent/{contentId}")
+    public String TourContentpage(@PathVariable String contentId, Model model) {
+        //System.out.println("content");
+        return "tourcontent";  // html name
+    }
 
 //    @PostMapping("/")
 //    public String postTesting(TestParam testParam, Model model) {

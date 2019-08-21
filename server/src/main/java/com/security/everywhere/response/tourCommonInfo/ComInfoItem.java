@@ -11,6 +11,9 @@ public class ComInfoItem {
     private String tel;             // 전화번호
     private String telname;         // 전화번호명
     private String title;           // 콘텐츠명(제목)
+    private String mapx;
+    private String mapy;
+    private String addr1;
 
     public String getContentid() {
         return contentid;
@@ -91,4 +94,16 @@ public class ComInfoItem {
     public void setTitle(String title) {
         this.title = title;
     }
+
+    public String getAddr1() { return addr1; }
+
+    public void setAddr1(String addr1) { this.addr1 = addr1; }
+
+    public String getMapX() { return mapx; }
+
+    public void setMapX(String mapx) { this.mapx = mapx; }
+
+    public String getMapY() { return mapy; }
+
+    public void setMapY(String addr1) { this.mapy = mapy;}
 }
