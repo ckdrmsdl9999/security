@@ -4,15 +4,16 @@ import java.util.*;
 import com.security.everywhere.model.User;
 import com.security.everywhere.repository.UserRepository;
 import com.security.everywhere.request.UserParam;
+import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
-import org.springframework.util.ObjectUtils;
+
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 
 @RestController
-@RequestMapping(value = "/login")
+@RequestMapping(value = "/loginPage", method = RequestMethod.POST)
 public class UserController {
 
     private UserRepository userRepository;
@@ -22,17 +23,18 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public boolean login(@RequestBody UserParam userParam, Model model) {
+    public String login(@RequestBody UserParam userParam, Model model) {
         String nickName = userParam.getNickName();
         String pw = userParam.getPw();
         if(nickName.equals(userRepository.findByNickName(nickName).getNickName()) && pw.equals(userRepository.findByNickName(nickName).getPw())
                 && nickName.equals(userRepository.findByPw(pw).getNickName()) && pw.equals(userRepository.findByPw(pw).getPw())) {
-            model.addAttribute("msg", "세션 이름 : " + nickName);
-            //session.setAttribute("id", nickName);
-            return true;
+            System.out.println(model.addAttribute("msg", "세션 이름 : " + nickName));
+//            session.setAttribute("id", nickName);
+//            session.setMaxInactiveInterval(60*10);
+            return "redirect:/main";
         }
         else
-            return false;
+            return "redirect:/main";
     }
 
     @RequestMapping("/logout")
@@ -44,21 +46,10 @@ public class UserController {
 
     @Transactional
     @PostMapping("/addUser")
-    public boolean addUser(@RequestBody UserParam userParam) {
-        String nickName = userParam.getNickName();
-        String pw = userParam.getPw();
-        User user = new User(nickName, pw);
+    public String addUser(String username, String confirm_password) {
+        User user = new User(username, confirm_password);
         userRepository.save(user);
-        return true;
-//        User user = userRepository.findByNickName(nickName);
-//        if(ObjectUtils.isEmpty(user)) {
-//            user.setNickName(nickName);
-//            user.setPw(pw);
-//            userRepository.save(user);
-//            return true;
-//        }
-//        else
-//            return false;
+        return "redirect:/main";
     }
 
     @Transactional

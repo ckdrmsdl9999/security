@@ -41,7 +41,6 @@ public class Festival implements Serializable {
 
     public Festival() {}
 
-
     public Festival(TourItem item, String homepage, String overview) {
         this.addr1 = item.getAddr1();
         this.addr2 = item.getAddr2();

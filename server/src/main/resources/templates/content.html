@@ -482,17 +482,36 @@
 </div>
 </body>
 <script type="text/javascript">
-
-    var param = document.location.href.split("content/");
+  var myy;//latitude
+  var myx;//longtitude
+    function getLocation() {
+        if (navigator.geolocation) { // GPS를 지원하면
+            navigator.geolocation.getCurrentPosition(function(position) {
+                myy=position.coords.latitude;myx=position.coords.longitude;
+                alert("위도:"+position.coords.latitude + '경도:' + position.coords.longitude);
+            }, function(error) {
+                console.error(error);
+            }, {
+                enableHighAccuracy: false,
+                maximumAge: 0,
+                timeout: Infinity
+            });
+        } else {
+            alert('GPS를 지원하지 않습니다');
+        }
+    }
+    var param = document.location.href.split("/");
+ //
     var thumbnail;
     var addr="서울특별시";
     var mapx="126.9787932340";
     var mapy="37.5659098804";
-    var val=param[1];
+    var val=param[4];
     var contentX;//해당content축제의 x값을 html에저장
     var contentY;//해당content축제의 y값을 html에저장
     var tourcontentid = new Array();
   //  alert(val+"param값");
+   // $( document ).ready(function(){  alert(param[0]+"*"+param[1]+"*"+param[2]+"*"+param[3]+"*"+param[4])} );
     $( document ).ready(function() {
         var param = {"addr": addr, "mapX": mapx, "mapY": mapy,"contentid" : val};
 
@@ -503,6 +522,7 @@
             contentType: "application/json",
             data: JSON.stringify(param),
         }).done(function (data) {
+          //  alert(param[0]+"/"+param[1]);
             for (var i = 0; i < data.length; i++) {
                 $festival_item5 = $('<th scope="col">월</th>\n');
                 $festival_item5.text(data[i].dayOfTheWeek);
@@ -519,7 +539,7 @@
             }
             //alert("띄우기일단완료");
             checker=0;
-        }).fail(function () {
+        }).fail(function () {alert("실패22")
         });
     });
     var aa="좋음"
@@ -555,7 +575,7 @@
             }
             $("#atmosphere").append($festival_item7);
             checker=0;
-        }).fail(function () {
+        }).fail(function () {alert("fail뜸")
         });
     });
 
@@ -583,19 +603,56 @@
                     '</div>');
 
                 $festival_item5.children('img').attr('src',data[i].firstimage2);
-                $festival_item5.find('a').attr('href',"tourcontent/" + data[i].contentid);
+                $festival_item5.find('a').attr('href',"tourcontent/" + data[i].contentid+"/"+data[i].mapx+"/"+data[i].mapy);//////////
                 $festival_item5.find('p').text(data[i].title);
                 $festival_item5.find('small').text(data[i].dist+'미터');
-
+                //alert(data[i].mapX+"이단");
                 $("#tourtour").append($festival_item5);
                 tourcontentid[i]=data[i].contentid;
                 // alert("잘들어갔는지확인용"+tourcontentid[i]);
             }
 
-        }).fail(function () {
+        }).fail(function () {alert("실패ㅐ");
         });
     });
 
+   /* $( document ).ready(function() {//내위치기반
+        getLocation()
+        var param = {"contentid" : val ,"numOfRows":"10","pageNo":"1","arrange":"E","radius":"5000"};
+        $.ajax({
+            url: "/api/nearbyTour",
+            type: "POST",
+            dataType: "json",
+            contentType: "application/json",
+            data: JSON.stringify(param),
+        }).done(function (data) {
+            //     alert(data.length+"개의 관광지가 근처에있어");
+            //$festival_item.find('a').attr('href',"tourcontent/" + data[i].contentId);
+            for (var i = 0; i < data.length; i++) {
+                //  alert("데이터의거리값:"+data[i].dist+"그림src"+data[i].firstimage);
+                $festival_item5 = $('<div class="card" width="300" height="160"  >\n'+
+                    '<img src="http://placehold.it/200x140"  width="300" height="170"/>\n'+
+                    '<a href="#">\n'+
+                    '<div class="card-body">\n'+
+                    '<p class="card-text">이름</p>\n'+
+                    '<i class="card-text"><small class="text-muted">약 1km임</small></i>\n'+
+                    '</div>'+
+                    '</a>'+
+                    '</div>');
+
+                $festival_item5.children('img').attr('src',data[i].firstimage2);
+                $festival_item5.find('a').attr('href',"tourcontent/" + data[i].contentid+"/"+data[i].mapx+"/"+data[i].mapy);//////////
+                $festival_item5.find('p').text(data[i].title);
+                $festival_item5.find('small').text(data[i].dist+'미터');
+                //alert(data[i].mapX+"이단");
+                $("#tourtour").append($festival_item5);
+                tourcontentid[i]=data[i].contentid;
+                // alert("잘들어갔는지확인용"+tourcontentid[i]);
+            }
+
+        }).fail(function () {alert("실패ㅐ");
+        });
+    });*/
 
     // 리뷰 포스트 버튼
     $(document).on('click','.area_button',function () {
@@ -610,7 +667,7 @@
             type: "POST",
             dataType: "json",
             contentType: "application/json",
-            data: param[1],
+            data: param[4],
         }).done(function (data) {
             $('.card-title').text(data.title);
             thumbnail = data.firstImage;
@@ -623,7 +680,7 @@
                 type: "POST",
                 dataType: "json",
                 contentType: "application/json",
-                data: param[1],
+                data: param[4],
             }).done(function (data) {
                 if (data.length == 0) {
                     $carousel_item = $('<div class="carousel-item active">\n' +
@@ -644,10 +701,10 @@
                     }
                 }
             }).fail(function () {
-                alert('fail');
+                alert('fail1');
             });
         }).fail(function () {
-            alert('fail');
+            alert('fail2');
         });
 
         $.ajax({
@@ -692,7 +749,7 @@
             }
 
         }).fail(function () {
-            alert('fail');
+            alert('fail3');
         });
     });
 
@@ -709,6 +766,13 @@
 
         return date;
     }
+
+
+
+
+
+ //   $( document ).ready(function() { alert("실행한다");getLocation();});
+
 
     /*]]>*/
 </script>
