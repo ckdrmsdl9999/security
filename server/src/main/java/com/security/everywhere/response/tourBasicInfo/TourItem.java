@@ -208,4 +208,10 @@ public class TourItem {
     public void setEventenddate(String eventenddate) {
         this.eventenddate = eventenddate;
     }
+
+    @Override
+    public String toString(){
+        return title+" "+addr1+"확인용리턴값";
+    }
+
 }
