@@ -305,8 +305,6 @@ public class RestAPIController {
         var contentIdNear=nearbyTourParam.getContentid();
         System.out.println("/nearbyTour2의"+contentIdNear+"입니다");
 
-
-
         System.out.println(nearbyTourParam.getMapX()+" "+nearbyTourParam.getMapY()+"이랑임");
         System.out.println("/nearbytour2에서 관광지를 찾기위한 x,y값"+nearbyTourParam.getMapX()+" "+nearbyTourParam.getMapY()+nearbyTourParam.getAddr1()+
         nearbyTourParam.getNumOfRows()+" "+nearbyTourParam.getArrange()+" "+nearbyTourParam.getRadius());
@@ -805,7 +803,7 @@ public class RestAPIController {
         System.out.println("/weatherinfo에서db값체크2"+festivals2.getAddr1()+"*"+festivals2.getMapX().length()+"*"+festivals2.getMapY());
 
 
-        if(festivals2.getMapX().length()==0)//예외처리
+        if(festivals2.getMapX().length()==0)//예외처리 contentid 2602871
         {
             System.out.println("db에 x,y값이 존재하지않는 축제입니다kkkkkkkkkkkkkkkkkkk");
             weatherForecastParam.setMapX("126.9787932340");
