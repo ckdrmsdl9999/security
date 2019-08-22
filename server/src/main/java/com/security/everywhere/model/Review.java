@@ -23,7 +23,9 @@ public class Review {
     private int likecount = 0;               //좋아요 수
 
 
-    public Review() {}
+    public Review() {
+        likecount = 0;
+    }
 
     public Review(String contentId, double star, String date, String textcontent) {
         this.contentId = contentId;

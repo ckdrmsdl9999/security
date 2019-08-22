@@ -129,6 +129,20 @@ public class RestAPIController {
         return festivals;
     }
 
+    @PostMapping("/likeButton")
+    public void likeButton(@RequestBody String reviewid) {
+        reviewRepository.pluslikecount( Long.parseLong(reviewid));
+    }
+
+    @PostMapping("/popularReviewList_pos")
+    public List<Review> popularReviewList_pos(@RequestBody String contentid) {
+        return reviewRepository.findTopByContentIdAndStarGreaterThanEqualAndLikecountGreaterThanOrderByLikecountDesc(contentid,3.0, 0);
+    }
+
+    @PostMapping("/popularReviewList_nav")
+    public List<Review> popularReviewList_nav(@RequestBody String contentid) {
+        return reviewRepository.findTopByContentIdAndStarLessThanAndLikecountGreaterThanOrderByLikecountDesc(contentid,3.0, 0);
+    }
 
 
 
@@ -156,16 +170,16 @@ public class RestAPIController {
         }
 
 
-// 축제 이미지 추가로 가져오기
+        // 축제 이미지 추가로 가져오기
         @PostMapping("/festivalImages")
         public List<TourImages> festivalImages(@RequestBody String contentid) {
                 return tourImagesRepository.findByContentid(contentid);
-                }
+        }
 
 
-// 관광지 이미지 추가로 가져오기
+        // 관광지 이미지 추가로 가져오기
         @PostMapping("/tourImages")
-                public List <ImagesItem> tourImages(@RequestBody String contentid) throws IOException {
+        public List <ImagesItem> tourImages(@RequestBody String contentid) throws IOException {
                 System.out.println("/tourImages의contentid값"+contentid);
 
                 StringBuilder urlBuilder = new StringBuilder("http://api.visitkorea.or.kr/openapi/service/rest/KorService/detailImage"); /*URL*/
