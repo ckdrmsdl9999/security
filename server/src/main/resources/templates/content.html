@@ -500,9 +500,19 @@
                 $festival_item5.text(data[i].dayOfTheWeek);
                 $("#dayday").append($festival_item5);
                // $festival_item3 = $('<td><i class="fas fa-cloud-sun-rain"></i></td>\n');
-                $festival_item3 = $('<td><i></i></td>\n');
-               // $festival_item3.find('i').attr('class',"fas fa-cloud-rain").text(data[i].state);
-                $festival_item3.find('i').text(data[i].state);
+
+                $festival_item3 = $('<td><i class=""></i></td>\n');
+                // $festival_item3.find('i').attr('class',"fas fa-cloud-rain").text(data[i].state);
+                 alert(data[i].state+"날씨");
+                if(data[i].state=="구름 많음"||data[i].state=="흐림"||data[i].state=="구름많음")
+                    $festival_item3.find('i').addClass("fas fa-cloud");
+                else if(data[i].state=="구름많고 비"||data[i].state=="흐리고 비")
+                    $festival_item3.find('i').addClass("fas fa-cloud-rain");
+                else if(data[i].state=="맑음")
+                    $festival_item3.find('i').addClass("fas fa-cloud");
+                else if(data[i].state=="구름많고 눈"||data[i].state=="구름많고 눈"||data[i].state=="구름많고 비/눈"||data[i].state=="구름많고 눈/비"
+                    +data[i].state=="흐리고 눈"||data[i].state=="흐리고 비/눈"|data[i].state=="흐리고 눈/비")
+                    $festival_item3.find('i').addClass("fas fa-snowflake");
                 $("#suncloud").append($festival_item3);
 
                 $festival_item4 = $('<td>21°C 23°C</td>\n');

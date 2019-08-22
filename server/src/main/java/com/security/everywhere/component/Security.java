@@ -1,20 +1,26 @@
-//package com.security.everywhere.component;
-//
-//import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-//import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-//import org.springframework.stereotype.Component;
-//
-//@Component
-//public class Security extends WebSecurityConfigurerAdapter {
-//
-//    @Override
-//    protected void configure(HttpSecurity http) throws Exception {
+package com.security.everywhere.component;
+
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+
+@EnableWebSecurity
+public class Security extends WebSecurityConfigurerAdapter {
+
+    @Override
+    public void configure(WebSecurity web) throws Exception {
+        web.ignoring().antMatchers("/css/**", "/script/**", "image/**", "/fonts/**", "lib/**");
+    }
+
+    @Override
+    protected void configure(HttpSecurity http) throws Exception {
+        http.cors().and();
+        http.csrf().disable();
+
 //        http.authorizeRequests()
-//                .antMatchers("/", "/test/", "/api/test").permitAll();
-////                .anyRequest().authenticated()
-////                .and()
-////                .formLogin()
-////                .and()
-////                .httpBasic();
-//    }
-//}
+//                .antMatchers("/admin/**").hasRole("ADMIN")
+//                .antMatchers("/**", "api/**", "member/**").permitAll();
+    }
+
+}

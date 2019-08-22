@@ -464,31 +464,40 @@
                 </div>
                 <div class="register-modal-body">
                     <div class="signup-form">
-                        <form action="/loginPage/addUser" method="post">
+                        <form action="/member/create" method="post">
                             <h2>Create Account</h2>
                             <div class="form-group">
                                 <div class="input-group">
                                     <span class="input-group-addon"><i class="fa fa-user"></i></span>
-                                    <input type="text" class="form-control" name="username" placeholder="Username" required="required">
+                                    <input type="text" class="form-control" id="signUpNickName" placeholder="Username" required="required">
                                 </div>
+                            </div>
+                            <div class="form-group">
+                                <p type="text" id="nickNameState" style="font-size: 0.5rem"></p>
                             </div>
                             <div class="form-group">
                                 <div class="input-group">
                                     <span class="input-group-addon"><i class="fa fa-lock"></i></span>
-                                    <input type="password" class="form-control" name="password" placeholder="Password" required="required">
+                                    <input type="password" class="form-control" id="signUpPassword" placeholder="Password" required="required">
                                 </div>
                             </div>
+<!--                            <div class="form-group">-->
+<!--                                <div class="input-group">-->
+<!--                                    <span class="input-group-addon">-->
+<!--                                        <i class="fa fa-lock"></i>-->
+<!--                                        <i class="fa fa-check"></i>-->
+<!--                                    </span>-->
+<!--                                    <input type="password" class="form-control" name="confirm_password" placeholder="Confirm Password" required="required">-->
+<!--                                </div>-->
+<!--                            </div>-->
                             <div class="form-group">
-                                <div class="input-group">
-                                    <span class="input-group-addon">
-                                        <i class="fa fa-lock"></i>
-                                        <i class="fa fa-check"></i>
-                                    </span>
-                                    <input type="password" class="form-control" name="confirm_password" placeholder="Confirm Password" required="required">
-                                </div>
+                                <p type="text" id="passwordState" style="font-size: 0.5rem"></p>
                             </div>
                             <div class="form-group">
-                                <button type="submit" class="btn btn-primary btn-block btn-lg">Sign Up</button>
+                                <button type="button" class="btn btn-primary btn-block btn-lg" id="signUp">Sign Up</button>
+                            </div>
+                            <div class="form-group">
+                                <p type="text" id="signUpFail" style="font-size: 0.5rem"></p>
                             </div>
                         </form>
                     </div>
@@ -795,7 +804,7 @@
     $(document).on('click', '#login', function() {
         var nickName = document.getElementById("loginNickName").value;
         var pw = document.getElementById("loginPw").value;
-        alert(nickName + pw);
+        alert(nickName +"카드"+pw);
         var param = {"nickName": nickName, "pw": pw};
         $.ajax({
             url: "/loginPage/login",
@@ -806,13 +815,77 @@
         }).done(function(data) {
             //var result = /*[[ ${session.id} ]]*/;
             //location.href = "/main";
-            alert(data);
+            alert(data.length+"ajax으로 넘어왔어");
+
+
+        }).fail(function(){
+            alert("error"+"값을보자-"+data.length);
+
+        });
+    });
+
+    // 회원가입
+    $(document).on('click', '#signUp', function() {
+        var nickName = document.getElementById("signUpNickName").value;
+        var pw = document.getElementById("signUpPassword").value;
+        var param = {"nickName": nickName, "pw": pw};
+        $.ajax({
+            url: "/member/create",
+            type: "POST",
+            dataType: "json",
+            contentType: "application/json",
+            data: JSON.stringify(param)
+        }).done(function(data) {
+            //var result = /*[[ ${session.id} ]]*/;
+            //location.href = "/main";
+            if (data == "0")
+                $(".register-modal-body").find("#signUpFail").text("닉네임과 비밀번호의 조건을 확인해주세요.");
 
 
         }).fail(function(){
             alert("error");
         });
     });
+
+    // 닉네임 중복 체크
+    $(document).on('focusout', '#signUpNickName', function () {
+        var nickName = document.getElementById("signUpNickName").value;
+        var param = {"nickName": nickName};
+        $.ajax({
+            url: "/member/check/nickName",
+            type: "POST",
+            dataType: "json",
+            contentType: "application/json",
+            data: JSON.stringify(param)
+        }).done(function (data) {
+            if (data == "1") {
+                $(".register-modal-body").find("#nickNameState").text("이미 존재하는 닉네임입니다.");
+            } else {
+                $(".register-modal-body").find("#nickNameState").text("사용 가능한 닉네임입니다.");
+            }
+        });
+    });
+
+    // 비밀번호 타입 검사
+    $(document).on('focusout', '#signUpPassword', function () {
+        var nickName = document.getElementById("signUpNickName").value;
+        var password = document.getElementById("signUpPassword").value;
+        var param = {"nickName": nickName, "pw": password};
+        $.ajax({
+            url: "/member/typeCheck/pw",
+            type: "POST",
+            dataType: "json",
+            contentType: "application/json",
+            data: JSON.stringify(param)
+        }).done(function (data) {
+            if (data == "1") {
+                $(".register-modal-body").find("#passwordState").text("사용 가능한 패스워드입니다.");
+            } else {
+                $(".register-modal-body").find("#passwordState").text("알파벳 대문자와 소문자, 특수기호, 숫자의 4가지로 이루어진 9~20자리로 입력해주세요.");
+            }
+        });
+    });
+
 
     // 세션에 따른 side bar 요소 변경
     $( document ).ready(function() {
