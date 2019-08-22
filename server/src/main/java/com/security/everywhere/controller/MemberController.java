@@ -1,16 +1,23 @@
 package com.security.everywhere.controller;
 
 
+import com.security.everywhere.model.AuthenticationRequest;
+import com.security.everywhere.model.AuthenticationToken;
 import com.security.everywhere.model.Member;
 import com.security.everywhere.model.MemberRole;
 import com.security.everywhere.repository.MemberRepository;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.stereotype.Controller;
+import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpSession;
 import java.util.Collections;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -19,10 +26,29 @@ import java.util.regex.Pattern;
 @RequestMapping("/member")
 public class MemberController {
 
+    private final AuthenticationManager authenticationManager;
+
     private final MemberRepository memberRepository;
 
-    public MemberController(MemberRepository memberRepository) {
+    public MemberController(MemberRepository memberRepository, AuthenticationManager authenticationManager) {
         this.memberRepository = memberRepository;
+        this.authenticationManager = authenticationManager;
+    }
+
+    @PostMapping("/login")
+    public AuthenticationToken login(@RequestBody AuthenticationRequest authenticationRequest, HttpSession session) {
+        String nickName = authenticationRequest.getNickName();
+        String password = authenticationRequest.getPassword();
+
+        UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(nickName, password);
+        Authentication authentication = authenticationManager.authenticate(token);
+
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+        session.setAttribute(HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY, SecurityContextHolder.getContext());
+
+        Member member = memberRepository.findByNickName(nickName);
+
+        return new AuthenticationToken(member.getNickName(), member.getRoles(), session.getId());
     }
 
     @PostMapping("/check/nickName")
@@ -38,7 +64,7 @@ public class MemberController {
 
     @PostMapping("/typeCheck/pw")
     public String passwordTypeChech(@RequestBody Member member) {
-        boolean isPass = isPassed(member.getPw());
+        boolean isPass = isPassed(member.getPassword());
 
         if (!member.getNickName().contains(member.getNickName())) {
             isPass = false;
@@ -57,7 +83,7 @@ public class MemberController {
         boolean isPass;
 
         if (already == null) {
-            isPass = isPassed(member.getPw());
+            isPass = isPassed(member.getPassword());
 
             if (!member.getNickName().contains(member.getNickName())) {
                 isPass = false;
@@ -65,8 +91,8 @@ public class MemberController {
             if (isPass) {
                 MemberRole role = new MemberRole();
                 BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-                member.setPw(passwordEncoder.encode(member.getPw()));
-                role.setRoleName("BASIC");
+                member.setPassword(passwordEncoder.encode(member.getPassword()));
+                role.setRoleName("USER");
                 member.setRoles(Collections.singletonList(role));
                 memberRepository.save(member);
                 return "1";
