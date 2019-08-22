@@ -177,56 +177,60 @@ public class RestAPIController {
 
 
         // 관광지 이미지 추가로 가져오기
-       /* @PostMapping("/tourImages")
+        @PostMapping("/tourImages")
         public List <ImagesItem> tourImages(@RequestBody String contentid) throws IOException {
-                System.out.println("/tourImages의contentid값"+contentid);
+            System.out.println("/tourImages의contentid값" + contentid);
 
-                StringBuilder urlBuilder = new StringBuilder("http://api.visitkorea.or.kr/openapi/service/rest/KorService/detailImage"); *//*URL*//*
-                urlBuilder.append("?")
-                .append(URLEncoder.encode("ServiceKey", StandardCharsets.UTF_8))
-                .append("=")
-                .append(apiServiceKey); *//*공공데이터포털에서 발급받은 인증키*//*
-                urlBuilder.append("&")
-                .append(URLEncoder.encode("numOfRows", StandardCharsets.UTF_8))
-                .append("=")
-                .append(URLEncoder.encode("10", StandardCharsets.UTF_8)); *//*한 페이지 결과 수*//*
-                urlBuilder.append("&")
-                .append(URLEncoder.encode("pageNo", StandardCharsets.UTF_8))
-                .append("=")
-                .append(URLEncoder.encode("1", StandardCharsets.UTF_8)); *//*현재 페이지 번호*//*
-                urlBuilder.append("&")
-                .append(URLEncoder.encode("MobileOS", StandardCharsets.UTF_8))
-                .append("=")
-                .append(URLEncoder.encode("ETC", StandardCharsets.UTF_8)); *//*IOS (아이폰), AND (안드로이드), WIN (원도우폰),ETC*//*
-                urlBuilder.append("&")
-                .append(URLEncoder.encode("MobileApp", StandardCharsets.UTF_8))
-                .append("=")
-                .append(URLEncoder.encode("AppTest", StandardCharsets.UTF_8)); *//*서비스명=어플명*//*
-                urlBuilder.append("&")
-                .append(URLEncoder.encode("contentId", StandardCharsets.UTF_8))
-                .append("=")
-                .append(URLEncoder.encode(contentid, StandardCharsets.UTF_8));    // 콘텐츠 ID
-                urlBuilder.append("&")
-                .append(URLEncoder.encode("imageYN", StandardCharsets.UTF_8))
-                .append("=")
-                .append(URLEncoder.encode("Y", StandardCharsets.UTF_8));    // Y=콘텐츠 이미지 조회, N='음식점'타입의 음식메뉴 이미지
-                urlBuilder.append("&")
-                .append(URLEncoder.encode("subImageYN", StandardCharsets.UTF_8))
-                .append("=")
-                .append(URLEncoder.encode("Y", StandardCharsets.UTF_8));    // Y=원본,썸네일 이미지 조회 N=Null
-                urlBuilder.append("&")
-                .append(URLEncoder.encode("_type", StandardCharsets.UTF_8))
-                .append("=")
-                .append(URLEncoder.encode("json", StandardCharsets.UTF_8));    // 콘텐츠 개요 조회여부
-                URL url = new URL(urlBuilder.toString());
+            StringBuilder urlBuilder = new StringBuilder("http://api.visitkorea.or.kr/openapi/service/rest/KorService/detailImage"); /*URL*/
+            urlBuilder.append("?")
+                    .append(URLEncoder.encode("ServiceKey", StandardCharsets.UTF_8))
+                    .append("=")
+                    .append(apiServiceKey); /*공공데이터포털에서 발급받은 인증키*/
+            urlBuilder.append("&")
+                    .append(URLEncoder.encode("numOfRows", StandardCharsets.UTF_8))
+                    .append("=")
+                    .append(URLEncoder.encode("10", StandardCharsets.UTF_8)); /*한 페이지 결과 수*/
+            urlBuilder.append("&")
+                    .append(URLEncoder.encode("pageNo", StandardCharsets.UTF_8))
+                    .append("=")
+                    .append(URLEncoder.encode("1", StandardCharsets.UTF_8)); /*현재 페이지 번호*/
+            urlBuilder.append("&")
+                    .append(URLEncoder.encode("MobileOS", StandardCharsets.UTF_8))
+                    .append("=")
+                    .append(URLEncoder.encode("ETC", StandardCharsets.UTF_8)); /*IOS (아이폰), AND (안드로이드), WIN (원도우폰),ETC*/
+            urlBuilder.append("&")
+                    .append(URLEncoder.encode("MobileApp", StandardCharsets.UTF_8))
+                    .append("=")
+                    .append(URLEncoder.encode("AppTest", StandardCharsets.UTF_8)); /*서비스명=어플명*/
+            urlBuilder.append("&")
+                    .append(URLEncoder.encode("contentId", StandardCharsets.UTF_8))
+                    .append("=")
+                    .append(URLEncoder.encode(contentid, StandardCharsets.UTF_8));    // 콘텐츠 ID
+            urlBuilder.append("&")
+                    .append(URLEncoder.encode("imageYN", StandardCharsets.UTF_8))
+                    .append("=")
+                    .append(URLEncoder.encode("Y", StandardCharsets.UTF_8));    // Y=콘텐츠 이미지 조회, N='음식점'타입의 음식메뉴 이미지
+            urlBuilder.append("&")
+                    .append(URLEncoder.encode("subImageYN", StandardCharsets.UTF_8))
+                    .append("=")
+                    .append(URLEncoder.encode("Y", StandardCharsets.UTF_8));    // Y=원본,썸네일 이미지 조회 N=Null
+            urlBuilder.append("&")
+                    .append(URLEncoder.encode("_type", StandardCharsets.UTF_8))
+                    .append("=")
+                    .append(URLEncoder.encode("json", StandardCharsets.UTF_8));    // 콘텐츠 개요 조회여부
+            URL url = new URL(urlBuilder.toString());
+            ImagesResponse imagesResponse = null;
+            //   ImagesResponse imagesResponse = mapper.readValue(url, ImagesResponse.class);
+            List<ImagesItem> a = new ArrayList<>();
+            try {
+                imagesResponse = mapper.readValue(url, ImagesResponse.class);
 
-                ImagesResponse imagesResponse = mapper.readValue(url, ImagesResponse.class);
-
-
-                return imagesResponse.getResponse().getBody().getItems().getItem();//사진있는경우
-        }*/
-
-
+            } catch (Exception e) {
+                System.out.println("ㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇ에러ㅓㅓㅓㅓㅓㅓㅓㅓㅓ");
+                return a;//사진있는경우
+            }
+            return a;
+        }
 //x, y축을 가지고 주변 관광지 정보 가져오기-축제
         @PostMapping("/nearbyTour")
         public List<TourItem> nearbyTour(@RequestBody NearbyTourParam nearbyTourParam) throws IOException {
@@ -304,6 +308,8 @@ public class RestAPIController {
     public List<TourItem> nearbyTour2(@RequestBody NearbyTourParam nearbyTourParam) throws IOException {
         var contentIdNear=nearbyTourParam.getContentid();
         System.out.println("/nearbyTour2의"+contentIdNear+"입니다");
+
+
 
         System.out.println(nearbyTourParam.getMapX()+" "+nearbyTourParam.getMapY()+"이랑임");
         System.out.println("/nearbytour2에서 관광지를 찾기위한 x,y값"+nearbyTourParam.getMapX()+" "+nearbyTourParam.getMapY()+nearbyTourParam.getAddr1()+
@@ -803,7 +809,7 @@ public class RestAPIController {
         System.out.println("/weatherinfo에서db값체크2"+festivals2.getAddr1()+"*"+festivals2.getMapX().length()+"*"+festivals2.getMapY());
 
 
-        if(festivals2.getMapX().length()==0)//예외처리 contentid 2602871
+        if(festivals2.getMapX().length()==0)//예외처리
         {
             System.out.println("db에 x,y값이 존재하지않는 축제입니다kkkkkkkkkkkkkkkkkkk");
             weatherForecastParam.setMapX("126.9787932340");
