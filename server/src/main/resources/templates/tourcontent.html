@@ -519,6 +519,7 @@
         }).done(function (data) {
           //  alert(data.length);
             for (var i = 0; i < data.length; i++) {
+                $festival_item4 = $('<td>21°C 23°C</td>\n');
                 $festival_item5 = $('<th scope="col">월</th>\n');
                 $festival_item5.text(data[i].dayOfTheWeek);
                 $("#dayday").append($festival_item5);
@@ -528,13 +529,16 @@
                 else if(data[i].state=="구름많고 비"||data[i].state=="흐리고 비")
                     $festival_item3.find('i').addClass("fas fa-cloud-rain");
                 else if(data[i].state=="맑음")
-                    $festival_item3.find('i').addClass("fas fa-sun");
+                    $festival_item3.find('i').addClass("fas fa-cloud");
                 else if(data[i].state=="구름많고 눈"||data[i].state=="구름많고 눈"||data[i].state=="구름많고 비/눈"||data[i].state=="구름많고 눈/비"
                     +data[i].state=="흐리고 눈"||data[i].state=="흐리고 비/눈"|data[i].state=="흐리고 눈/비")
                     $festival_item3.find('i').addClass("fas fa-snowflake");
                 $("#suncloud").append($festival_item3);
-                $festival_item4 = $('<td>21°C 23°C</td>\n');
-                $festival_item4.text(data[i].minTemp+"\n    "+data[i].maxTemp);
+                if(i==0||i==1){//처음 이틀만 소수점형태라 2개자름
+                    data[i].minTemp=data[i].minTemp.substring(0,2);
+                    data[i].maxTemp=data[i].maxTemp.substring(0,2);}
+                //  data[i].maxTemp=data[i].maxTemp.substring(data[i].maxTemp.length-2);}
+                $festival_item4.text("Max-"+data[i].minTemp+" "+"Min-"+data[i].maxTemp);
                 $("#temperature").append($festival_item4);
             }
             //alert("띄우기일단완료");
