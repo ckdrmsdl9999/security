@@ -69,7 +69,8 @@ public class MemberController {
                 role.setRoleName("BASIC");
                 member.setRoles(Collections.singletonList(role));
                 memberRepository.save(member);
-                return "redirect:/main";
+                return "1";
+//                return "redirect:/main";
             } else {
                 return "0";
             }
