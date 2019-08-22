@@ -496,6 +496,12 @@ public class RestAPIController {
 
             ComInfoResponse responseResult = mapper.readValue(url, ComInfoResponse.class);
             System.out.println("/detailcmmontour에서 image값확인"+responseResult.getResponse().getBody().getItems().getItem().getFirstimage()+"이야"+responseResult.getResponse().getBody().getItems().getItem().getFirstimage2());
+
+        String result ="";
+        result = responseResult.getResponse().getBody().getItems().getItem().getOverview().replaceAll("</br>","");
+        result = responseResult.getResponse().getBody().getItems().getItem().getOverview().replaceAll("<br>","");
+        result = result.replaceAll("<br />","");
+        responseResult.getResponse().getBody().getItems().getItem().setOverview(result);
             return responseResult.getResponse().getBody().getItems().getItem();
         }
 

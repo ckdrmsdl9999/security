@@ -510,7 +510,7 @@
                     +data[i].state=="흐리고 눈"||data[i].state=="흐리고 비/눈"|data[i].state=="흐리고 눈/비")
                     $festival_item3.find('i').addClass("fas fa-snowflake");
                 $("#suncloud").append($festival_item3);
-
+                alert("*"+data[i].minTemp+"*"+data[i].maxTemp+"*");
                 $festival_item4 = $('<td>21°C 23°C</td>\n');
                 $festival_item4.text(data[i].minTemp+"\n    "+data[i].maxTemp);
                 $("#temperature").append($festival_item4);
@@ -558,7 +558,7 @@
     });
 
     $( document ).ready(function() {
-        var param = {"contentid" : val ,"numOfRows":"10","pageNo":"1","arrange":"E","radius":"2000"};
+        var param = {"contentid" : val ,"numOfRows":"10","pageNo":"1","arrange":"E","radius":"5000"};
         $.ajax({
             url: "/api/nearbyTour",
             type: "POST",
