@@ -6,8 +6,8 @@ package com.security.everywhere.request;
 * */
 public class WeatherForecastParam {
     private String addr;    // 축제 or 관광지 주소
-    private String mapX;    // x 좌표
-    private String mapY;    // y 좌표
+    private String mapX="0";    // x 좌표
+    private String mapY="0";    // y 좌표
     private String contentid; //관광지 id 추가
 
     public String getAddr() {
