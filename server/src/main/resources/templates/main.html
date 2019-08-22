@@ -795,7 +795,7 @@
     $(document).on('click', '#login', function() {
         var nickName = document.getElementById("loginNickName").value;
         var pw = document.getElementById("loginPw").value;
-        alert(nickName + pw);
+        alert(nickName +"카드"+pw);
         var param = {"nickName": nickName, "pw": pw};
         $.ajax({
             url: "/loginPage/login",
@@ -806,11 +806,12 @@
         }).done(function(data) {
             //var result = /*[[ ${session.id} ]]*/;
             //location.href = "/main";
-            alert(data);
+            alert(data.length+"ajax으로 넘어왔어");
 
 
         }).fail(function(){
-            alert("error");
+            alert("error"+"값을보자-"+data.length);
+
         });
     });
 

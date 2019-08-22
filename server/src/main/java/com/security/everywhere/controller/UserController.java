@@ -23,14 +23,17 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public String login(@RequestBody UserParam userParam, Model model) {
+    @ResponseBody
+    public  String login(@RequestBody UserParam userParam) {
         String nickName = userParam.getNickName();
         String pw = userParam.getPw();
         if(nickName.equals(userRepository.findByNickName(nickName).getNickName()) && pw.equals(userRepository.findByNickName(nickName).getPw())
                 && nickName.equals(userRepository.findByPw(pw).getNickName()) && pw.equals(userRepository.findByPw(pw).getPw())) {
-            System.out.println(model.addAttribute("msg", "세션 이름 : " + nickName));
+           // System.out.println(model.addAttribute("msg", "세션 이름 : " + nickName));
 //            session.setAttribute("id", nickName);
 //            session.setMaxInactiveInterval(60*10);
+            System.out.println("컨트롤러에 왓어" +
+                    "");
             return "redirect:/main";
         }
         else
