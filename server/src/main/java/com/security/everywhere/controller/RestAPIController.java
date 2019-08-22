@@ -297,10 +297,16 @@ public class RestAPIController {
         .append("=")
         .append(URLEncoder.encode("json", StandardCharsets.UTF_8));
         URL url = new URL(urlBuilder.toString());
+            TourResponse tourResponse=null;
+            List<TourItem> a = new ArrayList<>();
+            try {
+                tourResponse = mapper.readValue(url, TourResponse.class);
+            } catch (Exception e) {
+                System.out.println("에러가 발생했어요!!");
+                return a;//
+            }
+            return tourResponse.getResponse().getBody().getItems().getItem();
 
-        TourResponse tourResponse = mapper.readValue(url, TourResponse.class);
-        //tourResponse.getResponse().getBody().getItems().getItem().get(0);
-        return tourResponse.getResponse().getBody().getItems().getItem();
         }
 
     //x, y축을 가지고 주변 관광지 정보 가져오기-관광지
@@ -365,9 +371,16 @@ public class RestAPIController {
         .append(URLEncoder.encode("json", StandardCharsets.UTF_8));
         URL url = new URL(urlBuilder.toString());
 
-        TourResponse tourResponse = mapper.readValue(url, TourResponse.class);
-//        System.out.println(tourResponse.getResponse().getBody().getItems().getItem().get(0)+"야야야야");
+        TourResponse tourResponse=null;
+        List<TourItem> a = new ArrayList<>();
+        try {
+            tourResponse = mapper.readValue(url, TourResponse.class);
+        } catch (Exception e) {
+            System.out.println("에러가 발생했어요!!");
+            return a;//
+        }
         return tourResponse.getResponse().getBody().getItems().getItem();
+
         }
 
 // 관광지의 상세정보
