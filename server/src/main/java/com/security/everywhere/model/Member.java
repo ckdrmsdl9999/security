@@ -11,15 +11,13 @@ import java.util.Objects;
 @Entity
 public class Member {
 
+    @Id
     @Column(nullable = false, unique = true, length = 50)
     private String nickName;
 
     @Column(nullable = false, length = 200)
     private String pw;
 
-    @Id
-    @Column(nullable = false, unique = true, length = 50)
-    private String email;
 
     @CreationTimestamp
     private Date regdate;
@@ -45,14 +43,6 @@ public class Member {
 
     public void setPw(String pw) {
         this.pw = pw;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
     }
 
     public Date getRegdate() {
@@ -97,7 +87,6 @@ public class Member {
         return "Member{" +
                 ", nickName='" + nickName + '\'' +
                 ", pw='" + pw + '\'' +
-                ", email='" + email + '\'' +
                 ", regdate=" + regdate +
                 ", updateDate=" + updateDate +
                 ", roles=" + roles +
