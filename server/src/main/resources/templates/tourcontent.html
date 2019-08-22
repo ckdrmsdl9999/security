@@ -709,6 +709,119 @@
         });
     });
     ///////////////////////////////////////////
+    $.ajax({
+        url: "/api/reviewList",
+        type: "POST",
+        dataType: "json",
+        contentType: "application/json",
+        data: val,
+    }).done(function (data) {
+
+        for(var i=0; i<data.length ;i++) {
+            $review_form = $('<li class="media mb-1" style="width: 550px">\n' +
+                '                                <a href="#" class="float-left mr-4">\n' +
+                '                                    <img src="https://bootdey.com/img/Content/user_3.jpg" alt=""class="rounded-circle">\n' +
+                '                                </a>\n' +
+                '                                <div class="media-body">\n' +
+                '                        <span class="text-muted float-right">\n' +
+                '                            <small class="text-muted" id="review_date">2019.08.11</small>\n' +
+                '                         </span>\n' +
+                '                                    <strong class="text-success" id="UserId">JohnNida</strong>\n' +
+                '                                    <div class="row">\n' +
+                '                                        <p class="star_review col-10">\n' +
+                '                                            <i class="fas fa-star"></i>\n' +
+                '                                        </p>\n' +
+                '                                        <a href="javascript:void(0);" onclick=""><p class="like_review col-2">\n' +
+                '                                            <i class="far fa-thumbs-up"></i>\n' +
+                '                                        </a></p>\n' +
+                '                                    </div>\n' +
+                '                                    <p id="review_content">\n' +
+                '                                        Lorem ipsum dolor sitamet sit ag elit.\n' +
+                '                                    </p>\n' +
+                '                                </div>\n' +
+                '                            </li>');
+
+            $review_form.find('#UserId').text(data[i].userId);
+            $review_form.find('#review_date').text(data[i].date);
+            $review_form.find('.star_review').append(data[i].star);
+            $review_form.find('.like_review').append(data[i].likecount);
+            $review_form.find('#review_content').text(data[i].textcontent);
+            $review_form.find('a').attr("onclick","like_click("+data[i].id+")");
+
+
+            $('.list-unstyled').append($review_form);
+        }
+
+        $no_review = $('<li class="mt-4 text-center" style="height: 200px; margin-top: 6.5rem!important;\n"> 리뷰가 없습니다. </li>');
+
+        if(data.length == 0)
+            $('.list-unstyled').append($no_review);
+
+    }).fail(function () {
+        alert('fail3');
+    });
+
+
+    //긍정적 인기리뷰 불러옴
+    $.ajax({
+        url: "/api/popularReviewList_pos",
+        type: "POST",
+        dataType: "json",
+        contentType: "application/json",
+        data: val,
+    }).done(function (data) {
+        if(data.length == 0) {
+            $no_review = $('<li class="mt-4 text-center" style="height: 200px; margin-top: 6.5rem!important;\n"> 긍정적 인기 리뷰가 없습니다. </li>');
+            $('.tab-pane.fade.show.active').append($no_review);
+
+        }else {
+            $review_form = $('<div class="card review_card mb-2" style="width: 35rem;">\n' +
+                '                            <div class="card-header">\n' +
+                '                                인기 리뷰(긍정적)\n' +
+                '                            </div>\n' +
+                '                            <div class="card-body">\n' +
+                '                                <blockquote class="blockquote mb-0">\n' +
+                '                                    <ul class="media-list">\n' +
+                '                                        <li class="media">\n' +
+                '                                            <a href="#" class="float-left mr-3 best_review_img">\n' +
+                '                                                <img src="https://bootdey.com/img/Content/user_1.jpg" alt="" class="rounded-circle">\n' +
+                '                                            </a>\n' +
+                '                                            <div class="media-body">\n' +
+                '                                                <strong class="text-success" id="userId"></strong>\n' +
+                '                                                <span class="text-muted float-right">\n' +
+                '                                                <small class="text-muted" id="review_date">2019.08.11</small>\n' +
+                '                                            </span>\n' +
+                '                                                <p class="star_review">\n' +
+                '                                                    <i class="fas fa-star"></i> \n' +
+                '                                                </p>\n' +
+                '                                                <p id="textcontent">\n' +
+                '                                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit.\n' +
+                '                                                    Lorem ipsum dolor sit amet\n' +
+                '                                                </p>\n' +
+                '                                            </div>\n' +
+                '                                        </li>\n' +
+                '                                    </ul>\n' +
+                '                                    <div class="row">\n' +
+                '                                        <footer class="blockquote-footer col-7"> 이 리뷰가 도움이 되었습니까?</footer>\n' +
+                '                                        <button class="btn btn-primary col-2">예</button> \n' +
+                '                                    </div>\n' +
+                '                                </blockquote>\n' +
+                '                            </div>\n' +
+                '                        </div>');
+
+            $review_form.find('#userId').text(data[0].userId);
+            $review_form.find('#review_date').text(data[0].date);
+            $review_form.find('.star_review').append(data[0].star);
+            $review_form.find('#textcontent').text(data[0].textcontent);
+
+            $('.tab-pane.fade.show.active').append($review_form);
+        }
+
+    }).fail(function () {
+        alert('fail4');
+    });
+
+
 
 
 
