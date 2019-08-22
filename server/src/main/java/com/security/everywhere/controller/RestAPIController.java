@@ -179,54 +179,58 @@ public class RestAPIController {
         // 관광지 이미지 추가로 가져오기
         @PostMapping("/tourImages")
         public List <ImagesItem> tourImages(@RequestBody String contentid) throws IOException {
-                System.out.println("/tourImages의contentid값"+contentid);
+            System.out.println("/tourImages의contentid값" + contentid);
 
-                StringBuilder urlBuilder = new StringBuilder("http://api.visitkorea.or.kr/openapi/service/rest/KorService/detailImage"); /*URL*/
-                urlBuilder.append("?")
-                .append(URLEncoder.encode("ServiceKey", StandardCharsets.UTF_8))
-                .append("=")
-                .append(apiServiceKey); /*공공데이터포털에서 발급받은 인증키*/
-                urlBuilder.append("&")
-                .append(URLEncoder.encode("numOfRows", StandardCharsets.UTF_8))
-                .append("=")
-                .append(URLEncoder.encode("10", StandardCharsets.UTF_8)); /*한 페이지 결과 수*/
-                urlBuilder.append("&")
-                .append(URLEncoder.encode("pageNo", StandardCharsets.UTF_8))
-                .append("=")
-                .append(URLEncoder.encode("1", StandardCharsets.UTF_8)); /*현재 페이지 번호*/
-                urlBuilder.append("&")
-                .append(URLEncoder.encode("MobileOS", StandardCharsets.UTF_8))
-                .append("=")
-                .append(URLEncoder.encode("ETC", StandardCharsets.UTF_8)); /*IOS (아이폰), AND (안드로이드), WIN (원도우폰),ETC*/
-                urlBuilder.append("&")
-                .append(URLEncoder.encode("MobileApp", StandardCharsets.UTF_8))
-                .append("=")
-                .append(URLEncoder.encode("AppTest", StandardCharsets.UTF_8)); /*서비스명=어플명*/
-                urlBuilder.append("&")
-                .append(URLEncoder.encode("contentId", StandardCharsets.UTF_8))
-                .append("=")
-                .append(URLEncoder.encode(contentid, StandardCharsets.UTF_8));    // 콘텐츠 ID
-                urlBuilder.append("&")
-                .append(URLEncoder.encode("imageYN", StandardCharsets.UTF_8))
-                .append("=")
-                .append(URLEncoder.encode("Y", StandardCharsets.UTF_8));    // Y=콘텐츠 이미지 조회, N='음식점'타입의 음식메뉴 이미지
-                urlBuilder.append("&")
-                .append(URLEncoder.encode("subImageYN", StandardCharsets.UTF_8))
-                .append("=")
-                .append(URLEncoder.encode("Y", StandardCharsets.UTF_8));    // Y=원본,썸네일 이미지 조회 N=Null
-                urlBuilder.append("&")
-                .append(URLEncoder.encode("_type", StandardCharsets.UTF_8))
-                .append("=")
-                .append(URLEncoder.encode("json", StandardCharsets.UTF_8));    // 콘텐츠 개요 조회여부
-                URL url = new URL(urlBuilder.toString());
+            StringBuilder urlBuilder = new StringBuilder("http://api.visitkorea.or.kr/openapi/service/rest/KorService/detailImage"); /*URL*/
+            urlBuilder.append("?")
+                    .append(URLEncoder.encode("ServiceKey", StandardCharsets.UTF_8))
+                    .append("=")
+                    .append(apiServiceKey); /*공공데이터포털에서 발급받은 인증키*/
+            urlBuilder.append("&")
+                    .append(URLEncoder.encode("numOfRows", StandardCharsets.UTF_8))
+                    .append("=")
+                    .append(URLEncoder.encode("10", StandardCharsets.UTF_8)); /*한 페이지 결과 수*/
+            urlBuilder.append("&")
+                    .append(URLEncoder.encode("pageNo", StandardCharsets.UTF_8))
+                    .append("=")
+                    .append(URLEncoder.encode("1", StandardCharsets.UTF_8)); /*현재 페이지 번호*/
+            urlBuilder.append("&")
+                    .append(URLEncoder.encode("MobileOS", StandardCharsets.UTF_8))
+                    .append("=")
+                    .append(URLEncoder.encode("ETC", StandardCharsets.UTF_8)); /*IOS (아이폰), AND (안드로이드), WIN (원도우폰),ETC*/
+            urlBuilder.append("&")
+                    .append(URLEncoder.encode("MobileApp", StandardCharsets.UTF_8))
+                    .append("=")
+                    .append(URLEncoder.encode("AppTest", StandardCharsets.UTF_8)); /*서비스명=어플명*/
+            urlBuilder.append("&")
+                    .append(URLEncoder.encode("contentId", StandardCharsets.UTF_8))
+                    .append("=")
+                    .append(URLEncoder.encode(contentid, StandardCharsets.UTF_8));    // 콘텐츠 ID
+            urlBuilder.append("&")
+                    .append(URLEncoder.encode("imageYN", StandardCharsets.UTF_8))
+                    .append("=")
+                    .append(URLEncoder.encode("Y", StandardCharsets.UTF_8));    // Y=콘텐츠 이미지 조회, N='음식점'타입의 음식메뉴 이미지
+            urlBuilder.append("&")
+                    .append(URLEncoder.encode("subImageYN", StandardCharsets.UTF_8))
+                    .append("=")
+                    .append(URLEncoder.encode("Y", StandardCharsets.UTF_8));    // Y=원본,썸네일 이미지 조회 N=Null
+            urlBuilder.append("&")
+                    .append(URLEncoder.encode("_type", StandardCharsets.UTF_8))
+                    .append("=")
+                    .append(URLEncoder.encode("json", StandardCharsets.UTF_8));    // 콘텐츠 개요 조회여부
+            URL url = new URL(urlBuilder.toString());
+            ImagesResponse imagesResponse = null;
+            //   ImagesResponse imagesResponse = mapper.readValue(url, ImagesResponse.class);
+            List<ImagesItem> a = new ArrayList<>();
+            try {
+                imagesResponse = mapper.readValue(url, ImagesResponse.class);
 
-                ImagesResponse imagesResponse = mapper.readValue(url, ImagesResponse.class);
-
-
-                return imagesResponse.getResponse().getBody().getItems().getItem();//사진있는경우
+            } catch (Exception e) {
+                System.out.println("ㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇ에러ㅓㅓㅓㅓㅓㅓㅓㅓㅓ");
+                return a;//사진있는경우
+            }
+            return imagesResponse.getResponse().getBody().getItems().getItem();
         }
-
-
 //x, y축을 가지고 주변 관광지 정보 가져오기-축제
         @PostMapping("/nearbyTour")
         public List<TourItem> nearbyTour(@RequestBody NearbyTourParam nearbyTourParam) throws IOException {
@@ -293,10 +297,16 @@ public class RestAPIController {
         .append("=")
         .append(URLEncoder.encode("json", StandardCharsets.UTF_8));
         URL url = new URL(urlBuilder.toString());
+            TourResponse tourResponse=null;
+            List<TourItem> a = new ArrayList<>();
+            try {
+                tourResponse = mapper.readValue(url, TourResponse.class);
+            } catch (Exception e) {
+                System.out.println("에러가 발생했어요!!");
+                return a;//
+            }
+            return tourResponse.getResponse().getBody().getItems().getItem();
 
-        TourResponse tourResponse = mapper.readValue(url, TourResponse.class);
-        //tourResponse.getResponse().getBody().getItems().getItem().get(0);
-        return tourResponse.getResponse().getBody().getItems().getItem();
         }
 
     //x, y축을 가지고 주변 관광지 정보 가져오기-관광지
@@ -361,9 +371,16 @@ public class RestAPIController {
         .append(URLEncoder.encode("json", StandardCharsets.UTF_8));
         URL url = new URL(urlBuilder.toString());
 
-        TourResponse tourResponse = mapper.readValue(url, TourResponse.class);
-//        System.out.println(tourResponse.getResponse().getBody().getItems().getItem().get(0)+"야야야야");
+        TourResponse tourResponse=null;
+        List<TourItem> a = new ArrayList<>();
+        try {
+            tourResponse = mapper.readValue(url, TourResponse.class);
+        } catch (Exception e) {
+            System.out.println("에러가 발생했어요!!");
+            return a;//
+        }
         return tourResponse.getResponse().getBody().getItems().getItem();
+
         }
 
 // 관광지의 상세정보
@@ -479,6 +496,12 @@ public class RestAPIController {
 
             ComInfoResponse responseResult = mapper.readValue(url, ComInfoResponse.class);
             System.out.println("/detailcmmontour에서 image값확인"+responseResult.getResponse().getBody().getItems().getItem().getFirstimage()+"이야"+responseResult.getResponse().getBody().getItems().getItem().getFirstimage2());
+
+        String result ="";
+        result = responseResult.getResponse().getBody().getItems().getItem().getOverview().replaceAll("</br>","");
+        result = responseResult.getResponse().getBody().getItems().getItem().getOverview().replaceAll("<br>","");
+        result = result.replaceAll("<br />","");
+        responseResult.getResponse().getBody().getItems().getItem().setOverview(result);
             return responseResult.getResponse().getBody().getItems().getItem();
         }
 
