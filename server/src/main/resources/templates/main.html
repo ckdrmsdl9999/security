@@ -840,7 +840,14 @@
             //location.href = "/main";
             if (data == "0")
                 $(".register-modal-body").find("#signUpFail").text("닉네임과 비밀번호의 조건을 확인해주세요.");
-
+            else if(data == '1') {
+                $("#Modal3").modal('hide');
+                $("#Modal3").find('.form-control').val("");
+                $(".register-modal-body").find("#nickNameState").text("");
+                $(".register-modal-body").find("#passwordState").text("");
+                $(".register-modal-body").find("#signUpFail").text("");
+                setTimeout(function() { alert("회원가입이 완료되었습니다."); }, 1000);
+            }
 
         }).fail(function(){
             alert("error");
