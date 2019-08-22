@@ -464,31 +464,34 @@
                 </div>
                 <div class="register-modal-body">
                     <div class="signup-form">
-                        <form action="/loginPage/addUser" method="post">
+                        <form action="/member/create" method="post">
                             <h2>Create Account</h2>
                             <div class="form-group">
                                 <div class="input-group">
                                     <span class="input-group-addon"><i class="fa fa-user"></i></span>
-                                    <input type="text" class="form-control" name="username" placeholder="Username" required="required">
+                                    <input type="text" class="form-control" id="signUpNickName" placeholder="Username" required="required">
                                 </div>
                             </div>
                             <div class="form-group">
                                 <div class="input-group">
                                     <span class="input-group-addon"><i class="fa fa-lock"></i></span>
-                                    <input type="password" class="form-control" name="password" placeholder="Password" required="required">
+                                    <input type="password" class="form-control" id="signUpPassword" placeholder="Password" required="required">
                                 </div>
                             </div>
+<!--                            <div class="form-group">-->
+<!--                                <div class="input-group">-->
+<!--                                    <span class="input-group-addon">-->
+<!--                                        <i class="fa fa-lock"></i>-->
+<!--                                        <i class="fa fa-check"></i>-->
+<!--                                    </span>-->
+<!--                                    <input type="password" class="form-control" name="confirm_password" placeholder="Confirm Password" required="required">-->
+<!--                                </div>-->
+<!--                            </div>-->
                             <div class="form-group">
-                                <div class="input-group">
-                                    <span class="input-group-addon">
-                                        <i class="fa fa-lock"></i>
-                                        <i class="fa fa-check"></i>
-                                    </span>
-                                    <input type="password" class="form-control" name="confirm_password" placeholder="Confirm Password" required="required">
-                                </div>
+                                <p id="signUpFail"></p>
                             </div>
                             <div class="form-group">
-                                <button type="submit" class="btn btn-primary btn-block btn-lg">Sign Up</button>
+                                <button type="button" class="btn btn-primary btn-block btn-lg" id="signUp">Sign Up</button>
                             </div>
                         </form>
                     </div>
@@ -812,6 +815,27 @@
         }).fail(function(){
             alert("error"+"값을보자-"+data.length);
 
+        });
+    });
+
+    $(document).on('click', '#signUp', function() {
+        var nickName = document.getElementById("signUpNickName").value;
+        var pw = document.getElementById("signUpPassword").value;
+        var param = {"nickName": nickName, "pw": pw};
+        $.ajax({
+            url: "/member/create",
+            type: "POST",
+            dataType: "json",
+            contentType: "application/json",
+            data: JSON.stringify(param)
+        }).done(function(data) {
+            //var result = /*[[ ${session.id} ]]*/;
+            //location.href = "/main";
+            $("#signUpFail").val("조건에 맞게 입력해주세요.");
+
+
+        }).fail(function(){
+            alert("error");
         });
     });
 
