@@ -638,9 +638,27 @@
                 $festival_item5.find('a').attr('href',"/content/tourcontent/"+data[i].contentid+"/"+data[i].mapx+"/"+data[i].mapy);////
                 $festival_item5.find('p').text(data[i].title);
                 $festival_item5.find('small').text(data[i].dist+'미터');
-
-
                 $("#tourtour").append($festival_item5);
+
+                if (data.length == 0) {
+                    $carousel_item = $('<div class="carousel-item active">\n' +
+                        '                <img src="" class="d-block img-fluid " style="width: 600px; height:400px" alt="...">\n' +
+                        '            </div>');
+                    $carousel_item.find('img').attr('src', thumbnail);
+                    $('.carousel-inner').append($carousel_item);
+                } else {
+                    for (var i = 0; i < 1; i++) {
+                        $carousel_item = $('<div class="carousel-item">\n' +
+                            '                <img src="" class="d-block img-fluid" style="width: 600px; height:400px" alt="...">\n' +
+                            '            </div>');
+                        if (i == 0)
+                            $carousel_item.addClass('active');
+                        $carousel_item.find('img').attr("src", data[i].originimgurl);
+                        $('.carousel-inner').append($carousel_item);
+                    }
+                }
+
+
             }
 
         }).fail(function () {

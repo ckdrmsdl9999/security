@@ -177,31 +177,31 @@ public class RestAPIController {
 
 
         // 관광지 이미지 추가로 가져오기
-        @PostMapping("/tourImages")
+       /* @PostMapping("/tourImages")
         public List <ImagesItem> tourImages(@RequestBody String contentid) throws IOException {
                 System.out.println("/tourImages의contentid값"+contentid);
 
-                StringBuilder urlBuilder = new StringBuilder("http://api.visitkorea.or.kr/openapi/service/rest/KorService/detailImage"); /*URL*/
+                StringBuilder urlBuilder = new StringBuilder("http://api.visitkorea.or.kr/openapi/service/rest/KorService/detailImage"); *//*URL*//*
                 urlBuilder.append("?")
                 .append(URLEncoder.encode("ServiceKey", StandardCharsets.UTF_8))
                 .append("=")
-                .append(apiServiceKey); /*공공데이터포털에서 발급받은 인증키*/
+                .append(apiServiceKey); *//*공공데이터포털에서 발급받은 인증키*//*
                 urlBuilder.append("&")
                 .append(URLEncoder.encode("numOfRows", StandardCharsets.UTF_8))
                 .append("=")
-                .append(URLEncoder.encode("10", StandardCharsets.UTF_8)); /*한 페이지 결과 수*/
+                .append(URLEncoder.encode("10", StandardCharsets.UTF_8)); *//*한 페이지 결과 수*//*
                 urlBuilder.append("&")
                 .append(URLEncoder.encode("pageNo", StandardCharsets.UTF_8))
                 .append("=")
-                .append(URLEncoder.encode("1", StandardCharsets.UTF_8)); /*현재 페이지 번호*/
+                .append(URLEncoder.encode("1", StandardCharsets.UTF_8)); *//*현재 페이지 번호*//*
                 urlBuilder.append("&")
                 .append(URLEncoder.encode("MobileOS", StandardCharsets.UTF_8))
                 .append("=")
-                .append(URLEncoder.encode("ETC", StandardCharsets.UTF_8)); /*IOS (아이폰), AND (안드로이드), WIN (원도우폰),ETC*/
+                .append(URLEncoder.encode("ETC", StandardCharsets.UTF_8)); *//*IOS (아이폰), AND (안드로이드), WIN (원도우폰),ETC*//*
                 urlBuilder.append("&")
                 .append(URLEncoder.encode("MobileApp", StandardCharsets.UTF_8))
                 .append("=")
-                .append(URLEncoder.encode("AppTest", StandardCharsets.UTF_8)); /*서비스명=어플명*/
+                .append(URLEncoder.encode("AppTest", StandardCharsets.UTF_8)); *//*서비스명=어플명*//*
                 urlBuilder.append("&")
                 .append(URLEncoder.encode("contentId", StandardCharsets.UTF_8))
                 .append("=")
@@ -224,7 +224,7 @@ public class RestAPIController {
 
 
                 return imagesResponse.getResponse().getBody().getItems().getItem();//사진있는경우
-        }
+        }*/
 
 
 //x, y축을 가지고 주변 관광지 정보 가져오기-축제
