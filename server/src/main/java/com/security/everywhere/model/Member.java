@@ -16,7 +16,7 @@ public class Member {
     private String nickName;
 
     @Column(nullable = false, length = 200)
-    private String pw;
+    private String password;
 
 
     @CreationTimestamp
@@ -37,12 +37,12 @@ public class Member {
         this.nickName = nickName;
     }
 
-    public String getPw() {
-        return pw;
+    public String getPassword() {
+        return password;
     }
 
-    public void setPw(String pw) {
-        this.pw = pw;
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public Date getRegdate() {
@@ -86,7 +86,7 @@ public class Member {
     public String toString() {
         return "Member{" +
                 ", nickName='" + nickName + '\'' +
-                ", pw='" + pw + '\'' +
+                ", pw='" + password + '\'' +
                 ", regdate=" + regdate +
                 ", updateDate=" + updateDate +
                 ", roles=" + roles +
