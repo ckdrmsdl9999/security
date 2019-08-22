@@ -28,6 +28,7 @@ public class MemberController {
 
     private final AuthenticationManager authenticationManager;
 
+
     private final MemberRepository memberRepository;
 
     public MemberController(MemberRepository memberRepository, AuthenticationManager authenticationManager) {
