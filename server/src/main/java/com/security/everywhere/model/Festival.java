@@ -24,8 +24,8 @@ public class Festival implements Serializable {
     private String createdTime = "";    // 콘텐츠 최초 등록일
     private String firstImage= "";      // 원본 대표이미지 약 500x333 size
     private String firstImage2= "";     // 썸네일 대표이미지 약 150x100 size
-    private String mapX= "";            // 경도
-    private String mapY= "";            // 위도
+    private String mapX= "0";            // 경도
+    private String mapY= "0";            // 위도
     private String mLevel= "";          // map level 응답
     private String modifiedTime = "";   // 콘텐츠 수정일
     private String readCount= "";       // 콘텐츠 조회수

@@ -221,6 +221,12 @@ public class RestAPIController {
         festival = festivalRepository.findByContentId(contentIdNear);
         nearbyTourParam.setMapX(festival.getMapX());
         nearbyTourParam.setMapY(festival.getMapY());
+        if(nearbyTourParam.getMapX().length()==0)//예외처리 contentid 2602871
+        {
+            nearbyTourParam.setMapX("126.9787932340");
+            nearbyTourParam.setMapY("37.5659098804");
+        }
+
         //  System.out.println(nearbyTourParam.getArrange()+"포착완료");
         System.out.println("/nearbytour에서 관광지를 찾기위한 contentid값과x,y값"+contentIdNear+" "+nearbyTourParam.getMapX()+" "+nearbyTourParam.getMapY());
         StringBuilder urlBuilder = new StringBuilder("http://api.visitkorea.or.kr/openapi/service/rest/KorService/locationBasedList"); /*URL*/
@@ -648,7 +654,13 @@ public class RestAPIController {
         festivals3=festivalRepository.findByContentId(requestParam.getContentid());
         requestParam.setMapx(festivals3.getMapX());
         requestParam.setMapy(festivals3.getMapY());
-        //  System.out.println("airinfo의 getmapx값체크요-"+festivals3.getMapX()+" "+festivals3.getMapY());
+          System.out.println("airinfo의 getmapx값체크요-"+requestParam.getContentid()+"이고"+festivals3.getMapX()+" "+festivals3.getMapY());
+
+          if(requestParam.getMapx().length()==0)//예외처리
+          {
+              requestParam.setMapx("126.9787932340");
+              requestParam.setMapy("37.5659098804");
+          }
 
         // 좌표 변환해주는 api 사용하기 전에 키를 받아야함
         StringBuilder urlBuilder = new StringBuilder("https://sgisapi.kostat.go.kr/OpenAPI3/auth/authentication.json");
@@ -766,15 +778,29 @@ public class RestAPIController {
         Date standardDate = currentTimeFormat.parse(today+"0600");    // api가 아침 6시를 기준으로 데이터가 갱신되므로
         long standardMillis = standardDate.getTime();       // 기준 시간을 초로
 
-//       // System.out.println("넘어온contentid이거다"+weatherForecastParam.getContentid());
+       // System.out.println("넘어온contentid이거다"+weatherForecastParam.getContentid());
         Festival festivals2 = new Festival();
+        festivals2.setMapX("0");
+        festivals2.setMapY("0");
+        System.out.println("/weatherinfo에서db값체크1"+festivals2.getAddr1()+"*"+festivals2.getMapX()+"*"+festivals2.getMapY());
         festivals2=festivalRepository.findByContentId(weatherForecastParam.getContentid());
+        System.out.println("/weatherinfo에서값체크"+weatherForecastParam.getAddr()+" "+weatherForecastParam.getMapX()+" "+weatherForecastParam.getMapY());
         weatherForecastParam.setAddr(festivals2.getAddr1());
         weatherForecastParam.setMapX(festivals2.getMapX());
         weatherForecastParam.setMapY(festivals2.getMapY());
-        //   System.out.println("값체크"+weatherForecastParam.getAddr()+" "+weatherForecastParam.getMapX()+" "+weatherForecastParam.getMapY());
+        System.out.println("/weatherinfo에서db값체크2"+festivals2.getAddr1()+"*"+festivals2.getMapX().length()+"*"+festivals2.getMapY());
 
 
+        if(festivals2.getMapX().length()==0)//예외처리
+        {
+            System.out.println("db에 x,y값이 존재하지않는 축제입니다kkkkkkkkkkkkkkkkkkk");
+            weatherForecastParam.setMapX("126.9787932340");
+            weatherForecastParam.setMapY("37.5659098804");
+
+
+        }
+        else {System.out.println("몰라영");
+        }
         // 새벽 6시 이전이면 하루 전 데이터 가져옴
         String currentTime;
         if (standardMillis > currentMillis) {
@@ -1330,7 +1356,6 @@ public class RestAPIController {
         }
         }
         }
-
         weatherInfo.setDayOfTheWeek( setDayOfWeek(dayOfWeekCode) );
 
         weatherList.add(weatherInfo);
