@@ -605,7 +605,11 @@
                          '</div>'+
                      '</a>'+
                      '</div>');
-                 $festival_item5.children('img').attr('src',data[i].firstimage2);
+                 if(data[i].firstimage2.length==0)
+                 { $festival_item5.children('img').attr('src',"/img/alt.png");}
+                 else
+                 {$festival_item5.children('img').attr('src',data[i].firstimage2);}
+                 //$festival_item5.children('img').attr('src',data[i].firstimage2);
                  $festival_item5.find('a').attr('href',"/content/tourcontent/"+data[i].contentid+"/"+data[i].mapx+"/"+data[i].mapy);////
                  $festival_item5.find('p').text(data[i].title);
                  $festival_item5.find('small').text(data[i].dist+'미터');

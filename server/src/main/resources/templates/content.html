@@ -573,6 +573,10 @@
             //$festival_item.find('a').attr('href',"tourcontent/" + data[i].contentId);
             for (var i = 0; i < data.length; i++) {
                 //  alert("데이터의거리값:"+data[i].dist+"그림src"+data[i].firstimage);
+
+                 // <img src="/img/alt.png" class="d-block img-fluid " style="width: 600px; height:400px" alt="...">
+
+
                 $festival_item5 = $('<div class="card" width="300" height="160"  >\n'+
                     '<img src="http://placehold.it/200x140"  width="300" height="170"/>\n'+
                     '<a href="#">\n'+
@@ -582,8 +586,11 @@
                     '</div>'+
                     '</a>'+
                     '</div>');
+                if(data[i].firstimage2.length==0)
+                { $festival_item5.children('img').attr('src',"/img/alt.png");}
+                else
+                {$festival_item5.children('img').attr('src',data[i].firstimage2);}
 
-                $festival_item5.children('img').attr('src',data[i].firstimage2);
                 $festival_item5.find('a').attr('href',"tourcontent/" + data[i].contentid+"/"+data[i].mapx+"/"+data[i].mapy);//////////
                 $festival_item5.find('p').text(data[i].title);
                 $festival_item5.find('small').text(data[i].dist+'미터');
