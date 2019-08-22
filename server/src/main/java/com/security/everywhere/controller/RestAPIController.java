@@ -229,7 +229,7 @@ public class RestAPIController {
                 System.out.println("ㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇ에러ㅓㅓㅓㅓㅓㅓㅓㅓㅓ");
                 return a;//사진있는경우
             }
-            return a;
+            return imagesResponse.getResponse().getBody().getItems().getItem();
         }
 //x, y축을 가지고 주변 관광지 정보 가져오기-축제
         @PostMapping("/nearbyTour")

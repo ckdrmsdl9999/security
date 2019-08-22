@@ -32,7 +32,7 @@ public class WeatherForecastAreaCode {
         areaList.put("부산", "11H20000");
         areaList.put("울산", "11H20000");
         areaList.put("경상남도", "11H20000");
-        areaList.put("제주도", "11G00000");
+        areaList.put("제주", "11G00000");
     }
 
     public Map<String, String> getAreaList() {
